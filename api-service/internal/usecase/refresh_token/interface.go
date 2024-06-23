@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/dostonshernazarov/resume_maker/internal/entity"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/entity"
 )
 
 type RefreshToken interface {

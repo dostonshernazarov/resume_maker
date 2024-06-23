@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/config"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 )
 
 func NewServer(cfg *config.Config, handler http.Handler) (*http.Server, error) {

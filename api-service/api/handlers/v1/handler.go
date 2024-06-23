@@ -6,13 +6,13 @@ import (
 	"github.com/casbin/casbin/v2"
 	"go.uber.org/zap"
 
-	grpcClients "github.com/dostonshernazarov/resume_maker/internal/infrastructure/grpc_service_client"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/config"
-	tokens "github.com/dostonshernazarov/resume_maker/internal/pkg/token"
+	grpcClients "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/grpc_service_client"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
+	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
 
-	appV "github.com/dostonshernazarov/resume_maker/internal/usecase/app_version"
-	"github.com/dostonshernazarov/resume_maker/internal/usecase/event"
-	// "github.com/dostonshernazarov/resume_maker/internal/usecase/refresh_token"
+	appV "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/app_version"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/event"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/refresh_token"
 )
 
 type HandlerV1 struct {

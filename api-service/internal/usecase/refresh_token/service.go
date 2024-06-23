@@ -6,8 +6,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/dostonshernazarov/resume_maker/internal/entity"
-	// "github.com/dostonshernazarov/resume_maker/internal/pkg/token"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/entity"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
 )
 
 type refreshTokenService struct {

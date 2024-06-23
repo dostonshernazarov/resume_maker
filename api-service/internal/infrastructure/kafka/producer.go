@@ -4,14 +4,14 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/dostonshernazarov/resume_maker/api/models"
+	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 
-	// "github.com/dostonshernazarov/resume_maker/internal/entity"
-	configpkg "github.com/dostonshernazarov/resume_maker/internal/pkg/config"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/entity"
+	configpkg "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 
 	"github.com/segmentio/kafka-go"
 
-	// otlp_pkg "github.com/dostonshernazarov/resume_maker/internal/pkg/otlp"
+	// otlp_pkg "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
 	"go.uber.org/zap"
 )
 

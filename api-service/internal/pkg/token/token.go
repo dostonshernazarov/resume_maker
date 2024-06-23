@@ -3,11 +3,11 @@
 package tokens
 
 import (
-	// "github.com/dostonshernazarov/resume_maker/internal/pkg/config"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 	"fmt"
 	"time"
 
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/logger"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
 
 	"github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"

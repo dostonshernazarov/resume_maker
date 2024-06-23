@@ -11,8 +11,8 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	pgxadapter "github.com/pckhoi/casbin-pgx-adapter/v2"
 
-	errorspkg "github.com/dostonshernazarov/resume_maker/internal/errors"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/config"
+	errorspkg "github.com/dostonshernazarov/resume_maker/api-service/internal/errors"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 )
 
 // PostgresDB ...

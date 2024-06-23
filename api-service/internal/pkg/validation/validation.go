@@ -12,7 +12,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	validatorEn "github.com/go-playground/validator/v10/translations/en"
 
-	errorpkg "github.com/dostonshernazarov/resume_maker/internal/errors"
+	errorpkg "github.com/dostonshernazarov/resume_maker/api-service/internal/errors"
 )
 
 func Validator(s interface{}) error {

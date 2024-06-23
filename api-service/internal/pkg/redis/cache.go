@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/config"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 )
 
 type RedisDB struct {

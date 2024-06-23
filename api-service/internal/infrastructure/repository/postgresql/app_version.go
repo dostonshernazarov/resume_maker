@@ -3,11 +3,11 @@ package postgresql
 import (
 	"context"
 
-	"github.com/dostonshernazarov/resume_maker/internal/entity"
-	"github.com/dostonshernazarov/resume_maker/internal/infrastructure/repository/postgresql/repo"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/entity"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/repository/postgresql/repo"
 
-	// "github.com/dostonshernazarov/resume_maker/internal/pkg/otlp"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/postgres"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/postgres"
 )
 
 type appVersionRepo struct {

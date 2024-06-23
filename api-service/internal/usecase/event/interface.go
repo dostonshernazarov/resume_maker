@@ -3,7 +3,7 @@ package event
 import (
 	"context"
 
-	"github.com/dostonshernazarov/resume_maker/api/models"
+	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 )
 
 type ConsumerConfig interface {

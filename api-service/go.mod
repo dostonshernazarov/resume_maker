@@ -1,4 +1,4 @@
-module github.com/dostonshernazarov/resume_maker
+module github.com/dostonshernazarov/resume_maker/api-service
 
 go 1.22.1
 

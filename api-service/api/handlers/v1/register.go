@@ -1,14 +1,14 @@
 package v1
 
 import (
-	"github.com/dostonshernazarov/resume_maker/api/models"
-	pbu "github.com/dostonshernazarov/resume_maker/genproto/user-proto"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/etc"
-	l "github.com/dostonshernazarov/resume_maker/internal/pkg/logger"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/otlp"
-	scode "github.com/dostonshernazarov/resume_maker/internal/pkg/sendcode"
-	tokens "github.com/dostonshernazarov/resume_maker/internal/pkg/token"
-	val "github.com/dostonshernazarov/resume_maker/internal/pkg/validation"
+	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
+	pbu "github.com/dostonshernazarov/resume_maker/api-service/genproto/user_service"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/etc"
+	l "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
+	scode "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/sendcode"
+	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
+	val "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/validation"
 
 	// "context"
 	"encoding/json"
@@ -38,10 +38,9 @@ import (
 // @Produce json
 // @Param User body models.RegisterReq true "RegisterUser"
 // @Success 200 {object} models.RegisterRes
-// @Failure 400 {object} models.StandartError
-// @Failure 500 {object} models.StandartError
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 func (h HandlerV1) RegisterUser(c *gin.Context) {
-
 	ctx, span := otlp.Start(c, "api", "Register")
 	span.SetAttributes(
 		attribute.Key("method").String(c.Request.Method),
@@ -54,9 +53,10 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		},
+		)
 		h.Logger.Error("failed to bind json", l.Error(err))
 		return
 	}
@@ -67,39 +67,38 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 
 	isEmail := val.IsValidEmail(body.Email)
 	if !isEmail {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect Email. Try again",
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
 		})
-
 		h.Logger.Error("Incorrect Email. Try again")
 		return
 	}
 
 	isPassword := val.IsValidPassword(body.Password)
 	if !isPassword {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Password must be at least 8 (numbers and characters) long",
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.WrongPassword,
 		})
 
 		h.Logger.Error("Password must be at least 8 (numbers and characters) long")
 		return
 	}
 
-	result, err := h.Service.UserService().CheckUniquess(ctx, &pbu.FV{
-		Field: "email",
-		Value: body.Email,
+	result, err := h.Service.UserService().UniqueEmail(ctx, &pbu.IsUnique{
+		Email: body.Email,
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		},
+		)
 		h.Logger.Error("Failed to check email uniquess", l.Error(err))
 		return
 	}
 
-	if result.Code == 1 {
-		c.JSON(http.StatusConflict, gin.H{
-			"error": "Email already in use, please use another email address",
+	if result.Status {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.EmailAlreadyInUse,
 		})
 		h.Logger.Error("failed to check email unique", l.Error(err))
 		return
@@ -123,16 +122,16 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 
 	userByte, err := json.Marshal(toRedis)
 	if err != nil {
-		c.JSON(http.StatusConflict, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
 	_, err = rdb.Set(ctx, body.Email, userByte, time.Minute*3).Result()
 	if err != nil {
-		c.JSON(http.StatusConflict, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Failed to set object to redis", l.Error(err))
 		return
@@ -157,8 +156,8 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 // @Produce json
 // @Param request query models.Verify true "request"
 // @Success 200 {object} models.UserResCreate
-// @Failure 400 {object} models.StandartError
-// @Failure 500 {object} models.StandartError
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 func (h HandlerV1) Verification(c *gin.Context) {
 	ctx, span := otlp.Start(c, "api", "Verification")
 	span.SetAttributes(
@@ -179,8 +178,8 @@ func (h HandlerV1) Verification(c *gin.Context) {
 
 	val, err := rdb.Get(ctx, email).Result()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect email. Try again ..",
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
 		})
 		h.Logger.Error("Failed to get user from redis", l.Error(err))
 		return
@@ -188,24 +187,24 @@ func (h HandlerV1) Verification(c *gin.Context) {
 
 	var userdetail models.ClientRedis
 	if err := json.Unmarshal([]byte(val), &userdetail); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Unmarshiling error",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Error unmarshalling userdetail", l.Error(err))
 		return
 	}
 
 	if userdetail.Code != code {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect code. Try again",
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
 		})
 		return
 	}
 
 	id, err := uuid.NewUUID()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "error while generating uuid",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Error generate new uuid", l.Error(err))
 		return
@@ -221,8 +220,8 @@ func (h HandlerV1) Verification(c *gin.Context) {
 
 	access, refresh, err := h.JwtHandler.GenerateJwt()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "error while generating jwt",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error generate new jwt tokens", l.Error(err))
 		return
@@ -230,44 +229,35 @@ func (h HandlerV1) Verification(c *gin.Context) {
 
 	userdetail.Password, err = etc.HashPassword(userdetail.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Oops. Something went wrong with password",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error in hash password", l.Error(err))
 		return
 	}
 
-	res, err := h.Service.UserService().Create(ctx, &pbu.User{
-		Id:           id.String(),
-		FullName:     userdetail.Fullname,
-		Email:        userdetail.Email,
-		Password:     userdetail.Password,
-		DateOfBirth:  "",
-		ProfileImg:   "",
-		Card:         "",
-		Gender:       "",
-		PhoneNumber:  "",
-		Role:         "user",
-		RefreshToken: refresh,
+	res, err := h.Service.UserService().CreateUser(ctx, &pbu.User{
+		Name:     userdetail.Fullname,
+		Email:    userdetail.Email,
+		Refresh:  refresh,
+		Password: userdetail.Password,
+		Role:     "user",
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Error while create user",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error in create user", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusCreated, &models.UserResCreate{
-		Id:           res.Id,
-		FullName:     res.FullName,
-		Email:        res.Email,
-		DateOfBirth:  res.DateOfBirth,
-		ProfileImg:   res.ProfileImg,
-		Card:         res.Card,
-		Gender:       res.Gender,
-		PhoneNumber:  res.PhoneNumber,
-		Role:         res.Role,
+		Id:           res.Guid,
+		FullName:     userdetail.Fullname,
+		Email:        userdetail.Email,
+		ProfileImg:   "",
+		PhoneNumber:  "",
+		Role:         "user",
 		AccessToken:  access,
 		RefreshToken: refresh,
 	})
@@ -283,8 +273,8 @@ func (h HandlerV1) Verification(c *gin.Context) {
 // @Produce json
 // @Param User body models.Login true "Login"
 // @Success 200 {object} models.UserResCreate
-// @Failure 400 {object} models.StandartError
-// @Failure 500 {object} models.StandartError
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 func (h HandlerV1) Login(c *gin.Context) {
 	ctx, span := otlp.Start(c, "api", "Login")
 	span.SetAttributes(
@@ -297,8 +287,8 @@ func (h HandlerV1) Login(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
 		})
 		h.Logger.Error("failed to bind json", l.Error(err))
 		return
@@ -307,29 +297,27 @@ func (h HandlerV1) Login(c *gin.Context) {
 	email := body.Email
 	password := body.Password
 
-	user, err := h.Service.UserService().Get(ctx, &pbu.Filter{
+	user, err := h.Service.UserService().GetUser(ctx, &pbu.Filter{
 		Filter: map[string]string{"email": email},
 	})
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect email or password",
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
 		})
 		h.Logger.Error("error while get user in login", l.Error(err))
 		return
 	}
 
-	// println("\n\n", user.User.Email, "\n\n")
-
-	if !etc.CheckPasswordHash(password, user.User.Password) {
-		c.JSON(http.StatusConflict, gin.H{
-			"message": "Incorrect email or password",
+	if !etc.CheckPasswordHash(password, user.Password) {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
 		})
 		return
 	}
 
 	h.JwtHandler = tokens.JwtHandler{
-		Sub:       user.User.Id,
-		Role:      user.User.Role,
+		Sub:       user.Id,
+		Role:      user.Role,
 		SigninKey: h.Config.Token.SignInKey,
 		Log:       h.Logger,
 		Timeout:   int(h.Config.Token.AccessTTL),
@@ -337,160 +325,32 @@ func (h HandlerV1) Login(c *gin.Context) {
 
 	access, refresh, err := h.JwtHandler.GenerateJwt()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Went wrong",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error while generate JWT in login", l.Error(err))
 		return
 	}
 
-	_, err = h.Service.UserService().Update(ctx, &pbu.User{
-		Id:           user.User.Id,
-		FullName:     user.User.FullName,
-		Email:        user.User.Email,
-		Password:     user.User.Password,
-		DateOfBirth:  user.User.DateOfBirth,
-		ProfileImg:   user.User.ProfileImg,
-		Card:         user.User.Card,
-		Gender:       user.User.Gender,
-		PhoneNumber:  user.User.PhoneNumber,
-		Role:         user.User.Role,
+	_, err = h.Service.UserService().UpdateRefresh(ctx, &pbu.RefreshRequest{
+		UserId:       user.Id,
 		RefreshToken: refresh,
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Went wrong",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error while update user in login", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, &models.UserResCreate{
-		Id:           user.User.Id,
-		FullName:     user.User.FullName,
-		Email:        user.User.Email,
-		DateOfBirth:  user.User.DateOfBirth,
-		ProfileImg:   user.User.ProfileImg,
-		Card:         user.User.Card,
-		Gender:       user.User.Gender,
-		PhoneNumber:  user.User.PhoneNumber,
-		Role:         user.User.Role,
-		AccessToken:  access,
-		RefreshToken: refresh,
-	})
-}
-
-// LOGIN ADMIN...
-// @Security BearerAuth
-// @Router /v1/admins/login [POST]
-// @Summary LOGIN
-// @Description Api for login admin
-// @Tags LOGIN
-// @Accept json
-// @Produce json
-// @Param User body models.Login true "Login"
-// @Success 200 {object} models.UserResCreate
-// @Failure 400 {object} models.StandartError
-// @Failure 500 {object} models.StandartError
-func (h HandlerV1) LoginAdmin(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "Login")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
-	var body models.Login
-
-	err := c.ShouldBindJSON(&body)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		h.Logger.Error("failed to bind json", l.Error(err))
-		return
-	}
-
-	email := body.Email
-	password := body.Password
-
-	user, err := h.Service.UserService().Get(ctx, &pbu.Filter{
-		Filter: map[string]string{"email": email},
-	})
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect email or password",
-		})
-		h.Logger.Error("error while get user in login admin", l.Error(err))
-		return
-	}
-
-	if user.User.Role != "admin" {
-		if user.User.Role != "sudo" {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Permission denied",
-			})
-			h.Logger.Error("Role not admin")
-			return
-		}
-	}
-	// println("\n\n", user.User.Email, "\n\n")
-
-	if !etc.CheckPasswordHash(password, user.User.Password) {
-		c.JSON(http.StatusConflict, gin.H{
-			"message": "Incorrect email or password",
-		})
-		return
-	}
-
-	h.JwtHandler = tokens.JwtHandler{
-		Sub:       user.User.Id,
-		Role:      user.User.Role,
-		SigninKey: h.Config.Token.SignInKey,
-		Log:       h.Logger,
-		Timeout:   int(h.Config.Token.AccessTTL),
-	}
-
-	access, refresh, err := h.JwtHandler.GenerateJwt()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Went wrong",
-		})
-		h.Logger.Error("error while generate JWT in login", l.Error(err))
-		return
-	}
-
-	_, err = h.Service.UserService().Update(ctx, &pbu.User{
-		Id:           user.User.Id,
-		FullName:     user.User.FullName,
-		Email:        user.User.Email,
-		Password:     user.User.Password,
-		DateOfBirth:  user.User.DateOfBirth,
-		ProfileImg:   user.User.ProfileImg,
-		Card:         user.User.Card,
-		Gender:       user.User.Gender,
-		PhoneNumber:  user.User.PhoneNumber,
-		Role:         user.User.Role,
-		RefreshToken: refresh,
-	})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Went wrong",
-		})
-		h.Logger.Error("error while update user in login", l.Error(err))
-		return
-	}
-
-	c.JSON(http.StatusOK, &models.UserResCreate{
-		Id:           user.User.Id,
-		FullName:     user.User.FullName,
-		Email:        user.User.Email,
-		DateOfBirth:  user.User.DateOfBirth,
-		ProfileImg:   user.User.ProfileImg,
-		Card:         user.User.Card,
-		Gender:       user.User.Gender,
-		PhoneNumber:  user.User.PhoneNumber,
-		Role:         user.User.Role,
+		Id:           user.Id,
+		FullName:     user.Name,
+		Email:        user.Email,
+		ProfileImg:   user.Image,
+		PhoneNumber:  user.PhoneNumber,
+		Role:         user.Role,
 		AccessToken:  access,
 		RefreshToken: refresh,
 	})
@@ -506,8 +366,8 @@ func (h HandlerV1) LoginAdmin(c *gin.Context) {
 // @Produce json
 // @Param email query string true "EMAIL"
 // @Success 200 {object} models.RegisterRes
-// @Failure 400 {object} models.StandartError
-// @Failure 500 {object} models.StandartError
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 func (h HandlerV1) ForgetPassword(c *gin.Context) {
 	ctx, span := otlp.Start(c, "api", "ForgetPassword")
 	span.SetAttributes(
@@ -524,21 +384,20 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 	email = strings.ToLower(email)
 
 	// println("\n\n", email, "\n")
-	uniqueCheck, err := h.Service.UserService().CheckUniquess(ctx, &pbu.FV{
-		Field: "email",
-		Value: email,
+	uniqueCheck, err := h.Service.UserService().UniqueEmail(ctx, &pbu.IsUnique{
+		Email: email,
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Went wrong",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error while check unique in forget password", l.Error(err))
 		return
 	}
 
-	if uniqueCheck.Code == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Incorrect email",
+	if !uniqueCheck.Status {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.WrongInfoMessage,
 		})
 		return
 	}
@@ -559,16 +418,16 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 
 	userByte, err := json.Marshal(toRedis)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
 	_, err = rdb.Set(ctx, toRedis.Email, userByte, time.Minute*10).Result()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Failed to set object to redis", l.Error(err))
 		return
@@ -593,8 +452,8 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 // @Produce json
 // @Param request query models.Verify true "request"
 // @Success 200 {object} models.RegisterRes
-// @Failure 400 {object} models.StandartError
-// @Failure 500 {object} models.StandartError
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 func (h HandlerV1) ForgetPasswordVerify(c *gin.Context) {
 	ctx, span := otlp.Start(c, "api", "ForgetPassword")
 	span.SetAttributes(
@@ -625,16 +484,16 @@ func (h HandlerV1) ForgetPasswordVerify(c *gin.Context) {
 	}
 
 	if err := json.Unmarshal([]byte(val), &userdetail); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Unmarshiling error",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Error unmarshalling userdetail in forget password verify", l.Error(err))
 		return
 	}
 
 	if userdetail.Code != code {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect code. Try again",
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
 		})
 		return
 	}
@@ -656,8 +515,8 @@ func (h HandlerV1) ForgetPasswordVerify(c *gin.Context) {
 // @Produce json
 // @Param request query models.Login true "request"
 // @Success 200 {object} models.UserResCreate
-// @Failure 400 {object} models.StandartError
-// @Failure 500 {object} models.StandartError
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 func (h HandlerV1) SetNewPassword(c *gin.Context) {
 	ctx, span := otlp.Start(c, "api", "SetNewPassword")
 	span.SetAttributes(
@@ -671,28 +530,28 @@ func (h HandlerV1) SetNewPassword(c *gin.Context) {
 
 	isPassword := val.IsValidPassword(password)
 	if !isPassword {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Password must be at least 8 (numbers and characters) long",
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.WrongPassword,
 		})
 
 		h.Logger.Error("Password must be at least 8 (numbers and characters) long")
 		return
 	}
 
-	user, err := h.Service.UserService().Get(ctx, &pbu.Filter{
+	user, err := h.Service.UserService().GetUser(ctx, &pbu.Filter{
 		Filter: map[string]string{"email": email},
 	})
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect email. Try again ..",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Failed to get user from set new password", l.Error(err))
 		return
 	}
 
 	h.JwtHandler = tokens.JwtHandler{
-		Sub:       user.User.Id,
-		Role:      user.User.Role,
+		Sub:       user.Id,
+		Role:      user.Role,
 		SigninKey: h.Config.Token.SignInKey,
 		Log:       h.Logger,
 		Timeout:   int(h.Config.Token.AccessTTL),
@@ -700,8 +559,8 @@ func (h HandlerV1) SetNewPassword(c *gin.Context) {
 
 	access, refresh, err := h.JwtHandler.GenerateJwt()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Went wrong",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error while generate JWT in login", l.Error(err))
 		return
@@ -709,47 +568,42 @@ func (h HandlerV1) SetNewPassword(c *gin.Context) {
 
 	password, err = etc.HashPassword(password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Oops. Something went wrong with password",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error while hash password in set new password", l.Error(err))
 		return
 	}
 
-	updUser, err := h.Service.UserService().Update(ctx, &pbu.User{
-		Id:           user.User.Id,
-		FullName:     user.User.FullName,
-		Email:        user.User.Email,
-		Password:     password,
-		DateOfBirth:  user.User.DateOfBirth,
-		ProfileImg:   user.User.ProfileImg,
-		Card:         user.User.Card,
-		Gender:       user.User.Gender,
-		PhoneNumber:  user.User.PhoneNumber,
-		Role:         user.User.Role,
-		RefreshToken: refresh,
+	updUser, err := h.Service.UserService().UpdatePassword(ctx, &pbu.UpdatePasswordRequest{
+		UserId:      user.Id,
+		NewPassword: password,
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Oops. Something went wrong with password",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("error while hash password in set new password", l.Error(err))
 		return
 	}
 
-	c.JSON(http.StatusOK, &models.UserResCreate{
-		Id:           updUser.Id,
-		FullName:     updUser.FullName,
-		Email:        updUser.Email,
-		DateOfBirth:  updUser.DateOfBirth,
-		ProfileImg:   updUser.ProfileImg,
-		Card:         updUser.Card,
-		Gender:       updUser.Gender,
-		PhoneNumber:  updUser.PhoneNumber,
-		Role:         updUser.Role,
-		AccessToken:  access,
-		RefreshToken: updUser.RefreshToken,
-	})
+	if updUser.Status {
+		c.JSON(http.StatusOK, &models.UserResCreate{
+			Id:           user.Id,
+			FullName:     user.Name,
+			Email:        user.Email,
+			ProfileImg:   user.Image,
+			PhoneNumber:  user.PhoneNumber,
+			Role:         user.Role,
+			AccessToken:  access,
+			RefreshToken: refresh,
+		})
+	} else {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+	}
+
 }
 
 // UPDATE TOKEN
@@ -762,8 +616,8 @@ func (h HandlerV1) SetNewPassword(c *gin.Context) {
 // @Produce json
 // @Param refresh path string true "Refresh Token"
 // @Success 200 {object} models.TokenResp
-// @Failure 400 {object} models.StandartError
-// @Failure 500 {object} models.StandartError
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 func (h HandlerV1) UpdateToken(c *gin.Context) {
 	ctx, span := otlp.Start(c, "api", "SetNewPassword")
 	span.SetAttributes(
@@ -774,14 +628,12 @@ func (h HandlerV1) UpdateToken(c *gin.Context) {
 
 	RToken := c.Param("refresh")
 
-	// println("\n\n", RToken, "\n\n")
-
-	user, err := h.Service.UserService().Get(ctx, &pbu.Filter{
-		Filter: map[string]string{"refresh_token": RToken},
+	user, err := h.Service.UserService().GetUser(ctx, &pbu.Filter{
+		Filter: map[string]string{"refresh": RToken},
 	})
 	if err != nil {
-		c.JSON(500, gin.H{
-			"error": "Incorrect token.",
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
 		})
 		h.Logger.Error("Failed to get user in update token", l.Error(err))
 		return
@@ -789,8 +641,8 @@ func (h HandlerV1) UpdateToken(c *gin.Context) {
 
 	resClaim, err := tokens.ExtractClaim(RToken, []byte(h.Config.Token.SignInKey))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Went wrong, 1",
+		c.JSON(http.StatusUnauthorized, models.Error{
+			Message: models.TokenExpired,
 		})
 		h.Logger.Error("Failed to extract token update token", l.Error(err))
 		return
@@ -800,54 +652,45 @@ func (h HandlerV1) UpdateToken(c *gin.Context) {
 	exp := (resClaim["exp"])
 	if exp.(float64)-float64(Now_time) > 0 {
 		h.JwtHandler = tokens.JwtHandler{
-			Sub:       user.User.Id,
+			Sub:       user.Id,
 			Iss:       "client",
 			SigninKey: h.Config.Token.SignInKey,
-			Role:      user.User.Role,
+			Role:      user.Role,
 			Log:       h.Logger,
 		}
 
 		accessR, refreshR, err := h.JwtHandler.GenerateJwt()
 		if err != nil {
-			c.JSON(http.StatusConflict, gin.H{
-				"error": "Went wrong",
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
 			})
 			h.Logger.Error("Failed to generate token update token", l.Error(err))
 			return
 		}
-		_, err = h.Service.UserService().Update(ctx, &pbu.User{
-			Id:           user.User.Id,
-			FullName:     user.User.FullName,
-			Email:        user.User.Email,
-			Password:     user.User.Password,
-			DateOfBirth:  user.User.DateOfBirth,
-			ProfileImg:   user.User.ProfileImg,
-			Card:         user.User.Card,
-			Gender:       user.User.Gender,
-			PhoneNumber:  user.User.PhoneNumber,
-			Role:         user.User.Role,
+		_, err = h.Service.UserService().UpdateRefresh(ctx, &pbu.RefreshRequest{
+			UserId:       user.Id,
 			RefreshToken: refreshR,
 		})
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Went wrong",
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
 			})
 			h.Logger.Error("Failed to update user in update token", l.Error(err))
 			return
 		}
 
 		respUser := &models.TokenResp{
-			ID:      user.User.Id,
+			ID:      user.Id,
 			Access:  accessR,
 			Refresh: refreshR,
-			Role:    user.User.Role,
+			Role:    user.Role,
 		}
 
 		c.JSON(http.StatusOK, respUser)
 
 	} else {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "refresh token expired",
+		c.JSON(http.StatusUnauthorized, models.Error{
+			Message: "Token expired",
 		})
 		h.Logger.Error("refresh token expired")
 		return

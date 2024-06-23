@@ -7,8 +7,8 @@ import (
 
 	// "go.opentelemetry.io/otel/attribute"
 
-	// otlp_pkg "github.com/dostonshernazarov/resume_maker/internal/pkg/otlp"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/redis"
+	// otlp_pkg "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/redis"
 )
 
 type Cache interface {

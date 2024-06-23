@@ -2,13 +2,13 @@ package models
 
 type RegisterReq struct {
 	Fullname string `json:"full_name"`
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
 type ForgetPassReq struct {
 	Email string `json:"email"`
-	Code string `json:"code"`
+	Code  string `json:"code"`
 }
 
 type RegisterRes struct {
@@ -17,7 +17,7 @@ type RegisterRes struct {
 
 type Verify struct {
 	Email string `json:"email"`
-	Code string `json:"code"`
+	Code  string `json:"code"`
 }
 
 type TokenResp struct {
@@ -31,25 +31,21 @@ type UserResCreate struct {
 	Id           string `json:"id"`
 	FullName     string `json:"full_name"`
 	Email        string `json:"email"`
-	DateOfBirth          string `json:"birthday"`
-	ProfileImg      string `json:"image_url"`
-	Card         string `json:"card"`
-	Gender string `json:"gender"`
+	ProfileImg   string `json:"image_url"`
 	PhoneNumber  string `json:"phone_num"`
-	Role string `json:"role"`
-	AccessToken string `json:"access_token"`
+	Role         string `json:"role"`
+	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
 
-
 type ClientRedis struct {
 	Fullname string `json:"full_name"`
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
-	Code string `json:"code"`
+	Code     string `json:"code"`
 }
 
 type Login struct {
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }

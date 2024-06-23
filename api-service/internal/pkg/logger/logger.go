@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/app"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/app"
 )
 
 func productionConfig(file string) zap.Config {

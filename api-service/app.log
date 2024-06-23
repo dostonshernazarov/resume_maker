@@ -1,0 +1,4 @@
+2024-06-23T15:33:02.204+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-23T15:33:54.486+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-23T18:56:34.983+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-23T18:56:52.568+0500	INFO	app/main.go:41	api gateway service stops

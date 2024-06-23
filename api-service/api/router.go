@@ -4,10 +4,10 @@ import (
 	// "net/http"
 	"time"
 
-	_ "github.com/dostonshernazarov/resume_maker/api/docs"
-	v1 "github.com/dostonshernazarov/resume_maker/api/handlers/v1"
+	_ "github.com/dostonshernazarov/resume_maker/api-service/api/docs"
+	v1 "github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1"
 
-	"github.com/dostonshernazarov/resume_maker/api/middleware"
+	"github.com/dostonshernazarov/resume_maker/api-service/api/middleware"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-contrib/cors"
@@ -17,12 +17,12 @@ import (
 
 	"go.uber.org/zap"
 
-	grpcClients "github.com/dostonshernazarov/resume_maker/internal/infrastructure/grpc_service_client"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/config"
-	tokens "github.com/dostonshernazarov/resume_maker/internal/pkg/token"
-	"github.com/dostonshernazarov/resume_maker/internal/usecase/app_version"
-	"github.com/dostonshernazarov/resume_maker/internal/usecase/event"
-	// "github.com/dostonshernazarov/resume_maker/internal/usecase/refresh_token"
+	grpcClients "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/grpc_service_client"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
+	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/app_version"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/event"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/refresh_token"
 )
 
 type RouteOption struct {
@@ -37,8 +37,8 @@ type RouteOption struct {
 }
 
 // NewRouter
-// @title Welcome To Booking API
-// @Description API for Touristan
+// @title Welcome To CV Maker API
+// @Description API for CV Maker
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
@@ -76,12 +76,11 @@ func NewRoute(option RouteOption) *gin.Engine {
 
 	// USER METHODS
 
-	api.POST("/users", HandlerV1.Create)
-	api.GET("/users/:id", HandlerV1.Get)
+	api.POST("/users", HandlerV1.CreateUser)
+	api.GET("/users/:id", HandlerV1.GetUser)
 	api.GET("/users/list", HandlerV1.ListUsers)
-	api.GET("/users/list/deleted", HandlerV1.ListDeletedUsers)
-	api.PUT("/users", HandlerV1.Update)
-	api.DELETE("/users/:id", HandlerV1.Delete)
+	api.PUT("/users", HandlerV1.UpdateUser)
+	api.DELETE("/users/:id", HandlerV1.DeleteUser)
 	api.GET("/users/token", HandlerV1.GetByToken)
 
 	// REGISTER METHODS
@@ -91,13 +90,11 @@ func NewRoute(option RouteOption) *gin.Engine {
 	api.GET("/users/set/:email", HandlerV1.ForgetPassword)
 	api.GET("/users/code", HandlerV1.ForgetPasswordVerify)
 	api.PUT("/users/password", HandlerV1.SetNewPassword)
-	api.POST("/admins/login", HandlerV1.LoginAdmin)
 
 	api.GET("/token/:refresh", HandlerV1.UpdateToken)
 
 	// MEDIA
 	api.POST("/media/user-photo", HandlerV1.UploadMedia)
-	api.POST("/media/establishment/:id", HandlerV1.CreateEstablishmentMedia)
 
 	url := ginSwagger.URL("swagger/doc.json")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

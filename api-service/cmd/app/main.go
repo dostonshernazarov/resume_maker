@@ -8,8 +8,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/dostonshernazarov/resume_maker/internal/app"
-	configpkg "github.com/dostonshernazarov/resume_maker/internal/pkg/config"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/app"
+	configpkg "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 )
 
 func main() {

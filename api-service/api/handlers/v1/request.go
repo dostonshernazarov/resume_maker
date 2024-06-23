@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/config"
-	tokens "github.com/dostonshernazarov/resume_maker/internal/pkg/token"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
+	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
 
 	"github.com/spf13/cast"
 )

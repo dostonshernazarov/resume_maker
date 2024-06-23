@@ -12,7 +12,7 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 
-	configpkg "github.com/dostonshernazarov/resume_maker/internal/pkg/config"
+	configpkg "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 )
 
 // Initializes an OTLP exporter, and configures the corresponding trace

@@ -11,8 +11,8 @@ package middleware
 // 	"go.opentelemetry.io/otel"
 // 	"go.opentelemetry.io/otel/attribute"
 
-// 	// "github.com/dostonshernazarov/resume_maker/api/response"
-// 	// "github.com/dostonshernazarov/resume_maker/internal/pkg/otlp"
+// 	// "github.com/dostonshernazarov/resume_maker/api-service/api/response"
+// 	// "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
 // )
 
 // // Tracing middleware function

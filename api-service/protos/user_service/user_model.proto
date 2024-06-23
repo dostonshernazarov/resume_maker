@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package user_service;
+option go_package = "genproto/user_service";
+
+message User {
+  string id = 1;
+  string name = 2;
+  string image = 3;
+  string email = 4;
+  string phone_number = 5;
+  string refresh = 6;
+  string password = 7;
+  string role = 8;
+  string created_at = 9;
+  string updated_at = 10;
+}
+
+message UserWithGUID {
+  string guid = 1;
+}
+
+message Filter {
+  map<string, string> filter = 1;
+}
+
+message IsUnique {
+  string email = 1;
+}
+
+message RefreshRequest {
+  string user_id = 1;
+  string refresh_token = 3;
+}
+
+message UpdatePasswordRequest {
+  string user_id = 1;
+  string new_password = 3;
+}
+
+message ResponseStatus {
+  bool status = 1;
+}
+
+message ListUserRequest {
+  int64 page = 1;
+  int64 limit = 2;
+}
+
+message ListUserResponse {
+  repeated User users = 1;
+  uint64 total_count = 2;
+}

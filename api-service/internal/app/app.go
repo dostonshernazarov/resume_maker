@@ -10,25 +10,25 @@ import (
 	"github.com/casbin/casbin/v2"
 	"go.uber.org/zap"
 
-	"github.com/dostonshernazarov/resume_maker/api"
-	grpcService "github.com/dostonshernazarov/resume_maker/internal/infrastructure/grpc_service_client"
+	"github.com/dostonshernazarov/resume_maker/api-service/api"
+	grpcService "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/grpc_service_client"
 
 	defaultrolemanager "github.com/casbin/casbin/v2/rbac/default-role-manager"
 
-	// "github.com/dostonshernazarov/resume_maker/internal/infrastructure/kafka"
-	"github.com/dostonshernazarov/resume_maker/internal/infrastructure/repository/postgresql"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/config"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/logger"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/otlp"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/kafka"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/repository/postgresql"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
 
-	// "github.com/dostonshernazarov/resume_maker/internal/pkg/otlp"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
 
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/postgres"
-	"github.com/dostonshernazarov/resume_maker/internal/pkg/redis"
-	"github.com/dostonshernazarov/resume_maker/internal/usecase/app_version"
-	"github.com/dostonshernazarov/resume_maker/internal/usecase/event"
-	// "github.com/dostonshernazarov/resume_maker/internal/usecase/refresh_token"
-	// "github.com/dostonshernazarov/resume_maker/internal/usecase/refresh_token"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/postgres"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/redis"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/app_version"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/event"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/refresh_token"
+	// "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/refresh_token"
 )
 
 type App struct {
