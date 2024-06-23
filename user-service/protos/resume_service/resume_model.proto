@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package resume_service;
+option go_package = "genproto/resume_service";
+
+message Resume {
+  string id = 1;
+  string user_id = 2;
+  string url = 3;
+  string filename = 4;
+  string full_name = 5;
+  string job_title = 6;
+  string summary = 7;
+  string website = 8;
+  string profile_image = 9;
+  string email = 10;
+  string phone_number = 11;
+  string created_at = 12;
+  string updated_at = 13;
+}
