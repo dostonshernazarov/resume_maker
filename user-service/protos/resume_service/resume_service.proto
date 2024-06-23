@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package resume_service;
+option go_package = "genproto/resume_service";
+
+import "resume_model.proto";
+
+service ResumeService {
+  rpc Use(Resume) returns (Resume);
+}
