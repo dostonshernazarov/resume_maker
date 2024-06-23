@@ -1,0 +1,95 @@
+p, unauthorized, /v1/swagger/*,  GET
+p, unauthorized, /v1/users/register, POST
+p, unauthorized, /v1/users/verify, GET
+p, unauthorized, /v1/users/login, POST
+p, unauthorized, /v1/admins/login, POST
+p, unauthorized, /v1/users/set/{email}, GET
+p, unauthorized, /v1/users/code, GET
+p, unauthorized, /v1/users/password, PUT
+p, unauthorized, /v1/token/:refresh, GET
+
+p, unauthorized, /v1/attraction/list, GET
+p, unauthorized, /v1/hotel/list, GET
+p, unauthorized, /v1/restaurant/list, GET
+
+p, unauthorized, /v1/hotel/listlocation, GET
+p, unauthorized, /v1/attraction/listlocation, GET
+p, unauthorized, /v1/restaurant/listlocation, GET
+
+p, unauthorized, /v1/attraction, GET
+p, unauthorized, /v1/hotel, GET
+p, unauthorized, /v1/restaurant, GET
+
+p, unauthorized, /v1/attraction/find, GET
+p, unauthorized, /v1/hotel/find, GET
+p, unauthorized, /v1/restaurant/find, GET
+
+p, user, /v1/users/{id}, GET
+p, user, /v1/users, PUT
+p, user, /v1/media/user-photo, POST
+
+p, user, /v1/favourite/add, POST
+p, user, /v1/favourite/remove, DELETE
+p, user, /v1/favourite/list, GET
+
+p, user, /v1/review/create, POST
+p, user, /v1/review/delete, DELETE
+p, user, /v1/review/list, GET
+
+p, user, /v1/booking/hotels, POST
+p, user, /v1/booking/hotels/{id}, DELETE
+p, user, /v1/booking/hotels, PUT
+
+p, user, /v1/booking/restaurants, POST
+p, user, /v1/booking/restaurants, PUT
+p, user, /v1/booking/restaurants/{id}, DELETE
+
+p, user, /v1/booking/attractions, POST
+p, user, /v1/booking/attractions, PUT
+p, user, /v1/booking/attractions/{id}, DELETE
+
+p, admin, /v1/media/establishment/{id}, POST
+
+p, admin, /v1/users, POST
+p, admin, /v1/users/list, GET
+
+p, admin, /v1/users/list/deleted, GET
+p, admin, /v1/users/{id}, DELETE
+
+p, admin, /v1/attraction, POST
+p, admin, /v1/attraction, PUT
+p, admin, /v1/attraction, DELETE
+
+p, admin, /v1/hotel, POST
+p, admin, /v1/hotel, PUT
+p, admin, /v1/hotel, DELETE
+
+p, admin, /v1/restaurant, POST
+p, admin, /v1/restaurant, PUT
+p, admin, /v1/restaurant, DELETE
+
+p, admin, /v1/booking/hotels/{id}, GET
+p, admin, /v1/booking/users/room/{id}, GET
+p, admin, /v1/booking/hotels, GET
+p, admin, /v1/booking/hotels/deleted, GET
+
+p, admin, /v1/booking/restaurants/{id}, GET
+p, admin, /v1/booking/users/restaurant/{id}, GET
+p, admin, /v1/booking/restaurants, GET
+p, admin, /v1/booking/restaurants/deleted, GET
+
+p, admin, /v1/booking/attractions/{id}, GET
+p, admin, /v1/booking/users/attraction/{id}, GET
+p, admin, /v1/booking/attractions, GET
+p, admin, /v1/booking/attractions/deleted, GET
+
+p, sudo, /v1/admins, POST
+p, sudo, /v1/admins/{id}, GET
+p, sudo, /v1/admins/list, GET
+p, sudo, /v1/admins/list/deleted, GET
+p, sudo, /v1/admins, PUT
+p, sudo, /v1/admins/{id}, DELETE
+
+g, admin, user, *
+g, admin, unauthorized, *
+g, sudo, admin, *
