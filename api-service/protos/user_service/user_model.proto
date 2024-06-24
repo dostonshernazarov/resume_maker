@@ -30,12 +30,12 @@ message IsUnique {
 
 message RefreshRequest {
   string user_id = 1;
-  string refresh_token = 3;
+  string refresh_token = 2;
 }
 
 message UpdatePasswordRequest {
   string user_id = 1;
-  string new_password = 3;
+  string new_password = 2;
 }
 
 message ResponseStatus {

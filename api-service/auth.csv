@@ -8,12 +8,12 @@ p, unauthorized, /v1/users/code, GET
 p, unauthorized, /v1/users/password, PUT
 p, unauthorized, /v1/token/:refresh, GET
 
-p, user, /v1/users/{id}, GET
-p, user, /v1/users, PUT
-p, user, /v1/media/user-photo, POST
+p, unauthorized, /v1/users/{id}, GET
+p, unauthorized, /v1/users, PUT
+p, unauthorized, /v1/media/user-photo, POST
 
-p, admin, /v1/users, POST
-p, admin, /v1/users/list, GET
+p, unauthorized, /v1/users, POST
+p, unauthorized, /v1/users/list, GET
 
 p, admin, /v1/users/list/deleted, GET
 p, admin, /v1/users/{id}, DELETE

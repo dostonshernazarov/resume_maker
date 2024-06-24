@@ -66,7 +66,7 @@ func (h *HandlerV1) CreateUser(c *gin.Context) {
 	res = valid.IsValidPassword(body.Password)
 	if !res {
 		c.JSON(http.StatusBadRequest, models.Error{
-			Message: models.NotAvailable,
+			Message: models.WrongPassword,
 		})
 
 		h.Logger.Error("Incorrect Password. Try again, error while in Create")
