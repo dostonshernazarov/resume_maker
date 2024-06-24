@@ -38,6 +38,21 @@ services:
     depends_on:
       - postgres-db
 
+  minio:
+    image: docker.io/bitnami/minio:2024
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    networks:
+      - db
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_DEFAULT_BUCKETS=resumes
+
+
   # Postgres
   postgres-db:
     container_name: postgres
@@ -72,14 +87,14 @@ services:
   #     - db
 
   # Redis
-  # redis-db:
-  #   container_name: redis-db
-  #   image: redis
-  #   ports:
-  #     - "6380:6380"
-  #   restart: unless-stopped
-  #   networks:
-  #     - db
+  redis-db:
+    container_name: redis-db
+    image: redis
+    ports:
+      - "6380:6380"
+    restart: unless-stopped
+    networks:
+      - db
 
     # Kafka Zookeeper
   # zookeeper:

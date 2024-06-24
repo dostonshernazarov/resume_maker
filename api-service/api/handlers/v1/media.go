@@ -53,7 +53,7 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 	endpoint := "3.76.217.224:9000"
 	accessKeyID := "minioadmin"
 	secretAccessKey := "minioadmin"
-	bucketName := "images"
+	bucketName := "resumes"
 	minioClient, err := minio.New(endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
 		Secure: false,
@@ -89,7 +89,7 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 	})
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
-			Message: "Error getting user",
+			Message: models.NotAvailable,
 		})
 		return
 	}
