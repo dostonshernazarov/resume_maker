@@ -16,7 +16,7 @@ p, unauthorized, /v1/users, POST
 p, unauthorized, /v1/users/list, GET
 
 p, admin, /v1/users/list/deleted, GET
-p, admin, /v1/users/{id}, DELETE
+p, unauthorized, /v1/users/{id}, DELETE
 
 g, admin, user, *
 g, admin, unauthorized, *

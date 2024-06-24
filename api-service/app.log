@@ -168,3 +168,392 @@ net/http.serverHandler.ServeHTTP
 	/usr/local/go/src/net/http/server.go:3137
 net/http.(*conn).serve
 	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T14:55:18.257+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-24T14:55:23.461+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-24T15:04:38.956+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-24T15:04:45.616+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-24T15:06:09.256+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-24T15:06:11.848+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-24T16:45:12.667+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-24T16:48:01.691+0500	ERROR	v1/register.go:184	Failed to get user from redis	{"error": "redis: nil"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Verification
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:184
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T16:53:33.005+0500	ERROR	v1/register.go:184	Failed to get user from redis	{"error": "redis: nil"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Verification
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:184
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T17:21:10.449+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-24T17:21:14.156+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-24T17:22:16.755+0500	ERROR	v1/register.go:184	Failed to get user from redis	{"error": "redis: nil"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Verification
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:184
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T17:23:12.422+0500	ERROR	v1/register.go:184	Failed to get user from redis	{"error": "redis: nil"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Verification
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:184
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T17:24:02.948+0500	ERROR	v1/register.go:184	Failed to get user from redis	{"error": "redis: nil"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Verification
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:184
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T17:39:34.153+0500	ERROR	v1/register.go:184	Failed to get user from redis	{"error": "redis: nil"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Verification
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:184
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:02:12.417+0500	ERROR	v1/register.go:73	Incorrect Email. Try again
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.RegisterUser
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:73
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:02:17.302+0500	ERROR	v1/register.go:73	Incorrect Email. Try again
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.RegisterUser
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:73
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:03:17.131+0500	ERROR	v1/register.go:103	failed to check email unique
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.RegisterUser
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:103
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:12:24.334+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-24T18:12:28.760+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-24T18:12:37.500+0500	ERROR	v1/user.go:407	failed to get user in delete	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).DeleteUser
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/user.go:407
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:36:20.843+0500	ERROR	v1/register.go:308	error while get user in login	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Login
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:308
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:36:22.286+0500	ERROR	v1/register.go:308	error while get user in login	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Login
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:308
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:36:22.484+0500	ERROR	v1/register.go:308	error while get user in login	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Login
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:308
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:36:24.213+0500	ERROR	v1/register.go:308	error while get user in login	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Login
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:308
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:36:27.901+0500	ERROR	v1/register.go:308	error while get user in login	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Login
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:308
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:36:28.496+0500	ERROR	v1/register.go:308	error while get user in login	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Login
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:308
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:36:51.743+0500	ERROR	v1/register.go:308	error while get user in login	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Login
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:308
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
+2024-06-24T18:36:53.143+0500	ERROR	v1/register.go:308	error while get user in login	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.Login
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/register.go:308
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/usr/local/go/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/usr/local/go/src/net/http/server.go:2039
