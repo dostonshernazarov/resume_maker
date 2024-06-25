@@ -24,6 +24,8 @@ CREATE TABLE resumes (
     profile_image TEXT,
     email VARCHAR(100) NOT NULL,
     phone_number VARCHAR(15) NOT NULL,
+    template VARCHAR(20) NOT NULL,
+    lang VARCHAR(5) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMPTZ
@@ -64,6 +66,7 @@ CREATE TABLE works (
     position VARCHAR(100) NOT NULL,
     company VARCHAR(200) NOT NULL,
     start_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    end_date DATE,
     location VARCHAR(100) NOT NULL,
     summary TEXT,
     skills TEXT,
