@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package user_service;
+option go_package = "genproto/user_service";
+
+import "user_model.proto";
+
+service UserService {
+  rpc CreateUser(User) returns (UserWithGUID);
+  rpc UpdateUser(User) returns (User);
+  rpc DeleteUser(UserWithGUID) returns (ResponseStatus);
+  rpc GetUser(Filter) returns (User);
+  rpc GetAllUsers(ListUserRequest) returns (ListUserResponse);
+
+  rpc UniqueEmail(IsUnique) returns (ResponseStatus);
+  rpc UpdateRefresh(RefreshRequest) returns (ResponseStatus);
+  rpc UpdatePassword(UpdatePasswordRequest) returns (ResponseStatus);
+}
