@@ -6,10 +6,6 @@ import (
 	"time"
 )
 
-const (
-	OtpSecret = "some_secret"
-)
-
 type webAddress struct {
 	Host string
 	Port string
@@ -26,14 +22,6 @@ type Config struct {
 		WriteTimeout string
 		IdleTimeout  string
 	}
-	DB struct {
-		Host     string
-		Port     string
-		Name     string
-		User     string
-		Password string
-		SSLMode  string
-	}
 	Context struct {
 		Timeout string
 	}
@@ -44,7 +32,6 @@ type Config struct {
 		Name     string
 	}
 	Token struct {
-		Secret     string
 		AccessTTL  time.Duration
 		RefreshTTL time.Duration
 		SignInKey  string
@@ -62,9 +49,9 @@ type Config struct {
 			UserCreateTopic string
 		}
 	}
-	ResumeService webAddress
-	UserService   webAddress
-	OTLPCollector webAddress
+	ResumeService   webAddress
+	UserService     webAddress
+	TelegramService webAddress
 }
 
 func NewConfig() (*Config, error) {
@@ -77,20 +64,11 @@ func NewConfig() (*Config, error) {
 	config.Context.Timeout = getEnv("CONTEXT_TIMEOUT", "7s")
 
 	// server configuration
-	config.Server.Host = getEnv("SERVER_HOST", "localhost")
+	config.Server.Host = getEnv("SERVER_HOST", "api-service")
 	config.Server.Port = getEnv("SERVER_PORT", ":8080")
 	config.Server.ReadTimeout = getEnv("SERVER_READ_TIMEOUT", "10s")
 	config.Server.WriteTimeout = getEnv("SERVER_WRITE_TIMEOUT", "10s")
 	config.Server.IdleTimeout = getEnv("SERVER_IDLE_TIMEOUT", "120s")
-
-	// db configuration
-	config.DB.Host = getEnv("POSTGRES_HOST", "localhost")
-	config.DB.Port = getEnv("POSTGRES_PORT", "5432")
-	config.DB.Name = getEnv("POSTGRES_DATABASE", "resume")
-	config.DB.User = getEnv("POSTGRES_USER", "postgres")
-	config.DB.Password = getEnv("POSTGRES_PASSWORD", "doston")
-
-	config.DB.SSLMode = getEnv("POSTGRES_SSLMODE", "disable")
 
 	// redis configuration
 	config.Redis.Host = getEnv("REDIS_HOST", "redis-db")
@@ -98,33 +76,33 @@ func NewConfig() (*Config, error) {
 	config.Redis.Password = getEnv("REDIS_PASSWORD", "")
 	config.Redis.Name = getEnv("REDIS_DATABASE", "0")
 
-	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "localhost")
+	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "resume-service")
 	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9080")
 
 	// user configuration
-	config.UserService.Host = getEnv("USER_SERVICE_GRPC_HOST", "localhost")
+	config.UserService.Host = getEnv("USER_SERVICE_GRPC_HOST", "user-service")
 	config.UserService.Port = getEnv("USER_SERVICE_GRPC_PORT", ":9090")
 
-	// token configuration
-	config.Token.Secret = getEnv("TOKEN_SECRET", "token_secret")
+	// telegram configuration
+	config.TelegramService.Host = getEnv("TELEGRAM_SERVICE_GRPC_HOST", "telegram-service")
+	config.TelegramService.Port = getEnv("TELEGRAM_SERVICE_GRPC_PORT", ":8090")
 
 	// access ttl parse
-	accessTTl, err := time.ParseDuration(getEnv("TOKEN_ACCESS_TTL", "2h"))
+	accessTTl, err := time.ParseDuration(getEnv("TOKEN_ACCESS_TTL", "6h"))
 	if err != nil {
 		return nil, err
 	}
+
 	// refresh ttl parse
-	refreshTTL, err := time.ParseDuration(getEnv("TOKEN_REFRESH_TTL", "48h"))
+	refreshTTL, err := time.ParseDuration(getEnv("TOKEN_REFRESH_TTL", "168h"))
 	if err != nil {
 		return nil, err
 	}
+
 	config.Token.AccessTTL = accessTTl
 	config.Token.RefreshTTL = refreshTTL
-	config.Token.SignInKey = getEnv("TOKEN_SIGNIN_KEY", "debug_booking")
 
-	// otlp collector configuration
-	config.OTLPCollector.Host = getEnv("OTLP_COLLECTOR_HOST", "otel-collector")
-	config.OTLPCollector.Port = getEnv("OTLP_COLLECTOR_PORT", ":4317")
+	config.Token.SignInKey = getEnv("TOKEN_SIGNING_KEY", "token_secret")
 
 	// kafka configuration
 	config.Kafka.Address = strings.Split(getEnv("KAFKA_ADDRESS", "localhost:9092"), ",")

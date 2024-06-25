@@ -1,40 +1,14 @@
 version: '3.8'
 
 services:
-  # Jeager
-  # jaeger-all-in-one:
-  #   container_name: jaeger-all-in-one
-  #   image: jaegertracing/all-in-one:latest
-  #   ports:
-  #     - "6831:6831/udp"
-  #     - "16686:16686"
-  #     - "14268:14268"
-  #     - "14250:14250"
-  #   networks:
-  #     - db
 
-  # Collector
-  # otel-collector:
-  #   container_name: otel-collector
-  #   image: ${OTELCOL_IMG}
-  #   command: [ "--config=/etc/otel-collector-config.yaml", "${OTELCOL_ARGS}" ]
-  #   volumes:
-  #     - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
-  #   ports:
-  #     - "4317:4317" # OTLP gRPC receiver
-  #   depends_on:
-  #     - jaeger-all-in-one
-  #   networks:
-  #     - db
-
-  # Migration
   migrate:
     image: migrate/migrate
     networks:
-      - db
+      - cv
     volumes:
       - ./user-service/migrations:/migrations
-    command: [ "-path", "/migrations", "-database",  "postgres://postgres:doston@postgres:5432/resume?sslmode=disable", "up" ]
+    command: [ "-path", "/migrations", "-database",  "postgres://postgres:root@postgres:5432/resume?sslmode=disable", "up" ]
     depends_on:
       - postgres-db
 
@@ -44,7 +18,7 @@ services:
       - '9000:9000'
       - '9001:9001'
     networks:
-      - db
+      - cv
     volumes:
       - 'minio_data:/data'
     environment:
@@ -52,14 +26,12 @@ services:
       - MINIO_ROOT_PASSWORD=minioadmin
       - MINIO_DEFAULT_BUCKETS=resumes
 
-
-  # Postgres
   postgres-db:
     container_name: postgres
     image: postgres
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: doston
+      POSTGRES_PASSWORD: root
       PGDATA: /data/postgres
       POSTGRES_DB: resume
     volumes:
@@ -67,7 +39,7 @@ services:
     ports:
       - "5332:5332"
     networks:
-      - db
+      - cv
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d postgres"]
@@ -75,18 +47,6 @@ services:
       timeout: 10s
       retries: 5
 
-  # MongoDB
-  # mongodb:
-  #   container_name: mongodb
-  #   image: mongo
-  #   ports:
-  #     - "27018:27018"
-  #   volumes:
-  #     - mongodata:/data/db
-  #   networks:
-  #     - db
-
-  # Redis
   redis-db:
     container_name: redis-db
     image: redis
@@ -94,9 +54,8 @@ services:
       - "6380:6380"
     restart: unless-stopped
     networks:
-      - db
+      - cv
 
-    # Kafka Zookeeper
   # zookeeper:
   #   image: confluentinc/cp-zookeeper:latest
   #   environment:
@@ -107,7 +66,6 @@ services:
   #   networks:
   #     - db
 
-  # Apache Kafka
   # kafka:
   #   image: confluentinc/cp-kafka:latest
   #   depends_on:
@@ -123,75 +81,46 @@ services:
   #   networks:
   #     - db
 
-  # Client Service
   user-service:
     container_name: user-service
     build: ./user-service
     depends_on:
+      - redis-db
       - postgres-db
-      # - zookeeper
-      # - kafka
-      # - mongodb
     ports:
       - "9090:9090"
     networks:
-      - db
+      - cv
 
-  # Job Service
-  # establishment-service:
-  #   container_name: establishment-service
-  #   build: ./establishment-service-booking
-  #   depends_on:
-  #     - postgres-db
-  #     # - client-service
-  #     # - zookeeper
-  #     # - kafka
-  #     # - mongodb
-  #   ports:
-  #     - "50024:50024"
-  #   networks:
-  #     - db
+  resume-service:
+    container_name: resume-service
+    build: ./resume-service
+    depends_on:
+      - redis-db
+      - postgres-db
+      - user-service
+    ports:
+      - "9080:9080"
+    networks:
+      - cv
 
-  # Admin API Gateway
-  # api-admin-service:
-  #   container_name: api-admin-service
-  #   build: ./api-admin-service
-  #   depends_on:
-  #     - postgres-db
-  #     - client-service
-  #     - job-service
-  #     - zookeeper
-  #     - kafka
-  #     - mongodb
-  #   ports:
-  #     - "8090:8090"
-  #   networks:
-  #     - db
-
-  # API Gateway
   api-service:
     container_name: api-service
     build: ./api-service
     depends_on:
+      - redis-db
       - postgres-db
-    #   - user-service
-    #   - establishment-service
-    #   - redis-db
-      # - zookeeper
-      # - kafka
-      # - api-admin-service
-      # - mongodb
+      - resume-service
+      - user-service
     ports:
       - "8080:8080"
     networks:
-      - db
+      - cv
 
-# Docker Networks
 networks:
-  db:
+  cv:
     driver: bridge
 
-# Docker Volumes
 volumes:
-  # mongodata:
   db:
+  minio_data:

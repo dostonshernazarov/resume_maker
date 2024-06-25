@@ -6,7 +6,6 @@ import (
 	pbr "github.com/dostonshernazarov/resume_maker/api-service/genproto/resume_service"
 	pbu "github.com/dostonshernazarov/resume_maker/api-service/genproto/user_service"
 
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
@@ -29,8 +28,6 @@ func New(cfg *config.Config) (ServiceClient, error) {
 	connResumeService, err := grpc.Dial(
 		fmt.Sprintf("%s%s", cfg.ResumeService.Host, cfg.ResumeService.Port),
 		grpc.WithInsecure(),
-		grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
-		grpc.WithStreamInterceptor(otelgrpc.StreamClientInterceptor()),
 	)
 	if err != nil {
 		return nil, err
@@ -41,8 +38,6 @@ func New(cfg *config.Config) (ServiceClient, error) {
 	connUserService, err := grpc.Dial(
 		fmt.Sprintf("%s%s", cfg.UserService.Host, cfg.UserService.Port),
 		grpc.WithInsecure(),
-		grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
-		grpc.WithStreamInterceptor(otelgrpc.StreamClientInterceptor()),
 	)
 	if err != nil {
 		return nil, err

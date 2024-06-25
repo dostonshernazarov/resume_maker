@@ -103,7 +103,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Through this api frontent can upload user photo and get the link
+      description: Through this api front-ent can upload user photo and get the link
         to the media.
       parameters:
       - description: Image
@@ -135,7 +135,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Api for updated acces token
+      description: Api for updated access token
       parameters:
       - description: Refresh Token
         in: path

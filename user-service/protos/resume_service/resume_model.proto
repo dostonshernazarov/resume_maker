@@ -3,18 +3,159 @@ syntax = "proto3";
 package resume_service;
 option go_package = "genproto/resume_service";
 
+message ResumeWithID {
+  string resume_id = 1;
+}
+
+message UserWithID {
+  uint64 page = 1;
+  uint64 limit = 2;
+  string user_id = 3;
+}
+
+message Status {
+  bool action = 1;
+}
+
+message UserRequest {
+  string user_id = 1;
+  uint64 page = 2;
+  uint64 limit = 3;
+}
+
+message ListRequest {
+  uint64 page = 1;
+  uint64 limit = 2;
+}
+
+message ListResumeResponse {
+  repeated Resume resumes = 1;
+  uint64 total_count = 2;
+}
+
 message Resume {
   string id = 1;
   string user_id = 2;
   string url = 3;
   string filename = 4;
-  string full_name = 5;
-  string job_title = 6;
+  Basic basic = 5;
+  repeated Profile profiles = 6;
+  repeated Work works = 7;
+  repeated Project projects = 8;
+  repeated Education educations = 9;
+  repeated Certificate certificates = 10;
+  repeated HardSkill hard_skills = 11;
+  repeated SoftSkill soft_skills = 12;
+  repeated Language languages = 13;
+  repeated Interest interests = 14;
+  Meta meta = 15;
+  string created_at = 16;
+  string updated_at = 17;
+}
+
+message Basic {
+  string name = 1;
+  string job_title = 2;
+  string image = 3;
+  string email = 4;
+  string phone_number = 5;
+  string website = 6;
   string summary = 7;
-  string website = 8;
-  string profile_image = 9;
-  string email = 10;
-  string phone_number = 11;
+  string location_id = 8;
+  string city = 9;
+  string country_code = 10;
+  string region = 11;
   string created_at = 12;
   string updated_at = 13;
+}
+
+message Profile {
+  string profile_id = 1;
+  string network = 2;
+  string username = 3;
+  string url = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+message Work {
+  string work_id = 1;
+  string position = 2;
+  string company = 3;
+  string start_date = 4;
+  string end_date = 5;
+  string location = 6;
+  string summary = 7;
+  repeated string skills = 8;
+  string created_at = 9;
+  string updated_at = 10;
+}
+
+message Project {
+  string project_id = 1;
+  string name = 2;
+  string url = 3;
+  string description = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+message Education {
+  string education_id = 1;
+  string institution = 2;
+  string area = 3;
+  string study_type = 4;
+  string location = 5;
+  string start_date = 6;
+  string end_date = 7;
+  string score = 8;
+  repeated string courses = 9;
+  string created_at = 10;
+  string updated_at = 11;
+}
+
+message Certificate {
+  string certificate_id = 1;
+  string title = 2;
+  string date = 3;
+  string issuer = 4;
+  string score = 5;
+  string url = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message HardSkill {
+  string hard_skill_id = 1;
+  string name = 2;
+  string level = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
+message SoftSkill {
+  string soft_skill_id = 1;
+  string name = 2;
+  string created_at = 3;
+  string updated_at = 4;
+}
+
+message Language {
+  string language_id = 1;
+  string language = 2;
+  string fluency = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
+message Interest {
+  string interest_id = 1;
+  string name = 2;
+  string created_at = 3;
+  string updated_at = 4;
+}
+
+message Meta {
+  string template = 1;
+  string lang = 2;
 }

@@ -1,24 +1,23 @@
 package v1
 
 import (
+	"context"
 	"net/http"
 
-	models "github.com/dostonshernazarov/resume_maker/api-service/api/models"
+	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 	pbu "github.com/dostonshernazarov/resume_maker/api-service/genproto/user_service"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/etc"
 	l "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
-	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
 	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/utils"
 	valid "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/validation"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"go.opentelemetry.io/otel/attribute"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// CREATE
+// CreateUser
 // @Summary CREATE
 // @Security BearerAuth
 // @Description Api for Create
@@ -31,13 +30,6 @@ import (
 // @Failure 500 {object} models.Error
 // @Router /v1/users [post]
 func (h *HandlerV1) CreateUser(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "CreateUser")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	var (
 		body        models.UserReq
 		jsonMarshal protojson.MarshalOptions
@@ -73,7 +65,7 @@ func (h *HandlerV1) CreateUser(c *gin.Context) {
 		return
 	}
 
-	isEmail, err := h.Service.UserService().UniqueEmail(ctx, &pbu.IsUnique{
+	isEmail, err := h.Service.UserService().UniqueEmail(context.Background(), &pbu.IsUnique{
 		Email: body.Email,
 	})
 	if err != nil {
@@ -122,7 +114,7 @@ func (h *HandlerV1) CreateUser(c *gin.Context) {
 		return
 	}
 
-	response, err := h.Service.UserService().CreateUser(ctx, &pbu.User{
+	response, err := h.Service.UserService().CreateUser(context.Background(), &pbu.User{
 		Id:          newId,
 		Name:        body.FullName,
 		Email:       body.Email,
@@ -151,7 +143,7 @@ func (h *HandlerV1) CreateUser(c *gin.Context) {
 	})
 }
 
-// GET
+// GetUser
 // @Summary GET
 // @Security BearerAuth
 // @Description Api for Get
@@ -164,20 +156,13 @@ func (h *HandlerV1) CreateUser(c *gin.Context) {
 // @Failure 500 {object} models.Error
 // @Router /v1/users/{id} [get]
 func (h *HandlerV1) GetUser(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "GetUser")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	var jsonMarshal protojson.MarshalOptions
 	jsonMarshal.UseProtoNames = true
 
 	id := c.Param("id")
 
 	response, err := h.Service.UserService().GetUser(
-		ctx, &pbu.Filter{
+		context.Background(), &pbu.Filter{
 			Filter: map[string]string{"id": id},
 		})
 	if err != nil {
@@ -207,7 +192,7 @@ func (h *HandlerV1) GetUser(c *gin.Context) {
 	})
 }
 
-// LIST USERS
+// ListUsers
 // @Summary LIST USERS
 // @Security BearerAuth
 // @Description Api for ListUsers
@@ -220,13 +205,6 @@ func (h *HandlerV1) GetUser(c *gin.Context) {
 // @Failure 500 {object} models.Error
 // @Router /v1/users/list [get]
 func (h *HandlerV1) ListUsers(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "ListUser")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	queryParams := c.Request.URL.Query()
 	params, errStr := utils.ParseQueryParam(queryParams)
 	if errStr != nil {
@@ -240,7 +218,7 @@ func (h *HandlerV1) ListUsers(c *gin.Context) {
 	jsonMarshal.UseProtoNames = true
 
 	response, err := h.Service.UserService().GetAllUsers(
-		ctx, &pbu.ListUserRequest{
+		context.Background(), &pbu.ListUserRequest{
 			Limit: int64(params.Limit),
 			Page:  int64(params.Page),
 		})
@@ -273,7 +251,7 @@ func (h *HandlerV1) ListUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-// UPDATE
+// UpdateUser
 // @Summary UPDATE
 // @Security BearerAuth
 // @Description Api for Update
@@ -286,13 +264,6 @@ func (h *HandlerV1) ListUsers(c *gin.Context) {
 // @Failure 500 {object} models.Error
 // @Router /v1/users [put]
 func (h *HandlerV1) UpdateUser(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "UpdateUser")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	var (
 		body        models.UserUpdateReq
 		jsonMarshal protojson.MarshalOptions
@@ -316,7 +287,7 @@ func (h *HandlerV1) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	getUser, err := h.Service.UserService().GetUser(ctx, &pbu.Filter{
+	getUser, err := h.Service.UserService().GetUser(context.Background(), &pbu.Filter{
 		Filter: map[string]string{"id": userID},
 	})
 	if err != nil {
@@ -346,7 +317,7 @@ func (h *HandlerV1) UpdateUser(c *gin.Context) {
 		}
 	}
 
-	response, err := h.Service.UserService().UpdateUser(ctx, &pbu.User{
+	response, err := h.Service.UserService().UpdateUser(context.Background(), &pbu.User{
 		Id:          userID,
 		Name:        body.FullName,
 		Email:       body.Email,
@@ -372,7 +343,7 @@ func (h *HandlerV1) UpdateUser(c *gin.Context) {
 	})
 }
 
-// DELETE
+// DeleteUser
 // @Summary DELETE
 // @Security BearerAuth
 // @Description Api for Delete
@@ -385,19 +356,12 @@ func (h *HandlerV1) UpdateUser(c *gin.Context) {
 // @Failure 500 {object} models.Error
 // @Router /v1/users/{id} [delete]
 func (h *HandlerV1) DeleteUser(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "DeleteUser")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	var jsonMarshal protojson.MarshalOptions
 	jsonMarshal.UseProtoNames = true
 
 	id := c.Query("id")
 
-	user, err := h.Service.UserService().GetUser(ctx, &pbu.Filter{
+	user, err := h.Service.UserService().GetUser(context.Background(), &pbu.Filter{
 		Filter: map[string]string{"id": id},
 	})
 	if err != nil {
@@ -416,7 +380,7 @@ func (h *HandlerV1) DeleteUser(c *gin.Context) {
 	}
 
 	_, err = h.Service.UserService().DeleteUser(
-		ctx, &pbu.UserWithGUID{
+		context.Background(), &pbu.UserWithGUID{
 			Guid: id,
 		})
 	if err != nil {
@@ -438,7 +402,7 @@ func (h *HandlerV1) DeleteUser(c *gin.Context) {
 	})
 }
 
-// GET BY TOKEN
+// GetByToken
 // @Summary GET BY TOKEN
 // @Security BearerAuth
 // @Description Api for Get user by token
@@ -450,17 +414,8 @@ func (h *HandlerV1) DeleteUser(c *gin.Context) {
 // @Failure 500 {object} models.Error
 // @Router /v1/users/token [get]
 func (h *HandlerV1) GetByToken(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "GetUser")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	var jsonMarshal protojson.MarshalOptions
 	jsonMarshal.UseProtoNames = true
-
-	// println("\n", c.Request.Header.Get("Authorization"), "\n")
 
 	userID, statusCode := GetIdFromToken(c.Request, h.Config)
 	if statusCode != http.StatusOK {
@@ -471,7 +426,7 @@ func (h *HandlerV1) GetByToken(c *gin.Context) {
 	}
 
 	response, err := h.Service.UserService().GetUser(
-		ctx, &pbu.Filter{
+		context.Background(), &pbu.Filter{
 			Filter: map[string]string{"id": userID},
 		})
 	if err != nil {

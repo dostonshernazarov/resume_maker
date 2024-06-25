@@ -15,31 +15,20 @@ import (
 
 	defaultrolemanager "github.com/casbin/casbin/v2/rbac/default-role-manager"
 
-	// "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/kafka"
-	"github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/repository/postgresql"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
-	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
-
-	// "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
-
-	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/postgres"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/redis"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/app_version"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/event"
-	// "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/refresh_token"
-	// "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/refresh_token"
 )
 
 type App struct {
 	Config         *config.Config
 	Logger         *zap.Logger
-	DB             *postgres.PostgresDB
 	RedisDB        *redis.RedisDB
 	server         *http.Server
 	Enforcer       *casbin.Enforcer
 	Clients        grpcService.ServiceClient
-	ShutdownOTLP   func() error
 	BrokerProducer event.BrokerProducer
 	appVersion     app_version.AppVersion
 }
@@ -54,12 +43,6 @@ func NewApp(cfg config.Config) (*App, error) {
 	// kafka producer init
 	// kafkaProducer := kafka.NewProducer(&cfg, logger)
 
-	// postgres init
-	db, err := postgres.New(&cfg)
-	if err != nil {
-		return nil, err
-	}
-
 	// redis init
 	redisdb, err := redis.New(&cfg)
 	if err != nil {
@@ -67,7 +50,6 @@ func NewApp(cfg config.Config) (*App, error) {
 	}
 
 	// otlp collector init
-	shutdownOTLP, err := otlp.InitOTLPProvider(&cfg)
 	if err != nil {
 		return nil, err
 	}
@@ -80,29 +62,22 @@ func NewApp(cfg config.Config) (*App, error) {
 
 	// enforcer.SetCache(policy.NewCache(&redisdb.Client))
 
-	var (
-		contextTimeout time.Duration
-	)
+	//var (
+	//	contextTimeout time.Duration
+	//)
 
 	// context timeout initialization
-	contextTimeout, err = time.ParseDuration(cfg.Context.Timeout)
+	_, err = time.ParseDuration(cfg.Context.Timeout)
 	if err != nil {
 		return nil, err
 	}
 
-	appVersionRepo := postgresql.NewAppVersionRepo(db)
-
-	appVersionUseCase := app_version.NewAppVersionService(contextTimeout, appVersionRepo)
-
 	return &App{
 		Config:   &cfg,
 		Logger:   logger,
-		DB:       db,
 		RedisDB:  redisdb,
 		Enforcer: enforcer,
 		// BrokerProducer: kafkaProducer,
-		ShutdownOTLP: shutdownOTLP,
-		appVersion:   appVersionUseCase,
 	}, nil
 }
 
@@ -118,20 +93,11 @@ func (a *App) Run() error {
 	}
 	a.Clients = clients
 
-	// initialize cache
-	// cache := redisrepo.NewCache(a.RedisDB)
-
-	// tokenRepo := postgresql.NewRefreshTokenRepo(a.DB)
-
-	// initialize token service
-	// refreshTokenService := refresh_token.NewRefreshTokenService(contextTimeout, tokenRepo)
-
 	// api init
 	handler := api.NewRoute(api.RouteOption{
 		Config:         a.Config,
 		Logger:         a.Logger,
 		ContextTimeout: contextTimeout,
-		// Cache:          cache,
 		Enforcer:       a.Enforcer,
 		Service:        clients,
 		BrokerProducer: a.BrokerProducer,
@@ -156,10 +122,6 @@ func (a *App) Run() error {
 }
 
 func (a *App) Stop() {
-
-	// close database
-	a.DB.Close()
-
 	// close grpc connections
 	a.Clients.Close()
 
@@ -169,11 +131,6 @@ func (a *App) Stop() {
 	// shutdown server http
 	if err := a.server.Shutdown(context.Background()); err != nil {
 		a.Logger.Error("shutdown server http ", zap.Error(err))
-	}
-
-	// shutdown otlp collector
-	if err := a.ShutdownOTLP(); err != nil {
-		a.Logger.Error("shutdown otlp collector", zap.Error(err))
 	}
 
 	// zap logger sync

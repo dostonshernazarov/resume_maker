@@ -2,22 +2,30 @@ p, unauthorized, /v1/swagger/*,  GET
 p, unauthorized, /v1/users/register, POST
 p, unauthorized, /v1/users/verify, GET
 p, unauthorized, /v1/users/login, POST
-p, unauthorized, /v1/admins/login, POST
 p, unauthorized, /v1/users/set/{email}, GET
 p, unauthorized, /v1/users/code, GET
 p, unauthorized, /v1/users/password, PUT
-p, unauthorized, /v1/token/:refresh, GET
-
-p, unauthorized, /v1/users/{id}, GET
+p, unauthorized, /v1/token/{refresh}, GET
+p, unauthorized, /v1/users, POST
 p, unauthorized, /v1/users, PUT
+p, unauthorized, /v1/users/{id}, DELETE
+p, unauthorized, /v1/users/{id}, GET
+p, unauthorized, /v1/users/list, GET
+p, unauthorized, /v1/users/token, GET
 p, unauthorized, /v1/media/user-photo, POST
 
-p, unauthorized, /v1/users, POST
-p, unauthorized, /v1/users/list, GET
-
-p, admin, /v1/users/list/deleted, GET
-p, unauthorized, /v1/users/{id}, DELETE
-
-g, admin, user, *
-g, admin, unauthorized, *
-g, sudo, admin, *
+p, user, /v1/swagger/*,  GET
+p, user, /v1/users/register, POST
+p, user, /v1/users/verify, GET
+p, user, /v1/users/login, POST
+p, user, /v1/users/set/{email}, GET
+p, user, /v1/users/code, GET
+p, user, /v1/users/password, PUT
+p, user, /v1/token/{refresh}, GET
+p, user, /v1/users, POST
+p, user, /v1/users, PUT
+p, user, /v1/users/{id}, DELETE
+p, user, /v1/users/{id}, GET
+p, user, /v1/users/list, GET
+p, user, /v1/users/token, GET
+p, user, /v1/media/user-photo, POST

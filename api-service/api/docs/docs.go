@@ -22,7 +22,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Through this api frontent can upload user photo and get the link to the media.",
+                "description": "Through this api front-ent can upload user photo and get the link to the media.",
                 "consumes": [
                     "application/json"
                 ],
@@ -71,7 +71,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Api for updated acces token",
+                "description": "Api for updated access token",
                 "consumes": [
                     "application/json"
                 ],
