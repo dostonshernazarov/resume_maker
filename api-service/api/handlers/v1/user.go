@@ -25,7 +25,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param User body models.UserReq true "createModel"
-// @Success 200 {object} models.UserRes
+// @Success 200 {object} models.UserResCreate
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /v1/users [post]
@@ -185,6 +185,7 @@ func (h *HandlerV1) GetUser(c *gin.Context) {
 		FullName:     response.Name,
 		Email:        response.Email,
 		PhoneNumber:  response.PhoneNumber,
+		ImageURL:     response.Image,
 		Role:         response.Role,
 		RefreshToken: response.Refresh,
 		CreatedAt:    response.CreatedAt,
@@ -238,6 +239,7 @@ func (h *HandlerV1) ListUsers(c *gin.Context) {
 		respUser.FullName = val.Name
 		respUser.Email = val.Email
 		respUser.PhoneNumber = val.PhoneNumber
+		respUser.ImageURL = val.Image
 		respUser.CreatedAt = val.CreatedAt
 		respUser.Role = val.Role
 		respUser.RefreshToken = val.Refresh
@@ -336,6 +338,7 @@ func (h *HandlerV1) UpdateUser(c *gin.Context) {
 		FullName:     response.Name,
 		Email:        response.Email,
 		PhoneNumber:  response.PhoneNumber,
+		ImageURL:     response.Image,
 		Role:         response.Role,
 		RefreshToken: response.Refresh,
 		CreatedAt:    response.CreatedAt,
@@ -442,6 +445,7 @@ func (h *HandlerV1) GetByToken(c *gin.Context) {
 		FullName:     response.Name,
 		Email:        response.Email,
 		PhoneNumber:  response.PhoneNumber,
+		ImageURL:     response.Image,
 		Role:         response.Role,
 		RefreshToken: response.Refresh,
 		CreatedAt:    response.CreatedAt,

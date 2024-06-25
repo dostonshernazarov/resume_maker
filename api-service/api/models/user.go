@@ -18,6 +18,7 @@ type UserRes struct {
 	FullName     string `json:"full_name"`
 	Email        string `json:"email"`
 	PhoneNumber  string `json:"phone_number"`
+	ImageURL     string `json:"image"`
 	Role         string `json:"role"`
 	RefreshToken string `json:"refresh_token"`
 	CreatedAt    string `json:"created_at"`

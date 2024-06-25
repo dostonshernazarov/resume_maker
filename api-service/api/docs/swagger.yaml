@@ -57,6 +57,8 @@ definitions:
         type: string
       id:
         type: string
+      image:
+        type: string
       phone_number:
         type: string
       refresh_token:
@@ -180,7 +182,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.UserRes'
+            $ref: '#/definitions/models.UserResCreate'
         "400":
           description: Bad Request
           schema:

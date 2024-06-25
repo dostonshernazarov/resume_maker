@@ -195,7 +195,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.UserRes"
+                            "$ref": "#/definitions/models.UserResCreate"
                         }
                     },
                     "400": {
@@ -798,6 +798,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "image": {
                     "type": "string"
                 },
                 "phone_number": {
