@@ -77,10 +77,10 @@ func NewRoute(option RouteOption) *gin.Engine {
 	// USER METHODS
 
 	api.POST("/users", HandlerV1.CreateUser)
-	api.GET("/users/:id", HandlerV1.GetUser)
-	api.GET("/users/list", HandlerV1.ListUsers)
 	api.PUT("/users", HandlerV1.UpdateUser)
 	api.DELETE("/users/:id", HandlerV1.DeleteUser)
+	api.GET("/users/:id", HandlerV1.GetUser)
+	api.GET("/users/list", HandlerV1.ListUsers)
 	api.GET("/users/token", HandlerV1.GetByToken)
 
 	// REGISTER METHODS
@@ -90,7 +90,6 @@ func NewRoute(option RouteOption) *gin.Engine {
 	api.GET("/users/set/:email", HandlerV1.ForgetPassword)
 	api.GET("/users/code", HandlerV1.ForgetPasswordVerify)
 	api.PUT("/users/password", HandlerV1.SetNewPassword)
-
 	api.GET("/token/:refresh", HandlerV1.UpdateToken)
 
 	// MEDIA

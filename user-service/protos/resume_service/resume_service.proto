@@ -6,5 +6,11 @@ option go_package = "genproto/resume_service";
 import "resume_model.proto";
 
 service ResumeService {
-  rpc Use(Resume) returns (Resume);
+  rpc CreateResume(Resume) returns (ResumeWithID);
+  rpc UpdateResume(Resume) returns (Resume);
+  rpc DeleteResume(ResumeWithID) returns (Status);
+  rpc DeleteUserResume(UserWithID) returns (Status);
+  rpc GetResumeByID(ResumeWithID) returns (Resume);
+  rpc GetUserResume(UserWithID) returns (ListResumeResponse);
+  rpc ListResume(ListRequest) returns (ListResumeResponse);
 }

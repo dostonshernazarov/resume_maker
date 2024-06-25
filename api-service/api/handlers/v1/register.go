@@ -1,18 +1,18 @@
 package v1
 
 import (
+	"context"
 	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 	pbu "github.com/dostonshernazarov/resume_maker/api-service/genproto/user_service"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/etc"
 	l "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
-	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
 	scode "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/sendcode"
 	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
 	val "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/validation"
+	"github.com/redis/go-redis/v9"
+	"log"
 
-	// "context"
 	"encoding/json"
-	// "errors"
 	"math/rand"
 	"strconv"
 	"time"
@@ -20,14 +20,11 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/google/uuid"
-	"github.com/redis/go-redis/v9"
-
 	"github.com/gin-gonic/gin"
-	// "github.com/go-chi/render"
-	"go.opentelemetry.io/otel/attribute"
+	"github.com/google/uuid"
 )
 
+// RegisterUser
 // REGISTER USER ...
 // @Security BearerAuth
 // @Router /v1/users/register [POST]
@@ -41,13 +38,6 @@ import (
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 func (h HandlerV1) RegisterUser(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "Register")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	var body models.RegisterReq
 	var toRedis models.ClientRedis
 
@@ -84,7 +74,7 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	result, err := h.Service.UserService().UniqueEmail(ctx, &pbu.IsUnique{
+	result, err := h.Service.UserService().UniqueEmail(context.Background(), &pbu.IsUnique{
 		Email: body.Email,
 	})
 	if err != nil {
@@ -92,7 +82,7 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 			Message: models.InternalMessage,
 		},
 		)
-		h.Logger.Error("Failed to check email uniquess", l.Error(err))
+		h.Logger.Error("Failed to check email uniques", l.Error(err))
 		return
 	}
 
@@ -106,11 +96,20 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 
 	// Connect to redis
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis-db:6379",
 		Password: "",
 		DB:       0,
 	})
-	defer rdb.Close()
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("failed to close redis connection", err)
+			return
+		}
+	}(rdb)
 
 	// Generate code for check email
 	code := strconv.Itoa(rand.Int())[:6]
@@ -128,7 +127,7 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
-	_, err = rdb.Set(ctx, body.Email, userByte, time.Minute*5).Result()
+	_, err = rdb.Set(context.Background(), body.Email, userByte, time.Minute*5).Result()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
@@ -139,14 +138,14 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 
 	scode.SendCode(body.Email, code)
 
-	responsemessage := models.RegisterRes{
+	responseMessage := models.RegisterRes{
 		Content: "We send verification password to your email",
 	}
 
-	c.JSON(http.StatusOK, responsemessage)
+	c.JSON(http.StatusOK, responseMessage)
 }
 
-// VERIFICATION ...
+// Verification
 // @Security BearerAuth
 // @Router /v1/users/verify [GET]
 // @Summary VERIFICATION
@@ -159,24 +158,26 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 func (h HandlerV1) Verification(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "Verification")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	email := c.Query("email")
 	code := c.Query("code")
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis-db:6379",
 		Password: "",
 		DB:       0,
 	})
-	defer rdb.Close()
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("failed to close redis connection", err)
+			return
+		}
+	}(rdb)
 
-	val, err := rdb.Get(ctx, email).Result()
+	value, err := rdb.Get(context.Background(), email).Result()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.NotAvailable,
@@ -185,16 +186,16 @@ func (h HandlerV1) Verification(c *gin.Context) {
 		return
 	}
 
-	var userdetail models.ClientRedis
-	if err := json.Unmarshal([]byte(val), &userdetail); err != nil {
+	var userDetail models.ClientRedis
+	if err := json.Unmarshal([]byte(value), &userDetail); err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
 		})
-		h.Logger.Error("Error unmarshalling userdetail", l.Error(err))
+		h.Logger.Error("Error unmarshalling user detail", l.Error(err))
 		return
 	}
 
-	if userdetail.Code != code {
+	if userDetail.Code != code {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.NotAvailable,
 		})
@@ -227,7 +228,7 @@ func (h HandlerV1) Verification(c *gin.Context) {
 		return
 	}
 
-	userdetail.Password, err = etc.HashPassword(userdetail.Password)
+	userDetail.Password, err = etc.HashPassword(userDetail.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
@@ -236,12 +237,12 @@ func (h HandlerV1) Verification(c *gin.Context) {
 		return
 	}
 
-	res, err := h.Service.UserService().CreateUser(ctx, &pbu.User{
+	res, err := h.Service.UserService().CreateUser(context.Background(), &pbu.User{
 		Id:       uuid.NewString(),
-		Name:     userdetail.Fullname,
-		Email:    userdetail.Email,
+		Name:     userDetail.Fullname,
+		Email:    userDetail.Email,
 		Refresh:  refresh,
-		Password: userdetail.Password,
+		Password: userDetail.Password,
 		Role:     "user",
 	})
 	if err != nil {
@@ -254,8 +255,8 @@ func (h HandlerV1) Verification(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, &models.UserResCreate{
 		Id:           res.Guid,
-		FullName:     userdetail.Fullname,
-		Email:        userdetail.Email,
+		FullName:     userDetail.Fullname,
+		Email:        userDetail.Email,
 		ProfileImg:   "",
 		PhoneNumber:  "",
 		Role:         "user",
@@ -264,7 +265,7 @@ func (h HandlerV1) Verification(c *gin.Context) {
 	})
 }
 
-// LOGIN ...
+// Login
 // @Security BearerAuth
 // @Router /v1/users/login [POST]
 // @Summary LOGIN
@@ -277,13 +278,6 @@ func (h HandlerV1) Verification(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 func (h HandlerV1) Login(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "Login")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	var body models.Login
 
 	err := c.ShouldBindJSON(&body)
@@ -298,7 +292,7 @@ func (h HandlerV1) Login(c *gin.Context) {
 	email := body.Email
 	password := body.Password
 
-	user, err := h.Service.UserService().GetUser(ctx, &pbu.Filter{
+	user, err := h.Service.UserService().GetUser(context.Background(), &pbu.Filter{
 		Filter: map[string]string{"email": email},
 	})
 	if err != nil {
@@ -333,7 +327,7 @@ func (h HandlerV1) Login(c *gin.Context) {
 		return
 	}
 
-	_, err = h.Service.UserService().UpdateRefresh(ctx, &pbu.RefreshRequest{
+	_, err = h.Service.UserService().UpdateRefresh(context.Background(), &pbu.RefreshRequest{
 		UserId:       user.Id,
 		RefreshToken: refresh,
 	})
@@ -357,7 +351,7 @@ func (h HandlerV1) Login(c *gin.Context) {
 	})
 }
 
-// FORGET PASSWORD ...
+// ForgetPassword
 // @Security BearerAuth
 // @Router /v1/users/set/{email} [GET]
 // @Summary FORGET PASSWORD
@@ -370,13 +364,6 @@ func (h HandlerV1) Login(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 func (h HandlerV1) ForgetPassword(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "ForgetPassword")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	var toRedis models.ForgetPassReq
 
 	email := c.Query("email")
@@ -384,8 +371,7 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 	email = strings.TrimSpace(email)
 	email = strings.ToLower(email)
 
-	// println("\n\n", email, "\n")
-	uniqueCheck, err := h.Service.UserService().UniqueEmail(ctx, &pbu.IsUnique{
+	uniqueCheck, err := h.Service.UserService().UniqueEmail(context.Background(), &pbu.IsUnique{
 		Email: email,
 	})
 	if err != nil {
@@ -405,11 +391,20 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 
 	// Connect to redis
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis-db:6379",
 		Password: "",
 		DB:       0,
 	})
-	defer rdb.Close()
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("failed to close redis connection", l.Error(err))
+			return
+		}
+	}(rdb)
 
 	// Generate code for check email
 	code := strconv.Itoa(rand.Int())[:6]
@@ -425,7 +420,7 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
-	_, err = rdb.Set(ctx, toRedis.Email, userByte, time.Minute*10).Result()
+	_, err = rdb.Set(context.Background(), toRedis.Email, userByte, time.Minute*10).Result()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
@@ -436,14 +431,14 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 
 	scode.SendCode(toRedis.Email, code)
 
-	responsemessage := models.RegisterRes{
+	responseMessage := models.RegisterRes{
 		Content: "We send verification password to your email",
 	}
 
-	c.JSON(http.StatusOK, responsemessage)
+	c.JSON(http.StatusOK, responseMessage)
 }
 
-// FORGET PASSWORD CODE ...
+// ForgetPasswordVerify
 // @Security BearerAuth
 // @Router /v1/users/code [GET]
 // @Summary FORGET PASSWORD CODE
@@ -456,26 +451,28 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 func (h HandlerV1) ForgetPasswordVerify(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "ForgetPassword")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
-	var userdetail models.ForgetPassReq
+	var userDetail models.ForgetPassReq
 
 	email := c.Query("email")
 	code := c.Query("code")
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis-db:6379",
 		Password: "",
 		DB:       0,
 	})
-	defer rdb.Close()
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("failed to close redis connection", l.Error(err))
+			return
+		}
+	}(rdb)
 
-	val, err := rdb.Get(ctx, email).Result()
+	value, err := rdb.Get(context.Background(), email).Result()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Incorrect email. Try again ..",
@@ -484,29 +481,29 @@ func (h HandlerV1) ForgetPasswordVerify(c *gin.Context) {
 		return
 	}
 
-	if err := json.Unmarshal([]byte(val), &userdetail); err != nil {
+	if err := json.Unmarshal([]byte(value), &userDetail); err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
 		})
-		h.Logger.Error("Error unmarshalling userdetail in forget password verify", l.Error(err))
+		h.Logger.Error("Error unmarshalling user detail in forget password verify", l.Error(err))
 		return
 	}
 
-	if userdetail.Code != code {
+	if userDetail.Code != code {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.NotAvailable,
 		})
 		return
 	}
 
-	responsemessage := models.RegisterRes{
+	responseMessage := models.RegisterRes{
 		Content: "Please enter new password",
 	}
 
-	c.JSON(http.StatusOK, responsemessage)
+	c.JSON(http.StatusOK, responseMessage)
 }
 
-// SET NEW PASSWORD ...
+// SetNewPassword
 // @Security BearerAuth
 // @Router /v1/users/password [PUT]
 // @Summary SET NEW PASSWORD
@@ -519,13 +516,6 @@ func (h HandlerV1) ForgetPasswordVerify(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 func (h HandlerV1) SetNewPassword(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "SetNewPassword")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	email := c.Query("email")
 	password := c.Query("password")
 
@@ -539,7 +529,7 @@ func (h HandlerV1) SetNewPassword(c *gin.Context) {
 		return
 	}
 
-	user, err := h.Service.UserService().GetUser(ctx, &pbu.Filter{
+	user, err := h.Service.UserService().GetUser(context.Background(), &pbu.Filter{
 		Filter: map[string]string{"email": email},
 	})
 	if err != nil {
@@ -576,7 +566,7 @@ func (h HandlerV1) SetNewPassword(c *gin.Context) {
 		return
 	}
 
-	updUser, err := h.Service.UserService().UpdatePassword(ctx, &pbu.UpdatePasswordRequest{
+	updUser, err := h.Service.UserService().UpdatePassword(context.Background(), &pbu.UpdatePasswordRequest{
 		UserId:      user.Id,
 		NewPassword: password,
 	})
@@ -607,11 +597,11 @@ func (h HandlerV1) SetNewPassword(c *gin.Context) {
 
 }
 
-// UPDATE TOKEN
+// UpdateToken
 // @Security BearerAuth
 // @Router /v1/token/{refresh} [GET]
 // @Summary UPDATE TOKEN
-// @Description Api for updated acces token
+// @Description Api for updated access token
 // @Tags TOKEN
 // @Accept json
 // @Produce json
@@ -620,16 +610,9 @@ func (h HandlerV1) SetNewPassword(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 func (h HandlerV1) UpdateToken(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "SetNewPassword")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-		attribute.Key("host").String(c.Request.Host),
-	)
-	defer span.End()
-
 	RToken := c.Param("refresh")
 
-	user, err := h.Service.UserService().GetUser(ctx, &pbu.Filter{
+	user, err := h.Service.UserService().GetUser(context.Background(), &pbu.Filter{
 		Filter: map[string]string{"refresh": RToken},
 	})
 	if err != nil {
@@ -649,9 +632,9 @@ func (h HandlerV1) UpdateToken(c *gin.Context) {
 		return
 	}
 
-	Now_time := time.Now().Unix()
-	exp := (resClaim["exp"])
-	if exp.(float64)-float64(Now_time) > 0 {
+	NowTime := time.Now().Unix()
+	exp := resClaim["exp"]
+	if exp.(float64)-float64(NowTime) > 0 {
 		h.JwtHandler = tokens.JwtHandler{
 			Sub:       user.Id,
 			Iss:       "client",
@@ -668,7 +651,7 @@ func (h HandlerV1) UpdateToken(c *gin.Context) {
 			h.Logger.Error("Failed to generate token update token", l.Error(err))
 			return
 		}
-		_, err = h.Service.UserService().UpdateRefresh(ctx, &pbu.RefreshRequest{
+		_, err = h.Service.UserService().UpdateRefresh(context.Background(), &pbu.RefreshRequest{
 			UserId:       user.Id,
 			RefreshToken: refreshR,
 		})
@@ -696,5 +679,4 @@ func (h HandlerV1) UpdateToken(c *gin.Context) {
 		h.Logger.Error("refresh token expired")
 		return
 	}
-
 }

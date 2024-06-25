@@ -1,0 +1,5 @@
+2024-06-25T18:47:38.103+0500	INFO	app/main.go:30	Listen: 	{"address": "api-gateway:8080"}
+2024-06-25T18:47:38.105+0500	ERROR	app/main.go:32	app run	{"error": "listen tcp: lookup api-gateway on 127.0.0.53:53: server misbehaving"}
+main.main.func1
+	/home/gopher/projects/go/src/resume_maker/api-service/cmd/app/main.go:32
+2024-06-25T18:47:42.590+0500	INFO	app/main.go:41	api gateway service stops

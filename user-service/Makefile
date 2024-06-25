@@ -5,8 +5,6 @@ CURRENT_DIR=$(shell pwd)
 APP=user_service
 CMD_DIR=./cmd
 
-.DEFAULT_GOAL = build
-
 .PHONY: run
 run:
 	go run ${CMD_DIR}/app/main.go

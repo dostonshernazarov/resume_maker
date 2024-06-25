@@ -12,7 +12,6 @@ import (
 
 	appV "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/app_version"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/event"
-	// "github.com/dostonshernazarov/resume_maker/api-service/internal/usecase/refresh_token"
 )
 
 type HandlerV1 struct {

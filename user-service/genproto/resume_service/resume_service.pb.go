@@ -27,15 +27,23 @@ const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 func init() { proto.RegisterFile("resume_service.proto", fileDescriptor_b6f3d3ddd1d37e28) }
 
 var fileDescriptor_b6f3d3ddd1d37e28 = []byte{
-	// 122 bytes of a gzipped FileDescriptorProto
+	// 242 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x29, 0x4a, 0x2d, 0x2e,
 	0xcd, 0x4d, 0x8d, 0x2f, 0x4e, 0x2d, 0x2a, 0xcb, 0x4c, 0x4e, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9,
 	0x17, 0xe2, 0x43, 0x15, 0x95, 0x12, 0x82, 0xf2, 0x73, 0xf3, 0x53, 0x52, 0x73, 0x20, 0x6a, 0x8c,
-	0xdc, 0xb8, 0x78, 0x83, 0xc0, 0xa2, 0xc1, 0x10, 0x45, 0x42, 0xa6, 0x5c, 0xcc, 0xa1, 0xc5, 0xa9,
-	0x42, 0x62, 0x7a, 0x68, 0x46, 0x42, 0x54, 0x49, 0xe1, 0x10, 0x77, 0xd2, 0x3c, 0xf1, 0x48, 0x8e,
-	0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x67, 0x3c, 0x96, 0x63, 0x88, 0x12, 0x4f,
-	0x4f, 0xcd, 0x03, 0xdb, 0xa1, 0x8f, 0xaa, 0x23, 0x89, 0x0d, 0x2c, 0x6a, 0x0c, 0x08, 0x00, 0x00,
-	0xff, 0xff, 0x1d, 0x19, 0x08, 0x48, 0xb5, 0x00, 0x00, 0x00,
+	0xba, 0x58, 0xb8, 0x78, 0x83, 0xc0, 0xc2, 0xc1, 0x10, 0x55, 0x42, 0x2e, 0x5c, 0x3c, 0xce, 0x45,
+	0xa9, 0x89, 0x25, 0xa9, 0x10, 0x61, 0x21, 0x31, 0x3d, 0x34, 0xc3, 0x21, 0xe2, 0x52, 0x32, 0xd8,
+	0xc5, 0xc3, 0x33, 0x4b, 0x32, 0x3c, 0x5d, 0x84, 0xec, 0xb8, 0x78, 0x42, 0x0b, 0x52, 0x08, 0x9b,
+	0x82, 0x43, 0x1c, 0xe4, 0x0a, 0x97, 0xd4, 0x9c, 0x54, 0xb8, 0x7e, 0xbc, 0xb6, 0x61, 0x9a, 0x12,
+	0x5c, 0x92, 0x58, 0x52, 0x5a, 0x2c, 0xe4, 0xc6, 0x25, 0x00, 0x31, 0x25, 0xb4, 0x38, 0xb5, 0x08,
+	0x6a, 0x92, 0x14, 0xba, 0x5a, 0x90, 0x1c, 0x01, 0x73, 0x5c, 0xb9, 0x78, 0xdd, 0x53, 0x4b, 0x20,
+	0x06, 0x38, 0x55, 0x7a, 0xba, 0x90, 0xea, 0x1c, 0xa8, 0xd5, 0xfe, 0x60, 0x63, 0x88, 0x74, 0x8b,
+	0x12, 0xba, 0x9c, 0x4f, 0x66, 0x31, 0xd4, 0x09, 0x41, 0xa9, 0xc5, 0x05, 0xf9, 0x79, 0xc5, 0xa9,
+	0x42, 0xbe, 0x5c, 0x5c, 0x08, 0x51, 0x21, 0x69, 0xec, 0x3a, 0x0a, 0x4b, 0x53, 0x8b, 0x4b, 0x88,
+	0x31, 0xce, 0x49, 0xf3, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63,
+	0x9c, 0xf1, 0x58, 0x8e, 0x21, 0x4a, 0x3c, 0x3d, 0x35, 0x0f, 0x9c, 0x50, 0xf4, 0x51, 0x75, 0x27,
+	0xb1, 0x81, 0x45, 0x8d, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x00, 0xdd, 0x5b, 0xc1, 0x7a, 0x02,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -50,7 +58,13 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ResumeServiceClient interface {
-	Use(ctx context.Context, in *Resume, opts ...grpc.CallOption) (*Resume, error)
+	CreateResume(ctx context.Context, in *Resume, opts ...grpc.CallOption) (*ResumeWithID, error)
+	UpdateResume(ctx context.Context, in *Resume, opts ...grpc.CallOption) (*Resume, error)
+	DeleteResume(ctx context.Context, in *ResumeWithID, opts ...grpc.CallOption) (*Status, error)
+	DeleteUserResume(ctx context.Context, in *UserWithID, opts ...grpc.CallOption) (*Status, error)
+	GetResumeByID(ctx context.Context, in *ResumeWithID, opts ...grpc.CallOption) (*Resume, error)
+	GetUserResume(ctx context.Context, in *UserWithID, opts ...grpc.CallOption) (*ListResumeResponse, error)
+	ListResume(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResumeResponse, error)
 }
 
 type resumeServiceClient struct {
@@ -61,9 +75,63 @@ func NewResumeServiceClient(cc *grpc.ClientConn) ResumeServiceClient {
 	return &resumeServiceClient{cc}
 }
 
-func (c *resumeServiceClient) Use(ctx context.Context, in *Resume, opts ...grpc.CallOption) (*Resume, error) {
+func (c *resumeServiceClient) CreateResume(ctx context.Context, in *Resume, opts ...grpc.CallOption) (*ResumeWithID, error) {
+	out := new(ResumeWithID)
+	err := c.cc.Invoke(ctx, "/resume_service.ResumeService/CreateResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *resumeServiceClient) UpdateResume(ctx context.Context, in *Resume, opts ...grpc.CallOption) (*Resume, error) {
 	out := new(Resume)
-	err := c.cc.Invoke(ctx, "/resume_service.ResumeService/Use", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/resume_service.ResumeService/UpdateResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *resumeServiceClient) DeleteResume(ctx context.Context, in *ResumeWithID, opts ...grpc.CallOption) (*Status, error) {
+	out := new(Status)
+	err := c.cc.Invoke(ctx, "/resume_service.ResumeService/DeleteResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *resumeServiceClient) DeleteUserResume(ctx context.Context, in *UserWithID, opts ...grpc.CallOption) (*Status, error) {
+	out := new(Status)
+	err := c.cc.Invoke(ctx, "/resume_service.ResumeService/DeleteUserResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *resumeServiceClient) GetResumeByID(ctx context.Context, in *ResumeWithID, opts ...grpc.CallOption) (*Resume, error) {
+	out := new(Resume)
+	err := c.cc.Invoke(ctx, "/resume_service.ResumeService/GetResumeByID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *resumeServiceClient) GetUserResume(ctx context.Context, in *UserWithID, opts ...grpc.CallOption) (*ListResumeResponse, error) {
+	out := new(ListResumeResponse)
+	err := c.cc.Invoke(ctx, "/resume_service.ResumeService/GetUserResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *resumeServiceClient) ListResume(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResumeResponse, error) {
+	out := new(ListResumeResponse)
+	err := c.cc.Invoke(ctx, "/resume_service.ResumeService/ListResume", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,35 +140,167 @@ func (c *resumeServiceClient) Use(ctx context.Context, in *Resume, opts ...grpc.
 
 // ResumeServiceServer is the server API for ResumeService service.
 type ResumeServiceServer interface {
-	Use(context.Context, *Resume) (*Resume, error)
+	CreateResume(context.Context, *Resume) (*ResumeWithID, error)
+	UpdateResume(context.Context, *Resume) (*Resume, error)
+	DeleteResume(context.Context, *ResumeWithID) (*Status, error)
+	DeleteUserResume(context.Context, *UserWithID) (*Status, error)
+	GetResumeByID(context.Context, *ResumeWithID) (*Resume, error)
+	GetUserResume(context.Context, *UserWithID) (*ListResumeResponse, error)
+	ListResume(context.Context, *ListRequest) (*ListResumeResponse, error)
 }
 
 // UnimplementedResumeServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedResumeServiceServer struct {
 }
 
-func (*UnimplementedResumeServiceServer) Use(ctx context.Context, req *Resume) (*Resume, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Use not implemented")
+func (*UnimplementedResumeServiceServer) CreateResume(ctx context.Context, req *Resume) (*ResumeWithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateResume not implemented")
+}
+func (*UnimplementedResumeServiceServer) UpdateResume(ctx context.Context, req *Resume) (*Resume, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateResume not implemented")
+}
+func (*UnimplementedResumeServiceServer) DeleteResume(ctx context.Context, req *ResumeWithID) (*Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteResume not implemented")
+}
+func (*UnimplementedResumeServiceServer) DeleteUserResume(ctx context.Context, req *UserWithID) (*Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserResume not implemented")
+}
+func (*UnimplementedResumeServiceServer) GetResumeByID(ctx context.Context, req *ResumeWithID) (*Resume, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResumeByID not implemented")
+}
+func (*UnimplementedResumeServiceServer) GetUserResume(ctx context.Context, req *UserWithID) (*ListResumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserResume not implemented")
+}
+func (*UnimplementedResumeServiceServer) ListResume(ctx context.Context, req *ListRequest) (*ListResumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListResume not implemented")
 }
 
 func RegisterResumeServiceServer(s *grpc.Server, srv ResumeServiceServer) {
 	s.RegisterService(&_ResumeService_serviceDesc, srv)
 }
 
-func _ResumeService_Use_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ResumeService_CreateResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Resume)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ResumeServiceServer).Use(ctx, in)
+		return srv.(ResumeServiceServer).CreateResume(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/resume_service.ResumeService/Use",
+		FullMethod: "/resume_service.ResumeService/CreateResume",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResumeServiceServer).Use(ctx, req.(*Resume))
+		return srv.(ResumeServiceServer).CreateResume(ctx, req.(*Resume))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ResumeService_UpdateResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Resume)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResumeServiceServer).UpdateResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/resume_service.ResumeService/UpdateResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResumeServiceServer).UpdateResume(ctx, req.(*Resume))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ResumeService_DeleteResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResumeWithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResumeServiceServer).DeleteResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/resume_service.ResumeService/DeleteResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResumeServiceServer).DeleteResume(ctx, req.(*ResumeWithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ResumeService_DeleteUserResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserWithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResumeServiceServer).DeleteUserResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/resume_service.ResumeService/DeleteUserResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResumeServiceServer).DeleteUserResume(ctx, req.(*UserWithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ResumeService_GetResumeByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResumeWithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResumeServiceServer).GetResumeByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/resume_service.ResumeService/GetResumeByID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResumeServiceServer).GetResumeByID(ctx, req.(*ResumeWithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ResumeService_GetUserResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserWithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResumeServiceServer).GetUserResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/resume_service.ResumeService/GetUserResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResumeServiceServer).GetUserResume(ctx, req.(*UserWithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ResumeService_ListResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResumeServiceServer).ListResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/resume_service.ResumeService/ListResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResumeServiceServer).ListResume(ctx, req.(*ListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -110,8 +310,32 @@ var _ResumeService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*ResumeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Use",
-			Handler:    _ResumeService_Use_Handler,
+			MethodName: "CreateResume",
+			Handler:    _ResumeService_CreateResume_Handler,
+		},
+		{
+			MethodName: "UpdateResume",
+			Handler:    _ResumeService_UpdateResume_Handler,
+		},
+		{
+			MethodName: "DeleteResume",
+			Handler:    _ResumeService_DeleteResume_Handler,
+		},
+		{
+			MethodName: "DeleteUserResume",
+			Handler:    _ResumeService_DeleteUserResume_Handler,
+		},
+		{
+			MethodName: "GetResumeByID",
+			Handler:    _ResumeService_GetResumeByID_Handler,
+		},
+		{
+			MethodName: "GetUserResume",
+			Handler:    _ResumeService_GetUserResume_Handler,
+		},
+		{
+			MethodName: "ListResume",
+			Handler:    _ResumeService_ListResume_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -12,18 +12,17 @@ import (
 	_ "github.com/dostonshernazarov/resume_maker/api-service/api/docs"
 	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 	pbu "github.com/dostonshernazarov/resume_maker/api-service/genproto/user_service"
-	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/otlp"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	"go.opentelemetry.io/otel/attribute"
 )
 
+// UploadMedia
 // @Summary     Upload User photo
 // @Security    BearerAuth
-// @Description Through this api frontent can upload user photo and get the link to the media.
+// @Description Through this api front-ent can upload user photo and get the link to the media.
 // @Tags        MEDIA
 // @Accept      json
 // @Produce     json
@@ -33,12 +32,6 @@ import (
 // @Failure     500 {object} models.Error
 // @Router      /v1/media/user-photo [POST]
 func (h *HandlerV1) UploadMedia(c *gin.Context) {
-	ctx, span := otlp.Start(c, "api", "UploadMediaUser")
-	span.SetAttributes(
-		attribute.Key("method").String(c.Request.Method),
-	)
-	defer span.End()
-
 	duration, err := time.ParseDuration(h.Config.Context.Timeout)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
@@ -47,7 +40,7 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 		log.Println(err.Error())
 		return
 	}
-	ctx, cancel := context.WithTimeout(ctx, duration)
+	ctx, cancel := context.WithTimeout(context.Background(), duration)
 	defer cancel()
 
 	endpoint := "3.76.217.224:9000"
@@ -64,7 +57,6 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 	err = minioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{})
 	if err != nil {
 		if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
-
 		} else {
 			c.JSON(http.StatusInternalServerError, models.Error{
 				Message: err.Error(),
@@ -145,7 +137,14 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 
 	uploadDir := "./media"
 	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
-		os.Mkdir(uploadDir, os.ModePerm)
+		err := os.Mkdir(uploadDir, os.ModePerm)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("Error creating media directory", err.Error())
+			return
+		}
 	}
 
 	id := uuid.New().String()
@@ -176,13 +175,6 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 	}
 
 	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, models.Error{
-	// 		Message: err.Error(),
-	// 	})
-	// 	log.Println(err)
-	// 	return
-	// }
 
 	user.Image = minioURL
 	_, err = h.Service.UserService().UpdateUser(ctx, user)
@@ -194,5 +186,4 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, minioURL)
-
 }
