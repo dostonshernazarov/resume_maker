@@ -1,0 +1,382 @@
+2024-06-26T14:05:34.056+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:05:41.798+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:12:16.727+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:14:38.031+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:14:48.983+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:17:31.682+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:18:05.282+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:18:20.569+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:18:40.626+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:18:45.784+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:18:55.964+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:19:01.447+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:19:11.305+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:19:21.980+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:19:32.805+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:19:37.855+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:19:50.631+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:19:56.959+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:25:13.679+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:25:28.265+0500	ERROR	v1/resume.go:242	Token is invalid: unauthorized
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:242
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T14:27:21.431+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:34:46.810+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:35:27.479+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:36:01.758+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:36:09.250+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: column "lang" of relation "resumes" does not exist (SQLSTATE 42703)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T14:36:28.564+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:40:42.591+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:41:11.848+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T14:46:04.942+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:48:23.279+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:48:31.194+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T14:49:16.547+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:49:18.944+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:49:24.437+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T14:49:40.201+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:49:42.539+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:49:48.435+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T14:50:23.196+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:50:25.502+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:50:32.166+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T14:50:47.543+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:50:49.838+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:50:54.839+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T14:56:01.284+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T14:58:38.846+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T14:59:57.437+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T15:00:50.122+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T15:02:20.639+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T15:05:08.887+0500	ERROR	v1/resume.go:370	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:370
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T15:06:49.046+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T15:11:49.739+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T15:11:59.072+0500	ERROR	v1/resume.go:384	failed to save resume content into service rpc error: code = Unknown desc = ERROR: insert or update on table "locations" violates foreign key constraint "locations_user_id_fkey" (SQLSTATE 23503)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:384
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T15:14:13.690+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T15:20:13.326+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T15:20:24.472+0500	ERROR	v1/resume.go:384	failed to save resume content into service rpc error: code = Unknown desc = ERROR: insert or update on table "locations" violates foreign key constraint "locations_user_id_fkey" (SQLSTATE 23503)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:384
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T15:20:59.511+0500	ERROR	v1/resume.go:384	failed to save resume content into service rpc error: code = Unknown desc = ERROR: insert or update on table "locations" violates foreign key constraint "locations_user_id_fkey" (SQLSTATE 23503)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:384
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T15:21:41.523+0500	ERROR	v1/resume.go:384	failed to save resume content into service rpc error: code = Unknown desc = ERROR: insert or update on table "locations" violates foreign key constraint "locations_user_id_fkey" (SQLSTATE 23503)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:384
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T15:22:03.137+0500	ERROR	v1/resume.go:384	failed to save resume content into service rpc error: code = Unknown desc = ERROR: insert or update on table "locations" violates foreign key constraint "locations_user_id_fkey" (SQLSTATE 23503)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:384
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T15:23:51.011+0500	ERROR	v1/resume.go:384	failed to save resume content into service rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp 127.0.0.1:9080: connect: connection refused"
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:384
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T15:23:58.813+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T15:24:01.218+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T15:26:08.667+0500	INFO	app/main.go:41	api gateway service stops

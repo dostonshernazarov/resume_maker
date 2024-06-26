@@ -96,7 +96,7 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 
 	// Connect to redis
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis-db:6379",
 		Password: "",
 		DB:       0,
 	})
@@ -162,7 +162,7 @@ func (h HandlerV1) Verification(c *gin.Context) {
 	code := c.Query("code")
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis-db:6379",
 		Password: "",
 		DB:       0,
 	})

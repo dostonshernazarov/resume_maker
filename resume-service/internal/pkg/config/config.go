@@ -40,7 +40,7 @@ func New() *Config {
 	config.APP = getEnv("APP", "app")
 	config.Environment = getEnv("ENVIRONMENT", "develop")
 	config.LogLevel = getEnv("LOG_LEVEL", "debug")
-	config.RPCPort = getEnv("RPC_PORT", ":9090")
+	config.RPCPort = getEnv("RPC_PORT", ":9080")
 	config.Context.Timeout = getEnv("CONTEXT_TIMEOUT", "30s")
 
 	// db configuration

@@ -4,6 +4,15 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
+	"log"
+	"mime/multipart"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
 	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 	"github.com/dostonshernazarov/resume_maker/api-service/api/services"
 	"github.com/dostonshernazarov/resume_maker/api-service/genproto/resume_service"
@@ -15,13 +24,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	"io"
-	"log"
-	"mime/multipart"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 func createMultipartFileHeader(filePath string) *multipart.FileHeader {
@@ -217,7 +219,7 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	}
 
 	objectName := newFilename
-	contentType := "image/jpeg"
+	contentType := "application/pdf"
 	_, err = minioClient.FPutObject(context.Background(), bucketName, objectName, uploadPath, minio.PutObjectOptions{
 		ContentType: contentType,
 	})
@@ -241,6 +243,8 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 		return
 	}
 
+	timeNow := time.Now()
+
 	var (
 		profiles     []*resume_service.Profile
 		works        []*resume_service.Work
@@ -262,6 +266,9 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	}
 
 	for _, work := range resumeData.Work {
+		if work.StartDate == "" {
+			work.StartDate = timeNow.String()
+		}
 		works = append(works, &resume_service.Work{
 			Position:  work.Position,
 			Company:   work.Company,
@@ -282,6 +289,9 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	}
 
 	for _, education := range resumeData.Education {
+		if education.StartDate == "" {
+			education.StartDate = timeNow.String()
+		}
 		educations = append(educations, &resume_service.Education{
 			EducationId: uuid.NewString(),
 			Institution: education.Institution,
@@ -296,6 +306,10 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	}
 
 	for _, certificate := range resumeData.Certificates {
+
+		if certificate.Date == "" {
+			certificate.Date = timeNow.String()
+		}
 		certificates = append(certificates, &resume_service.Certificate{
 			Title:  certificate.Title,
 			Date:   certificate.Date,
@@ -331,45 +345,45 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 		})
 	}
 
-	//_, err = h.Service.ResumeService().CreateResume(context.Background(), &resume_service.Resume{
-	//	Id:       uuid.NewString(),
-	//	UserId:   userID,
-	//	Url:      minioURL,
-	//	Filename: newFilename,
-	//	Basic: &resume_service.Basic{
-	//		Name:        resumeData.Basics.Name,
-	//		JobTitle:    resumeData.Basics.Label,
-	//		Image:       resumeData.Basics.Image,
-	//		Email:       resumeData.Basics.Email,
-	//		PhoneNumber: resumeData.Basics.Phone,
-	//		Website:     resumeData.Basics.URL,
-	//		Summary:     resumeData.Basics.Summary,
-	//		City:        resumeData.Basics.Location.City,
-	//		CountryCode: resumeData.Basics.Location.CountryCode,
-	//		Region:      resumeData.Basics.Location.Region,
-	//	},
-	//	Profiles:     profiles,
-	//	Works:        works,
-	//	Projects:     projects,
-	//	Educations:   educations,
-	//	Certificates: certificates,
-	//	HardSkills:   hardSkills,
-	//	SoftSkills:   softSkills,
-	//	Languages:    languages,
-	//	Interests:    interests,
-	//	Meta: &resume_service.Meta{
-	//		Template: resumeData.Meta.Template,
-	//		Lang:     resumeData.Meta.Lang,
-	//	},
-	//})
-	//
-	//if err != nil {
-	//	c.JSON(http.StatusInternalServerError, models.Error{
-	//		Message: models.InternalMessage,
-	//	})
-	//	h.Logger.Error(fmt.Sprintf("failed to save resume content into service %v", err))
-	//	return
-	//}
+	_, err = h.Service.ResumeService().CreateResume(context.Background(), &resume_service.Resume{
+		Id:       uuid.NewString(),
+		UserId:   userID,
+		Url:      minioURL,
+		Filename: newFilename,
+		Basic: &resume_service.Basic{
+			Name:        resumeData.Basics.Name,
+			JobTitle:    resumeData.Basics.Label,
+			Image:       resumeData.Basics.Image,
+			Email:       resumeData.Basics.Email,
+			PhoneNumber: resumeData.Basics.Phone,
+			Website:     resumeData.Basics.URL,
+			Summary:     resumeData.Basics.Summary,
+			City:        resumeData.Basics.Location.City,
+			CountryCode: resumeData.Basics.Location.CountryCode,
+			Region:      resumeData.Basics.Location.Region,
+		},
+		Profiles:     profiles,
+		Works:        works,
+		Projects:     projects,
+		Educations:   educations,
+		Certificates: certificates,
+		HardSkills:   hardSkills,
+		SoftSkills:   softSkills,
+		Languages:    languages,
+		Interests:    interests,
+		Meta: &resume_service.Meta{
+			Template: resumeData.Meta.Template,
+			Lang:     resumeData.Meta.Lang,
+		},
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error(fmt.Sprintf("failed to save resume content into service %v", err))
+		return
+	}
 
 	c.JSON(http.StatusOK, minioURL)
 }
