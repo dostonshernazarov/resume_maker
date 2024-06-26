@@ -13,6 +13,7 @@ p, unauthorized, /v1/users/{id}, GET
 p, unauthorized, /v1/users/list, GET
 p, unauthorized, /v1/users/token, GET
 p, unauthorized, /v1/media/user-photo, POST
+p, unauthorized, /v1/resume/generate-resume, POST
 
 p, user, /v1/swagger/*,  GET
 p, user, /v1/users/register, POST
@@ -29,3 +30,4 @@ p, user, /v1/users/{id}, GET
 p, user, /v1/users/list, GET
 p, user, /v1/users/token, GET
 p, user, /v1/media/user-photo, POST
+p, user, /v1/resume/generate-resume, POST

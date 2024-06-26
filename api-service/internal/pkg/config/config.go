@@ -64,27 +64,27 @@ func NewConfig() (*Config, error) {
 	config.Context.Timeout = getEnv("CONTEXT_TIMEOUT", "7s")
 
 	// server configuration
-	config.Server.Host = getEnv("SERVER_HOST", "api-service")
+	config.Server.Host = getEnv("SERVER_HOST", "localhost")
 	config.Server.Port = getEnv("SERVER_PORT", ":8080")
 	config.Server.ReadTimeout = getEnv("SERVER_READ_TIMEOUT", "10s")
 	config.Server.WriteTimeout = getEnv("SERVER_WRITE_TIMEOUT", "10s")
 	config.Server.IdleTimeout = getEnv("SERVER_IDLE_TIMEOUT", "120s")
 
 	// redis configuration
-	config.Redis.Host = getEnv("REDIS_HOST", "redis-db")
+	config.Redis.Host = getEnv("REDIS_HOST", "localhost")
 	config.Redis.Port = getEnv("REDIS_PORT", "6379")
 	config.Redis.Password = getEnv("REDIS_PASSWORD", "")
 	config.Redis.Name = getEnv("REDIS_DATABASE", "0")
 
-	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "resume-service")
+	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "localhost")
 	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9080")
 
 	// user configuration
-	config.UserService.Host = getEnv("USER_SERVICE_GRPC_HOST", "user-service")
+	config.UserService.Host = getEnv("USER_SERVICE_GRPC_HOST", "localhost")
 	config.UserService.Port = getEnv("USER_SERVICE_GRPC_PORT", ":9090")
 
 	// telegram configuration
-	config.TelegramService.Host = getEnv("TELEGRAM_SERVICE_GRPC_HOST", "telegram-service")
+	config.TelegramService.Host = getEnv("TELEGRAM_SERVICE_GRPC_HOST", "localhost")
 	config.TelegramService.Port = getEnv("TELEGRAM_SERVICE_GRPC_PORT", ":8090")
 
 	// access ttl parse

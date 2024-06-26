@@ -1,5 +1,91 @@
-2024-06-25T18:47:38.103+0500	INFO	app/main.go:30	Listen: 	{"address": "api-gateway:8080"}
-2024-06-25T18:47:38.105+0500	ERROR	app/main.go:32	app run	{"error": "listen tcp: lookup api-gateway on 127.0.0.53:53: server misbehaving"}
-main.main.func1
-	/home/gopher/projects/go/src/resume_maker/api-service/cmd/app/main.go:32
-2024-06-25T18:47:42.590+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T12:57:21.757+0500	ERROR	v1/register.go:135	Failed to set object to redis	{"error": "dial tcp: lookup redis-db on 127.0.0.53:53: server misbehaving"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.HandlerV1.RegisterUser
+	/home/gopher/projects/go/src/resume_maker/api-service/api/handlers/v1/register.go:135
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/gopher/mod-cache/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/gopher/mod-cache/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T12:58:03.275+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T12:58:06.141+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T12:58:56.766+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T12:58:58.666+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T12:59:17.809+0500	ERROR	v1/resume.go:363	failed to save resume content into service rpc error: code = Unknown desc = ERROR: insert or update on table "locations" violates foreign key constraint "locations_user_id_fkey" (SQLSTATE 23503)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/gopher/projects/go/src/resume_maker/api-service/api/handlers/v1/resume.go:363
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/gopher/mod-cache/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/gopher/mod-cache/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T13:00:41.668+0500	ERROR	v1/resume.go:363	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/gopher/projects/go/src/resume_maker/api-service/api/handlers/v1/resume.go:363
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/gopher/mod-cache/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/gopher/mod-cache/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T13:06:27.444+0500	ERROR	v1/resume.go:363	failed to save resume content into service rpc error: code = Unknown desc = ERROR: invalid input syntax for type date: "" (SQLSTATE 22007)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/gopher/projects/go/src/resume_maker/api-service/api/handlers/v1/resume.go:363
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/gopher/mod-cache/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/gopher/mod-cache/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/gopher/mod-cache/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T13:08:09.934+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T13:10:21.842+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T13:10:36.027+0500	INFO	app/main.go:41	api gateway service stops

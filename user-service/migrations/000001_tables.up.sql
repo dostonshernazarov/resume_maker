@@ -32,7 +32,7 @@ CREATE TABLE resumes (
 );
 
 CREATE TABLE locations (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     city VARCHAR(100),
@@ -46,7 +46,7 @@ CREATE TABLE locations (
 );
 
 CREATE TABLE profiles (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     network VARCHAR(50) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE profiles (
 );
 
 CREATE TABLE works (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     position VARCHAR(100) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE works (
 );
 
 CREATE TABLE projects (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     name VARCHAR(200) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE educations (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() UNIQUE ,
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     institution VARCHAR(300) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE educations (
 );
 
 CREATE TABLE courses (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     education_id UUID NOT NULL,
     course_name VARCHAR(100),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -120,7 +120,7 @@ CREATE TABLE courses (
 );
 
 CREATE TABLE certificates (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     title VARCHAR(100) NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE certificates (
 );
 
 CREATE TABLE hard_skills (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     name VARCHAR(200) NOT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE hard_skills (
 );
 
 CREATE TABLE soft_skills (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -161,7 +161,7 @@ CREATE TABLE soft_skills (
 );
 
 CREATE TABLE languages (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     language VARCHAR(100) NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE languages (
 );
 
 CREATE TABLE interests (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     resume_id UUID NOT NULL,
     name VARCHAR(200) NOT NULL,

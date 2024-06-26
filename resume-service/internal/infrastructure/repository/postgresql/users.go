@@ -117,7 +117,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 
 	locationBuilder := r.db.Sq.Builder.Insert(r.locationsTableName)
 	locationBuilder = locationBuilder.SetMap(map[string]interface{}{
-		"id":           resume.Basic.LocationID,
 		"user_id":      resume.UserID,
 		"resume_id":    resume.ID,
 		"city":         resume.Basic.City,
@@ -153,7 +152,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 	for _, profile := range resume.Profiles {
 		profileBuilder := r.db.Sq.Builder.Insert(r.profileTableName)
 		profileBuilder = profileBuilder.SetMap(map[string]interface{}{
-			"id":        profile.ProfileID,
 			"user_id":   resume.UserID,
 			"resume_id": resume.ID,
 			"network":   profile.Network,
@@ -183,7 +181,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 	for _, work := range resume.Works {
 		worksBuilder := r.db.Sq.Builder.Insert(r.worksTableName)
 		worksBuilder = worksBuilder.SetMap(map[string]interface{}{
-			"id":         work.WorkID,
 			"user_id":    resume.UserID,
 			"resume_id":  resume.ID,
 			"position":   work.Position,
@@ -217,7 +214,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 	for _, project := range resume.Projects {
 		projectsBuilder := r.db.Sq.Builder.Insert(r.projectsTableName)
 		projectsBuilder = projectsBuilder.SetMap(map[string]interface{}{
-			"id":          project.ProjectID,
 			"user_id":     resume.UserID,
 			"resume_id":   resume.ID,
 			"name":        project.Name,
@@ -308,7 +304,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 	for _, cert := range resume.Certificates {
 		certificatesBuilder := r.db.Sq.Builder.Insert(r.certificatesTableName)
 		certificatesBuilder = certificatesBuilder.SetMap(map[string]interface{}{
-			"id":        cert.CertificateID,
 			"user_id":   resume.UserID,
 			"resume_id": resume.ID,
 			"title":     cert.Title,
@@ -340,7 +335,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 	for _, hard := range resume.HardSkills {
 		hardSkillsBuilder := r.db.Sq.Builder.Insert(r.hardSkillsTableName)
 		hardSkillsBuilder = hardSkillsBuilder.SetMap(map[string]interface{}{
-			"id":        hard.HardSkillID,
 			"user_id":   resume.UserID,
 			"resume_id": resume.ID,
 			"name":      hard.Name,
@@ -369,7 +363,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 	for _, soft := range resume.SoftSkills {
 		softSkillsBuilder := r.db.Sq.Builder.Insert(r.softSkillsTableName)
 		softSkillsBuilder = softSkillsBuilder.SetMap(map[string]interface{}{
-			"id":        soft.SoftSkillID,
 			"user_id":   resume.UserID,
 			"resume_id": resume.ID,
 			"name":      soft.Name,
@@ -397,7 +390,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 	for _, lang := range resume.Languages {
 		languagesBuilder := r.db.Sq.Builder.Insert(r.languagesTableName)
 		languagesBuilder = languagesBuilder.SetMap(map[string]interface{}{
-			"id":        lang.LanguageID,
 			"user_id":   resume.UserID,
 			"resume_id": resume.ID,
 			"language":  lang.Language,
@@ -426,7 +418,6 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 	for _, interest := range resume.Interests {
 		interestBuilder := r.db.Sq.Builder.Insert(r.interestsTableName)
 		interestBuilder = interestBuilder.SetMap(map[string]interface{}{
-			"id":        interest.InterestID,
 			"user_id":   resume.UserID,
 			"resume_id": resume.ID,
 			"name":      interest.Name,
@@ -514,7 +505,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 	locationBuilder := r.db.Sq.Builder.Update(r.locationsTableName)
 	locationBuilder = locationBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 	locationBuilder = locationBuilder.SetMap(map[string]interface{}{
-		"id":           resume.Basic.LocationID,
 		"user_id":      resume.UserID,
 		"city":         resume.Basic.City,
 		"country_code": resume.Basic.CountryCode,
@@ -551,7 +541,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 		profileBuilder := r.db.Sq.Builder.Update(r.profileTableName)
 		profileBuilder = profileBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 		profileBuilder = profileBuilder.SetMap(map[string]interface{}{
-			"id":         profile.ProfileID,
 			"user_id":    resume.UserID,
 			"resume_id":  resume.ID,
 			"network":    profile.Network,
@@ -583,7 +572,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 		worksBuilder := r.db.Sq.Builder.Update(r.worksTableName)
 		worksBuilder = worksBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 		worksBuilder = worksBuilder.SetMap(map[string]interface{}{
-			"id":         work.WorkID,
 			"user_id":    resume.UserID,
 			"resume_id":  resume.ID,
 			"position":   work.Position,
@@ -619,7 +607,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 		projectsBuilder := r.db.Sq.Builder.Update(r.projectsTableName)
 		projectsBuilder = projectsBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 		projectsBuilder = projectsBuilder.SetMap(map[string]interface{}{
-			"id":          project.ProjectID,
 			"user_id":     resume.UserID,
 			"resume_id":   resume.ID,
 			"name":        project.Name,
@@ -690,6 +677,7 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 				"course_name":  course,
 				"updated_at":   time.Now().Format(time.RFC3339),
 			})
+			coursesBuilder = coursesBuilder.Where(r.db.Sq.Equal("education_id", education.EducationID))
 
 			coursesQuery, coursesArgs, err := coursesBuilder.ToSql()
 			if err != nil {
@@ -715,7 +703,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 		certificatesBuilder := r.db.Sq.Builder.Update(r.certificatesTableName)
 		certificatesBuilder = certificatesBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 		certificatesBuilder = certificatesBuilder.SetMap(map[string]interface{}{
-			"id":         cert.CertificateID,
 			"user_id":    resume.UserID,
 			"resume_id":  resume.ID,
 			"title":      cert.Title,
@@ -749,7 +736,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 		hardSkillsBuilder := r.db.Sq.Builder.Update(r.hardSkillsTableName)
 		hardSkillsBuilder = hardSkillsBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 		hardSkillsBuilder = hardSkillsBuilder.SetMap(map[string]interface{}{
-			"id":         hard.HardSkillID,
 			"user_id":    resume.UserID,
 			"resume_id":  resume.ID,
 			"name":       hard.Name,
@@ -780,7 +766,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 		softSkillsBuilder := r.db.Sq.Builder.Update(r.softSkillsTableName)
 		softSkillsBuilder = softSkillsBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 		softSkillsBuilder = softSkillsBuilder.SetMap(map[string]interface{}{
-			"id":         soft.SoftSkillID,
 			"user_id":    resume.UserID,
 			"resume_id":  resume.ID,
 			"name":       soft.Name,
@@ -810,7 +795,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 		languagesBuilder := r.db.Sq.Builder.Update(r.languagesTableName)
 		languagesBuilder = languagesBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 		languagesBuilder = languagesBuilder.SetMap(map[string]interface{}{
-			"id":         lang.LanguageID,
 			"user_id":    resume.UserID,
 			"resume_id":  resume.ID,
 			"language":   lang.Language,
@@ -841,7 +825,6 @@ func (r resumeRepo) UpdateResume(ctx context.Context, resume *entity.Resume) (*e
 		interestBuilder := r.db.Sq.Builder.Update(r.interestsTableName)
 		interestBuilder = interestBuilder.Where(r.db.Sq.Equal("resume_id", resume.ID))
 		interestBuilder = interestBuilder.SetMap(map[string]interface{}{
-			"id":         interest.InterestID,
 			"user_id":    resume.UserID,
 			"resume_id":  resume.ID,
 			"name":       interest.Name,
@@ -1125,7 +1108,6 @@ func (r resumeRepo) GetUserResume(ctx context.Context, userID string, limit, off
 	builder = builder.From(r.resumeTableName)
 	builder = builder.Where("deleted_at IS NULL")
 	builder = builder.Where(r.db.Sq.Equal("user_id", userID))
-	builder = builder.Limit(limit).Offset(offset)
 
 	query, args, err := builder.ToSql()
 	if err != nil {
@@ -1154,19 +1136,6 @@ func (r resumeRepo) GetUserResume(ctx context.Context, userID string, limit, off
 		}
 
 		response.Resumes = append(response.Resumes, resume)
-	}
-
-	countBuilder := r.db.Sq.Builder.Select("COUNT(*)")
-	countBuilder = countBuilder.From(r.resumeTableName)
-	countBuilder = countBuilder.Where("deleted_at IS NULL")
-	countBuilder = countBuilder.Where(r.db.Sq.Equal("user_id", userID))
-
-	query, args, err = countBuilder.ToSql()
-	if err != nil {
-		return nil, err
-	}
-	if err := r.db.QueryRow(ctx, query, args...).Scan(&response.TotalCount); err != nil {
-		return nil, err
 	}
 
 	return &response, nil
