@@ -1,0 +1,22 @@
+2024-06-26T14:12:52.385+0500	INFO	app/app.go:94	gRPC Server Listening	{"url": ":9090"}
+2024-06-26T14:12:52.386+0500	ERROR	app/main.go:27	app run	{"error": "gRPC fatal to serve grpc server over :9090 gRPC fatal to listen on :9090 listen tcp :9090: bind: address already in use"}
+main.main.func1
+	/home/doston/project/go/src/musobaqa/resume_maker/user-service/cmd/app/main.go:27
+2024-06-26T14:13:04.384+0500	INFO	app/main.go:36	User service stops !
+2024-06-26T14:13:05.879+0500	INFO	app/app.go:94	gRPC Server Listening	{"url": ":9090"}
+2024-06-26T14:13:05.879+0500	ERROR	app/main.go:27	app run	{"error": "gRPC fatal to serve grpc server over :9090 gRPC fatal to listen on :9090 listen tcp :9090: bind: address already in use"}
+main.main.func1
+	/home/doston/project/go/src/musobaqa/resume_maker/user-service/cmd/app/main.go:27
+2024-06-26T14:13:11.524+0500	INFO	app/main.go:36	User service stops !
+2024-06-26T14:13:49.494+0500	INFO	app/app.go:94	gRPC Server Listening	{"url": ":9090"}
+2024-06-26T14:25:54.187+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T14:25:54+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetAllUsers", "peer.address": "127.0.0.1:59030", "grpc.code": "OK", "grpc.time_ms": 31.014}
+2024-06-26T14:26:23.111+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T14:26:23+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "UniqueEmail", "peer.address": "127.0.0.1:59030", "grpc.code": "OK", "grpc.time_ms": 7.705}
+2024-06-26T14:26:24.253+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T14:26:24+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "CreateUser", "peer.address": "127.0.0.1:59030", "grpc.code": "OK", "grpc.time_ms": 5.284}
+2024-06-26T14:40:51.330+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T14:40:51+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "UniqueEmail", "peer.address": "127.0.0.1:50764", "grpc.code": "OK", "grpc.time_ms": 0.838}
+2024-06-26T14:40:52.469+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T14:40:52+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "CreateUser", "peer.address": "127.0.0.1:50764", "grpc.code": "OK", "grpc.time_ms": 0.788}
+2024-06-26T15:23:04.714+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T15:23:04+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetAllUsers", "peer.address": "127.0.0.1:40616", "grpc.code": "OK", "grpc.time_ms": 16.997}
+2024-06-26T15:23:07.165+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T15:23:07+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetAllUsers", "peer.address": "127.0.0.1:40616", "grpc.code": "OK", "grpc.time_ms": 0.381}
+2024-06-26T15:23:14.598+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T15:23:14+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "UniqueEmail", "peer.address": "127.0.0.1:40616", "grpc.code": "OK", "grpc.time_ms": 1.368}
+2024-06-26T15:23:15.729+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T15:23:15+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "CreateUser", "peer.address": "127.0.0.1:40616", "grpc.code": "OK", "grpc.time_ms": 2.196}
+2024-06-26T15:23:27.207+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-26T15:23:27+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetAllUsers", "peer.address": "127.0.0.1:40616", "grpc.code": "OK", "grpc.time_ms": 0.557}
+2024-06-26T15:26:59.038+0500	INFO	app/main.go:36	User service stops !
