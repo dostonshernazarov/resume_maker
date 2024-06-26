@@ -16,14 +16,17 @@ import (
 	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 	"github.com/dostonshernazarov/resume_maker/api-service/api/services"
 	"github.com/dostonshernazarov/resume_maker/api-service/genproto/resume_service"
+	l "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/parser"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/pdf"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/template"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/utils"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/utils/fs"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func createMultipartFileHeader(filePath string) *multipart.FileHeader {
@@ -82,7 +85,7 @@ func createMultipartFileHeader(filePath string) *multipart.FileHeader {
 // @Security 		BearerAuth
 // @Summary 		Generate a Resume
 // @Description 	This API for generate a resume
-// @Tags 			resume
+// @Tags 			RESUME
 // @Accept			json
 // @Produce 		json
 // @Param 			data body models.Resume true "Resume Model"
@@ -348,8 +351,9 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	_, err = h.Service.ResumeService().CreateResume(context.Background(), &resume_service.Resume{
 		Id:       uuid.NewString(),
 		UserId:   userID,
-		Url:      minioURL,
-		Filename: newFilename,
+		Url:      resumeData.Basics.URL,
+		Filename: minioURL,
+		Salary:   resumeData.Salary,
 		Basic: &resume_service.Basic{
 			Name:        resumeData.Basics.Name,
 			JobTitle:    resumeData.Basics.Label,
@@ -386,4 +390,323 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, minioURL)
+}
+
+// UploadMedia
+// @Summary     Upload Resume Photo
+// @Security    BearerAuth
+// @Description Through this api front-ent can upload resume photo and get the link to the resume.
+// @Tags        MEDIA
+// @Accept      json
+// @Produce     json
+// @Param       file formData file true "Image"
+// @Success     200 {object} string
+// @Failure     400 {object} models.Error
+// @Failure     500 {object} models.Error
+// @Router      /v1/resume/resume-photo [POST]
+func (h *HandlerV1) UploadResumePhoto(c *gin.Context) {
+	duration, err := time.ParseDuration(h.Config.Context.Timeout)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err.Error())
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), duration)
+	defer cancel()
+
+	endpoint := "3.76.217.224:9000"
+	accessKeyID := "minioadmin"
+	secretAccessKey := "minioadmin"
+	bucketName := "resumes"
+	minioClient, err := minio.New(endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
+		Secure: false,
+	})
+	if err != nil {
+		panic(err)
+	}
+	err = minioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{})
+	if err != nil {
+		if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
+		} else {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: err.Error(),
+			})
+			log.Println(err.Error())
+			return
+		}
+	}
+
+	policy := fmt.Sprintf(`{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "AWS": ["*"]
+                },
+                "Action": ["s3:GetObject"],
+                "Resource": ["arn:aws:s3:::%s/*"]
+            }
+        ]
+    }`, bucketName)
+
+	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err.Error())
+		return
+	}
+
+	file := &models.File{}
+	err = c.ShouldBind(&file)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err.Error())
+		return
+	}
+
+	if file.File.Size > 10<<20 {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: "File size cannot be larger than 10 MB",
+		})
+		return
+	}
+
+	ext := filepath.Ext(file.File.Filename)
+
+	if ext != ".png" && ext != ".jpg" && ext != ".svg" && ext != ".jpeg" {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: "Only .jpg and .png format images are accepted",
+		})
+		return
+	}
+
+	uploadDir := "./media"
+	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
+		err := os.Mkdir(uploadDir, os.ModePerm)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("Error creating media directory", err.Error())
+			return
+		}
+	}
+
+	id := uuid.New().String()
+
+	newFilename := id + ext
+	uploadPath := filepath.Join(uploadDir, newFilename)
+
+	if err := c.SaveUploadedFile(file.File, uploadPath); err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err)
+		return
+	}
+
+	objectName := newFilename
+	contentType := "image/jpeg"
+	_, err = minioClient.FPutObject(context.Background(), bucketName, objectName, uploadPath, minio.PutObjectOptions{
+		ContentType: contentType,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err)
+		return
+	}
+
+	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
+
+	c.JSON(http.StatusOK, minioURL)
+}
+
+// ListUsersResume
+// @Summary LIST USER RESUME
+// @Security BearerAuth
+// @Description Api for ListUsersResume
+// @Tags RESUME
+// @Accept json
+// @Produce json
+// @Param request query models.Pagination true "request"
+// @Success 200 {object} []models.ResResume
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
+// @Router /v1/users/resume/list [get]
+func (h *HandlerV1) ListUserResume(c *gin.Context) {
+	queryParams := c.Request.URL.Query()
+	params, errStr := utils.ParseQueryParam(queryParams)
+	if errStr != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		return
+	}
+
+	var jsonMarshal protojson.MarshalOptions
+	jsonMarshal.UseProtoNames = true
+
+	userID, statusCode := GetIdFromToken(c.Request, h.Config)
+	if statusCode == 401 {
+		c.JSON(http.StatusUnauthorized, models.Error{
+			Message: "Log In Again",
+		})
+		return
+	}
+
+	response, err := h.Service.ResumeService().GetUserResume(
+		context.Background(), &resume_service.UserWithID{
+			Page:   params.Page,
+			Limit:  params.Limit,
+			UserId: userID,
+		})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		l.Error(err)
+		return
+	}
+
+	var resumes []*models.ResResume
+	for _, val := range response.Resumes {
+		var resRes models.ResResume
+		resRes.ID = val.Id
+		resRes.UserID = val.UserId
+		resRes.Filename = val.Filename
+		resRes.JobTitle = val.Basic.JobTitle
+		resRes.Salary = val.Salary
+
+		resumes = append(resumes, &resRes)
+	}
+
+	c.JSON(http.StatusOK, resumes)
+}
+
+// ListResume
+// @Summary LIST RESUME
+// @Security BearerAuth
+// @Description Api for ListREsume
+// @Tags RESUME
+// @Accept json
+// @Produce json
+// @Param request query models.Pagination true "request"
+// @Success 200 {object} models.ResResumeList
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
+// @Router /v1/resume/list [get]
+func (h *HandlerV1) ListResume(c *gin.Context) {
+	queryParams := c.Request.URL.Query()
+	params, errStr := utils.ParseQueryParam(queryParams)
+	if errStr != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		return
+	}
+
+	var jsonMarshal protojson.MarshalOptions
+	jsonMarshal.UseProtoNames = true
+
+	response, err := h.Service.ResumeService().ListResume(
+		context.Background(), &resume_service.ListRequest{
+			Page:  params.Page,
+			Limit: params.Limit,
+		})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		l.Error(err)
+		return
+	}
+
+	var resumes models.ResResumeList
+	for _, val := range response.Resumes {
+		var resRes models.ResResume
+		resRes.ID = val.Id
+		resRes.UserID = val.UserId
+		resRes.Filename = val.Filename
+		resRes.JobTitle = val.Basic.JobTitle
+		resRes.Salary = ""
+
+		resumes.Resumes = append(resumes.Resumes, resRes)
+	}
+	resumes.Count = response.TotalCount
+
+	c.JSON(http.StatusOK, resumes)
+}
+
+// DeleteResume
+// @Summary DELETE
+// @Security BearerAuth
+// @Description Api for Delete Resume
+// @Tags RESUME
+// @Accept json
+// @Produce json
+// @Param id query string true "ID"
+// @Success 200 {object} models.RegisterRes
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
+// @Router /v1/resumes/{id} [delete]
+func (h *HandlerV1) DeleteResume(c *gin.Context) {
+	var jsonMarshal protojson.MarshalOptions
+	jsonMarshal.UseProtoNames = true
+
+	id := c.Query("id")
+
+	user, err := h.Service.ResumeService().GetResumeByID(context.Background(), &resume_service.ResumeWithID{
+		ResumeId: id,
+	})
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.WrongInfoMessage,
+		})
+		h.Logger.Error("failed to get resume in delete", l.Error(err))
+		return
+	}
+
+	if user == nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.WrongInfoMessage,
+		})
+		h.Logger.Error("failed to get resume in delete", l.Error(err))
+		return
+	}
+
+	_, err = h.Service.ResumeService().DeleteResume(
+		context.Background(), &resume_service.ResumeWithID{
+			ResumeId: id,
+		})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.InternalMessage)
+		h.Logger.Error("failed to delete resume", l.Error(err))
+		return
+	}
+
+	// if response != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{
+	// 		"error": "Went wrong",
+	// 	})
+	// 	h.Logger.Error("failed to delete user", l.Error(err))
+	// 	return
+	// }
+
+	c.JSON(http.StatusOK, &models.RegisterRes{
+		Content: "Resume has been deleted",
+	})
 }

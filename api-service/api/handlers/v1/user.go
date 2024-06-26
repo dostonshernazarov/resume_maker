@@ -253,7 +253,7 @@ func (h *HandlerV1) ListUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-// UpdateUser
+// UpdateUserm
 // @Summary UPDATE
 // @Security BearerAuth
 // @Description Api for Update

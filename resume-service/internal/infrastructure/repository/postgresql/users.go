@@ -4,13 +4,14 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"strings"
+	"time"
+
 	"github.com/dostonshernazarov/resume_maker/user-service/internal/entity"
 	"github.com/dostonshernazarov/resume_maker/user-service/internal/infrastructure/repository"
 	"github.com/dostonshernazarov/resume_maker/user-service/internal/pkg/postgres"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
-	"strings"
-	"time"
 )
 
 const (
@@ -82,6 +83,7 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 		"full_name":     resume.Basic.Name,
 		"job_title":     resume.Basic.JobTitle,
 		"summary":       resume.Basic.Summary,
+		"salary":        resume.Salary,
 		"website":       resume.Basic.Website,
 		"profile_image": resume.Basic.Image,
 		"email":         resume.Basic.Email,
@@ -928,6 +930,7 @@ func (r resumeRepo) GetResumeByID(ctx context.Context, resumeID string) (*entity
 	response.Filename = content.Filename
 	response.Meta.Template = content.Template
 	response.Meta.Lang = content.Lang
+	response.Salary = content.Salary
 
 	basic, err := r.GetBasic(ctx, resumeID)
 	if err != nil {
@@ -1199,7 +1202,7 @@ func (r resumeRepo) ListResume(ctx context.Context, limit, offset uint64) (*enti
 func (r resumeRepo) GetContent(ctx context.Context, params map[string]string) (*entity.ResumeContent, error) {
 	var content entity.ResumeContent
 
-	builder := r.db.Sq.Builder.Select("id, user_id, url, filename, template, lang")
+	builder := r.db.Sq.Builder.Select("id, user_id, url, filename, template, lang, salary")
 	builder = builder.From(r.resumeTableName)
 	builder = builder.Where("deleted_at IS NULL")
 
@@ -1219,6 +1222,7 @@ func (r resumeRepo) GetContent(ctx context.Context, params map[string]string) (*
 		&content.Filename,
 		&content.Template,
 		&content.Lang,
+		&content.Salary,
 	)
 	if err != nil {
 		return nil, err

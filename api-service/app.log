@@ -380,3 +380,88 @@ net/http.(*conn).serve
 2024-06-26T15:23:58.813+0500	INFO	app/main.go:41	api gateway service stops
 2024-06-26T15:24:01.218+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
 2024-06-26T15:26:08.667+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T19:10:30.843+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T19:10:48.486+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T19:11:55.719+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T19:12:13.300+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T19:56:47.015+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T19:57:02.983+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T19:57:48.489+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T19:59:13.981+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T19:59:27.758+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T20:00:06.649+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T20:02:49.928+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T20:06:22.899+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T20:15:53.864+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T20:16:15.087+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T20:17:29.604+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T20:20:23.048+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T20:47:19.345+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T20:47:49.273+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T20:49:02.775+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T20:49:08.714+0500	ERROR	v1/resume.go:676	failed to delete user	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).DeleteResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:676
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T20:49:13.740+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-26T20:51:50.839+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-26T20:51:53.136+0500	ERROR	v1/resume.go:677	failed to get resume in delete	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).DeleteResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:677
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T20:52:27.359+0500	ERROR	v1/resume.go:677	failed to get resume in delete	{"error": "rpc error: code = Unknown desc = no rows in result set"}
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).DeleteResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:677
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-26T21:17:25.543+0500	INFO	app/main.go:41	api gateway service stops

@@ -127,6 +127,7 @@ func (s resumeRPC) CreateResume(ctx context.Context, in *resume_service.Resume) 
 		UserID:   in.UserId,
 		URL:      in.Url,
 		Filename: in.Filename,
+		Salary:   int64(in.Salary),
 		Basic: entity.Basic{
 			Name:        in.Basic.Name,
 			JobTitle:    in.Basic.JobTitle,
@@ -532,6 +533,7 @@ func (s resumeRPC) GetResumeByID(ctx context.Context, in *resume_service.ResumeW
 		UserId:   resume.UserID,
 		Url:      resume.URL,
 		Filename: resume.Filename,
+		Salary:   uint64(resume.Salary),
 		Basic: &resume_service.Basic{
 			Name:        resume.Basic.Name,
 			JobTitle:    resume.Basic.JobTitle,
@@ -666,6 +668,7 @@ func (s resumeRPC) GetUserResume(ctx context.Context, in *resume_service.UserWit
 			UserId:   resume.UserID,
 			Url:      resume.URL,
 			Filename: resume.Filename,
+			Salary:   uint64(resume.Salary),
 			Basic: &resume_service.Basic{
 				Name:        resume.Basic.Name,
 				JobTitle:    resume.Basic.JobTitle,
@@ -803,6 +806,7 @@ func (s resumeRPC) ListResume(ctx context.Context, in *resume_service.ListReques
 			UserId:   resume.UserID,
 			Url:      resume.URL,
 			Filename: resume.Filename,
+			Salary:   uint64(resume.Salary),
 			Basic: &resume_service.Basic{
 				Name:        resume.Basic.Name,
 				JobTitle:    resume.Basic.JobTitle,

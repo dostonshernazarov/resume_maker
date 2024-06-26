@@ -38,19 +38,22 @@ message Resume {
   string user_id = 2;
   string url = 3;
   string filename = 4;
-  Basic basic = 5;
-  repeated Profile profiles = 6;
-  repeated Work works = 7;
-  repeated Project projects = 8;
-  repeated Education educations = 9;
-  repeated Certificate certificates = 10;
-  repeated HardSkill hard_skills = 11;
-  repeated SoftSkill soft_skills = 12;
-  repeated Language languages = 13;
-  repeated Interest interests = 14;
-  Meta meta = 15;
-  string created_at = 16;
-  string updated_at = 17;
+  uint64 salary = 5;
+  string job_location = 6;
+  string job_type = 7;
+  Basic basic = 8;
+  repeated Profile profiles = 9;
+  repeated Work works = 10;
+  repeated Project projects = 11;
+  repeated Education educations = 12;
+  repeated Certificate certificates = 13;
+  repeated HardSkill hard_skills = 14;
+  repeated SoftSkill soft_skills = 15;
+  repeated Language languages = 16;
+  repeated Interest interests = 17;
+  Meta meta = 18;
+  string created_at = 19;
+  string updated_at = 20;
 }
 
 message Basic {

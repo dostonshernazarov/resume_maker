@@ -12,6 +12,7 @@ type ResumeContent struct {
 	Filename string
 	Template string
 	Lang     string
+	Salary   int64
 }
 
 type Resume struct {
@@ -30,6 +31,7 @@ type Resume struct {
 	Languages    []*Language
 	Interests    []*Interest
 	Meta         Meta
+	Salary       int64
 }
 
 type Basic struct {

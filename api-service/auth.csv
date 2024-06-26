@@ -14,6 +14,10 @@ p, unauthorized, /v1/users/list, GET
 p, unauthorized, /v1/users/token, GET
 p, unauthorized, /v1/media/user-photo, POST
 p, unauthorized, /v1/resume/generate-resume, POST
+p, unauthorized, /v1/resume/resume-photo, POST
+p, unauthorized, /v1/users/resume/list, GET
+p, unauthorized, /v1/resume/list, GET
+p, unauthorized, /v1/resumes/{id}, DELETE
 
 p, user, /v1/swagger/*,  GET
 p, user, /v1/users/register, POST
@@ -31,3 +35,7 @@ p, user, /v1/users/list, GET
 p, user, /v1/users/token, GET
 p, user, /v1/media/user-photo, POST
 p, user, /v1/resume/generate-resume, POST
+p, user, /v1/resume/resume-photo, POST
+p, user, /v1/users/resume/list, GET
+p, user, /v1/resume/list, GET
+p, user, /v1/resumes/{id}, DELETE

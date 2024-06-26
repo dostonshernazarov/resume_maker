@@ -136,6 +136,28 @@ definitions:
       content:
         type: string
     type: object
+  models.ResResume:
+    properties:
+      filename:
+        type: string
+      id:
+        type: string
+      job_title:
+        type: string
+      salary:
+        type: string
+      userID:
+        type: string
+    type: object
+  models.ResResumeList:
+    properties:
+      count:
+        type: integer
+      resumes:
+        items:
+          $ref: '#/definitions/models.ResResume'
+        type: array
+    type: object
   models.Resume:
     properties:
       basics:
@@ -384,7 +406,102 @@ paths:
       - BearerAuth: []
       summary: Generate a Resume
       tags:
-      - resume
+      - RESUME
+  /v1/resume/list:
+    get:
+      consumes:
+      - application/json
+      description: Api for ListREsume
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResResumeList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: LIST RESUME
+      tags:
+      - RESUME
+  /v1/resume/resume-photo:
+    post:
+      consumes:
+      - application/json
+      description: Through this api front-ent can upload resume photo and get the
+        link to the resume.
+      parameters:
+      - description: Image
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: Upload Resume Photo
+      tags:
+      - MEDIA
+  /v1/resumes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Api for Delete Resume
+      parameters:
+      - description: ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RegisterRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: DELETE
+      tags:
+      - RESUME
   /v1/token/{refresh}:
     get:
       consumes:
@@ -700,6 +817,40 @@ paths:
       summary: REGISTER USER
       tags:
       - SIGNUP
+  /v1/users/resume/list:
+    get:
+      consumes:
+      - application/json
+      description: Api for ListUsersResume
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ResResume'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: LIST USER RESUME
+      tags:
+      - RESUME
   /v1/users/set/{email}:
     get:
       consumes:

@@ -44,6 +44,7 @@ type Resume struct {
 	Interests    []Interest    `json:"interests"`
 	Meta         Meta          `json:"meta"`
 	Labels       ResumeLabels
+	Salary       uint64 `json:"salary"`
 }
 
 type Basics struct {
@@ -138,6 +139,20 @@ type ResumeLabels struct {
 	Interests   string
 	Profile     string
 	Since       string
+}
+
+type ResResume struct {
+	ID       string `json:"id"`
+	UserID   string `json:"userID"`
+	Filename string `json:"filename"`
+	JobTitle string `json:"job_title"`
+	City     string `json:"city"`
+	Salary   uint64 `json:"salary"`
+}
+
+type ResResumeList struct {
+	Resumes []ResResume `json:"resumes"`
+	Count   uint64      `json:"count"`
 }
 
 func (r *Resume) GetEducationLabel() string {

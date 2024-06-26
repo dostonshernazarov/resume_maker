@@ -93,9 +93,13 @@ func NewRoute(option RouteOption) *gin.Engine {
 
 	// MEDIA
 	api.POST("/media/user-photo", HandlerV1.UploadMedia)
+	api.POST("/resume/resume-photo", HandlerV1.UploadResumePhoto)
 
 	// RESUME
 	api.POST("/resume/generate-resume", HandlerV1.GenerateResume)
+	api.GET("/users/resume/list", HandlerV1.ListUserResume)
+	api.GET("/resume/list", HandlerV1.ListResume)
+	api.DELETE("/resumes/:id", HandlerV1.DeleteResume)
 
 	url := ginSwagger.URL("swagger/doc.json")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
