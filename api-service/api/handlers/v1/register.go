@@ -238,7 +238,7 @@ func (h HandlerV1) Verification(c *gin.Context) {
 	}
 
 	res, err := h.Service.UserService().CreateUser(context.Background(), &pbu.User{
-		Id:       uuid.NewString(),
+		Id:       id.String(),
 		Name:     userDetail.Fullname,
 		Email:    userDetail.Email,
 		Refresh:  refresh,
