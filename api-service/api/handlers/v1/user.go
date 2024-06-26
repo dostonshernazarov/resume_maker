@@ -260,7 +260,7 @@ func (h *HandlerV1) ListUsers(c *gin.Context) {
 // @Tags USER
 // @Accept json
 // @Produce json
-// @Param User body models.UserReq true "createModel"
+// @Param User body models.UserUpdateReq true "createModel"
 // @Success 200 {object} models.UserRes
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -307,22 +307,9 @@ func (h *HandlerV1) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	if body.Email != "" {
-		emailVal := valid.IsValidEmail(body.Email)
-		if !emailVal {
-			c.JSON(http.StatusBadRequest, models.Error{
-				Message: models.NotAvailable,
-			})
-
-			h.Logger.Error("Incorrect Email. Try again, error while in update user")
-			return
-		}
-	}
-
 	response, err := h.Service.UserService().UpdateUser(context.Background(), &pbu.User{
 		Id:          userID,
 		Name:        body.FullName,
-		Email:       body.Email,
 		PhoneNumber: body.PhoneNumber,
 	})
 	if err != nil {

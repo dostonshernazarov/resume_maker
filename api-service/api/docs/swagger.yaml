@@ -87,6 +87,13 @@ definitions:
       role:
         type: string
     type: object
+  models.UserUpdateReq:
+    properties:
+      full_name:
+        type: string
+      phone_number:
+        type: string
+    type: object
   models.Users:
     properties:
       count:
@@ -206,7 +213,7 @@ paths:
         name: User
         required: true
         schema:
-          $ref: '#/definitions/models.UserReq'
+          $ref: '#/definitions/models.UserUpdateReq'
       produces:
       - application/json
       responses:
