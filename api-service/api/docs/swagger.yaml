@@ -1,7 +1,89 @@
 definitions:
+  models.Basics:
+    properties:
+      email:
+        type: string
+      image:
+        type: string
+      label:
+        type: string
+      location:
+        $ref: '#/definitions/models.Location'
+      name:
+        type: string
+      phone:
+        type: string
+      profiles:
+        items:
+          $ref: '#/definitions/models.Profile'
+        type: array
+      summary:
+        type: string
+      url:
+        type: string
+    type: object
+  models.Certificate:
+    properties:
+      date:
+        type: string
+      issuer:
+        type: string
+      score:
+        type: string
+      title:
+        type: string
+      url:
+        type: string
+    type: object
+  models.Education:
+    properties:
+      area:
+        type: string
+      courses:
+        items:
+          type: string
+        type: array
+      endDate:
+        type: string
+      institution:
+        type: string
+      location:
+        type: string
+      score:
+        type: string
+      startDate:
+        type: string
+      studyType:
+        type: string
+    type: object
   models.Error:
     properties:
       message:
+        type: string
+    type: object
+  models.Interest:
+    properties:
+      keywords:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+    type: object
+  models.Language:
+    properties:
+      fluency:
+        type: string
+      language:
+        type: string
+    type: object
+  models.Location:
+    properties:
+      city:
+        type: string
+      countryCode:
+        type: string
+      region:
         type: string
     type: object
   models.Login:
@@ -9,6 +91,35 @@ definitions:
       email:
         type: string
       password:
+        type: string
+    type: object
+  models.Meta:
+    properties:
+      lang:
+        type: string
+      template:
+        type: string
+    type: object
+  models.Profile:
+    properties:
+      network:
+        type: string
+      url:
+        type: string
+      username:
+        type: string
+    type: object
+  models.Project:
+    properties:
+      description:
+        type: string
+      highlights:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      url:
         type: string
     type: object
   models.RegisterReq:
@@ -23,6 +134,79 @@ definitions:
   models.RegisterRes:
     properties:
       content:
+        type: string
+    type: object
+  models.Resume:
+    properties:
+      basics:
+        $ref: '#/definitions/models.Basics'
+      certificates:
+        items:
+          $ref: '#/definitions/models.Certificate'
+        type: array
+      education:
+        items:
+          $ref: '#/definitions/models.Education'
+        type: array
+      interests:
+        items:
+          $ref: '#/definitions/models.Interest'
+        type: array
+      labels:
+        $ref: '#/definitions/models.ResumeLabels'
+      languages:
+        items:
+          $ref: '#/definitions/models.Language'
+        type: array
+      meta:
+        $ref: '#/definitions/models.Meta'
+      projects:
+        items:
+          $ref: '#/definitions/models.Project'
+        type: array
+      skills:
+        items:
+          $ref: '#/definitions/models.Skill'
+        type: array
+      softSkills:
+        items:
+          $ref: '#/definitions/models.Skill'
+        type: array
+      work:
+        items:
+          $ref: '#/definitions/models.Work'
+        type: array
+    type: object
+  models.ResumeLabels:
+    properties:
+      education:
+        type: string
+      experiences:
+        type: string
+      interests:
+        type: string
+      languages:
+        type: string
+      profile:
+        type: string
+      projects:
+        type: string
+      since:
+        type: string
+      skills:
+        type: string
+      softSkills:
+        type: string
+    type: object
+  models.Skill:
+    properties:
+      keywords:
+        items:
+          type: string
+        type: array
+      level:
+        type: string
+      name:
         type: string
     type: object
   models.TokenResp:
@@ -103,6 +287,27 @@ definitions:
           $ref: '#/definitions/models.UserRes'
         type: array
     type: object
+  models.Work:
+    properties:
+      company:
+        type: string
+      contract_type:
+        type: string
+      endDate:
+        type: string
+      location:
+        type: string
+      position:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+      startDate:
+        type: string
+      summary:
+        type: string
+    type: object
 info:
   contact: {}
   description: API for CV Maker
@@ -140,6 +345,46 @@ paths:
       summary: Upload User photo
       tags:
       - MEDIA
+  /v1/resume/generate-resume:
+    post:
+      consumes:
+      - application/json
+      description: This API for generate a resume
+      parameters:
+      - description: Resume Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Resume'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resume URL
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: Generate a Resume
+      tags:
+      - resume
   /v1/token/{refresh}:
     get:
       consumes:

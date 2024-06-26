@@ -75,7 +75,6 @@ func NewRoute(option RouteOption) *gin.Engine {
 	api := router.Group("/v1")
 
 	// USER METHODS
-
 	api.POST("/users", HandlerV1.CreateUser)
 	api.PUT("/users", HandlerV1.UpdateUser)
 	api.DELETE("/users/:id", HandlerV1.DeleteUser)
@@ -94,6 +93,9 @@ func NewRoute(option RouteOption) *gin.Engine {
 
 	// MEDIA
 	api.POST("/media/user-photo", HandlerV1.UploadMedia)
+
+	// RESUME
+	api.POST("/resume/generate-resume", HandlerV1.GenerateResume)
 
 	url := ginSwagger.URL("swagger/doc.json")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

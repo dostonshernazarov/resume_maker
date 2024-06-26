@@ -64,6 +64,69 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/resume/generate-resume": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This API for generate a resume",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "resume"
+                ],
+                "summary": "Generate a Resume",
+                "parameters": [
+                    {
+                        "description": "Resume Model",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Resume"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resume URL",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/token/{refresh}": {
             "get": {
                 "security": [
@@ -710,10 +773,136 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Basics": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/models.Location"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "profiles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Profile"
+                    }
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Certificate": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "issuer": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Education": {
+            "type": "object",
+            "properties": {
+                "area": {
+                    "type": "string"
+                },
+                "courses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "institution": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "studyType": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Error": {
             "type": "object",
             "properties": {
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Interest": {
+            "type": "object",
+            "properties": {
+                "keywords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Language": {
+            "type": "object",
+            "properties": {
+                "fluency": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Location": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "countryCode": {
+                    "type": "string"
+                },
+                "region": {
                     "type": "string"
                 }
             }
@@ -725,6 +914,51 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Meta": {
+            "type": "object",
+            "properties": {
+                "lang": {
+                    "type": "string"
+                },
+                "template": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Profile": {
+            "type": "object",
+            "properties": {
+                "network": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Project": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "highlights": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
                     "type": "string"
                 }
             }
@@ -747,6 +981,117 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "content": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Resume": {
+            "type": "object",
+            "properties": {
+                "basics": {
+                    "$ref": "#/definitions/models.Basics"
+                },
+                "certificates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Certificate"
+                    }
+                },
+                "education": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Education"
+                    }
+                },
+                "interests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Interest"
+                    }
+                },
+                "labels": {
+                    "$ref": "#/definitions/models.ResumeLabels"
+                },
+                "languages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Language"
+                    }
+                },
+                "meta": {
+                    "$ref": "#/definitions/models.Meta"
+                },
+                "projects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Project"
+                    }
+                },
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Skill"
+                    }
+                },
+                "softSkills": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Skill"
+                    }
+                },
+                "work": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Work"
+                    }
+                }
+            }
+        },
+        "models.ResumeLabels": {
+            "type": "object",
+            "properties": {
+                "education": {
+                    "type": "string"
+                },
+                "experiences": {
+                    "type": "string"
+                },
+                "interests": {
+                    "type": "string"
+                },
+                "languages": {
+                    "type": "string"
+                },
+                "profile": {
+                    "type": "string"
+                },
+                "projects": {
+                    "type": "string"
+                },
+                "since": {
+                    "type": "string"
+                },
+                "skills": {
+                    "type": "string"
+                },
+                "softSkills": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Skill": {
+            "type": "object",
+            "properties": {
+                "keywords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "level": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }
@@ -868,6 +1213,38 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.UserRes"
                     }
+                }
+            }
+        },
+        "models.Work": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "type": "string"
+                },
+                "contract_type": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string"
+                },
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
                 }
             }
         }
