@@ -311,6 +311,10 @@ func (h *HandlerV1) UpdateUser(c *gin.Context) {
 		Id:          userID,
 		Name:        body.FullName,
 		PhoneNumber: body.PhoneNumber,
+		Image:       getUser.Image,
+		Email:       getUser.Email,
+		Refresh:     getUser.Refresh,
+		Role:        getUser.Role,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
