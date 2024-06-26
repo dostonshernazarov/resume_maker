@@ -6,13 +6,14 @@ type ListResume struct {
 }
 
 type ResumeContent struct {
-	ResumeID string
-	UserID   string
-	URL      string
-	Filename string
-	Template string
-	Lang     string
-	Salary   int64
+	ResumeID    string
+	UserID      string
+	URL         string
+	Filename    string
+	Template    string
+	Lang        string
+	Salary      int64
+	JobLocation string
 }
 
 type Resume struct {
@@ -32,6 +33,7 @@ type Resume struct {
 	Interests    []*Interest
 	Meta         Meta
 	Salary       int64
+	JobLocation  string
 }
 
 type Basic struct {

@@ -84,6 +84,7 @@ func (r resumeRepo) CreateResume(ctx context.Context, resume *entity.Resume) (*e
 		"job_title":     resume.Basic.JobTitle,
 		"summary":       resume.Basic.Summary,
 		"salary":        resume.Salary,
+		"job_location":  resume.JobLocation,
 		"website":       resume.Basic.Website,
 		"profile_image": resume.Basic.Image,
 		"email":         resume.Basic.Email,
@@ -931,6 +932,7 @@ func (r resumeRepo) GetResumeByID(ctx context.Context, resumeID string) (*entity
 	response.Meta.Template = content.Template
 	response.Meta.Lang = content.Lang
 	response.Salary = content.Salary
+	response.JobLocation = content.JobLocation
 
 	basic, err := r.GetBasic(ctx, resumeID)
 	if err != nil {
@@ -1202,7 +1204,7 @@ func (r resumeRepo) ListResume(ctx context.Context, limit, offset uint64) (*enti
 func (r resumeRepo) GetContent(ctx context.Context, params map[string]string) (*entity.ResumeContent, error) {
 	var content entity.ResumeContent
 
-	builder := r.db.Sq.Builder.Select("id, user_id, url, filename, template, lang, salary")
+	builder := r.db.Sq.Builder.Select("id, user_id, url, filename, template, lang, salary, job_location")
 	builder = builder.From(r.resumeTableName)
 	builder = builder.Where("deleted_at IS NULL")
 
@@ -1223,6 +1225,7 @@ func (r resumeRepo) GetContent(ctx context.Context, params map[string]string) (*
 		&content.Template,
 		&content.Lang,
 		&content.Salary,
+		&content.JobLocation,
 	)
 	if err != nil {
 		return nil, err

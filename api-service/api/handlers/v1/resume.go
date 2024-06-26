@@ -349,11 +349,12 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	}
 
 	_, err = h.Service.ResumeService().CreateResume(context.Background(), &resume_service.Resume{
-		Id:       uuid.NewString(),
-		UserId:   userID,
-		Url:      resumeData.Basics.URL,
-		Filename: minioURL,
-		Salary:   resumeData.Salary,
+		Id:          uuid.NewString(),
+		UserId:      userID,
+		Url:         resumeData.Basics.URL,
+		Filename:    minioURL,
+		Salary:      resumeData.Salary,
+		JobLocation: resumeData.JobLocation,
 		Basic: &resume_service.Basic{
 			Name:        resumeData.Basics.Name,
 			JobTitle:    resumeData.Basics.Label,
@@ -588,6 +589,7 @@ func (h *HandlerV1) ListUserResume(c *gin.Context) {
 		resRes.Filename = val.Filename
 		resRes.JobTitle = val.Basic.JobTitle
 		resRes.Salary = val.Salary
+		resRes.JobLocation = val.JobLocation
 
 		resumes = append(resumes, &resRes)
 	}
@@ -641,7 +643,8 @@ func (h *HandlerV1) ListResume(c *gin.Context) {
 		resRes.UserID = val.UserId
 		resRes.Filename = val.Filename
 		resRes.JobTitle = val.Basic.JobTitle
-		resRes.Salary = ""
+		resRes.Salary = val.Salary
+		resRes.JobLocation = val.JobLocation
 
 		resumes.Resumes = append(resumes.Resumes, resRes)
 	}

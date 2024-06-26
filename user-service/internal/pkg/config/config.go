@@ -44,10 +44,10 @@ func New() *Config {
 	config.Context.Timeout = getEnv("CONTEXT_TIMEOUT", "30s")
 
 	// db configuration
-	config.DB.Host = getEnv("POSTGRES_HOST", "localhost")
+	config.DB.Host = getEnv("POSTGRES_HOST", "postgres")
 	config.DB.Port = getEnv("POSTGRES_PORT", "5432")
 	config.DB.User = getEnv("POSTGRES_USER", "postgres")
-	config.DB.Password = getEnv("POSTGRES_PASSWORD", "doston")
+	config.DB.Password = getEnv("POSTGRES_PASSWORD", "root")
 	config.DB.Name = getEnv("POSTGRES_DATABASE", "resume")
 
 	// telegram service
@@ -55,7 +55,7 @@ func New() *Config {
 	config.TelegramService.Port = getEnv("TELEGRAM_SERVICE_RPC_PORT", ":8090")
 
 	// resume service
-	config.ResumeService.Host = getEnv("RESUME_SERVICE_RPC_HOST", "localhost")
+	config.ResumeService.Host = getEnv("RESUME_SERVICE_RPC_HOST", "resume-service")
 	config.ResumeService.Port = getEnv("RESUME_SERVICE_RPC_PORT", ":9080")
 
 	return &config

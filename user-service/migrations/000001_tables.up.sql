@@ -22,7 +22,6 @@ CREATE TABLE resumes (
     summary TEXT,
     salary NUMERIC NOT NULL DEFAULT 0,
     job_location VARCHAR(100) NOT NULL DEFAULT 'offline',
-    job_type VARCHAR(100) NOT NULL DEFAULT 'full-time',
     website TEXT,
     profile_image TEXT,
     email VARCHAR(100) NOT NULL,

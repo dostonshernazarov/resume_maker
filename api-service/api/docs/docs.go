@@ -1193,17 +1193,23 @@ const docTemplate = `{
         "models.ResResume": {
             "type": "object",
             "properties": {
+                "city": {
+                    "type": "string"
+                },
                 "filename": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
+                "job_location": {
+                    "type": "string"
+                },
                 "job_title": {
                     "type": "string"
                 },
                 "salary": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "userID": {
                     "type": "string"
@@ -1248,6 +1254,10 @@ const docTemplate = `{
                         "$ref": "#/definitions/models.Interest"
                     }
                 },
+                "job_location": {
+                    "type": "string",
+                    "example": "offline"
+                },
                 "labels": {
                     "$ref": "#/definitions/models.ResumeLabels"
                 },
@@ -1265,6 +1275,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.Project"
                     }
+                },
+                "salary": {
+                    "type": "integer"
                 },
                 "skills": {
                     "type": "array",

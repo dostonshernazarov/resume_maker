@@ -138,14 +138,18 @@ definitions:
     type: object
   models.ResResume:
     properties:
+      city:
+        type: string
       filename:
         type: string
       id:
         type: string
+      job_location:
+        type: string
       job_title:
         type: string
       salary:
-        type: string
+        type: integer
       userID:
         type: string
     type: object
@@ -174,6 +178,9 @@ definitions:
         items:
           $ref: '#/definitions/models.Interest'
         type: array
+      job_location:
+        example: offline
+        type: string
       labels:
         $ref: '#/definitions/models.ResumeLabels'
       languages:
@@ -186,6 +193,8 @@ definitions:
         items:
           $ref: '#/definitions/models.Project'
         type: array
+      salary:
+        type: integer
       skills:
         items:
           $ref: '#/definitions/models.Skill'

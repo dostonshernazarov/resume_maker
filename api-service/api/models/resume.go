@@ -45,6 +45,7 @@ type Resume struct {
 	Meta         Meta          `json:"meta"`
 	Labels       ResumeLabels
 	Salary       uint64 `json:"salary"`
+	JobLocation  string `json:"job_location" example:"offline"`
 }
 
 type Basics struct {
@@ -142,12 +143,13 @@ type ResumeLabels struct {
 }
 
 type ResResume struct {
-	ID       string `json:"id"`
-	UserID   string `json:"userID"`
-	Filename string `json:"filename"`
-	JobTitle string `json:"job_title"`
-	City     string `json:"city"`
-	Salary   uint64 `json:"salary"`
+	ID          string `json:"id"`
+	UserID      string `json:"userID"`
+	Filename    string `json:"filename"`
+	JobTitle    string `json:"job_title"`
+	City        string `json:"city"`
+	Salary      uint64 `json:"salary"`
+	JobLocation string `json:"job_location"`
 }
 
 type ResResumeList struct {

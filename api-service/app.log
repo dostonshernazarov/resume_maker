@@ -465,3 +465,5 @@ net/http.serverHandler.ServeHTTP
 net/http.(*conn).serve
 	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
 2024-06-26T21:17:25.543+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T00:26:51.408+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T00:37:05.723+0500	INFO	app/main.go:41	api gateway service stops
