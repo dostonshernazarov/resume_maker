@@ -1155,7 +1155,7 @@ func (r resumeRepo) ListResume(ctx context.Context, limit, offset uint64) (*enti
 	builder := r.db.Sq.Builder.Select("id")
 	builder = builder.From(r.resumeTableName)
 	builder = builder.Where("deleted_at IS NULL")
-	builder = builder.Limit(limit).Offset(offset)
+	//builder = builder.Limit(limit).Offset(offset)
 
 	query, args, err := builder.ToSql()
 	if err != nil {
@@ -1186,17 +1186,17 @@ func (r resumeRepo) ListResume(ctx context.Context, limit, offset uint64) (*enti
 		response.Resumes = append(response.Resumes, resume)
 	}
 
-	countBuilder := r.db.Sq.Builder.Select("COUNT(*)")
-	countBuilder = countBuilder.From(r.resumeTableName)
-	countBuilder = countBuilder.Where("deleted_at IS NULL")
-
-	query, args, err = countBuilder.ToSql()
-	if err != nil {
-		return nil, err
-	}
-	if err := r.db.QueryRow(ctx, query, args...).Scan(&response.TotalCount); err != nil {
-		return nil, err
-	}
+	//countBuilder := r.db.Sq.Builder.Select("COUNT(*)")
+	//countBuilder = countBuilder.From(r.resumeTableName)
+	//countBuilder = countBuilder.Where("deleted_at IS NULL")
+	//
+	//query, args, err = countBuilder.ToSql()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//if err := r.db.QueryRow(ctx, query, args...).Scan(&response.TotalCount); err != nil {
+	//	return nil, err
+	//}
 
 	return &response, nil
 }
