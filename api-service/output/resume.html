@@ -3,16 +3,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>string - string</title>
+    <title>John Doe Rust | DevOps Engineer</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Catamaran&family=Roboto:wght@400;900&display=swap');
 
     :root {
          
-        --text-color: #000000;
-        --primary-color: #EFEDEE;
-        --secondary-color: #556777;
+        --text-color: #000;
 
          
         --main-font: 'Roboto', sans-serif;
@@ -34,8 +32,6 @@
         --page-max-width: 45rem;
         --header-height: 180px;
         --photo-size: 120px;
-        --left-col-width: 35%;
-        --right-col-width: 65%;
     }
 
     * {
@@ -44,17 +40,15 @@
     }
 
     body {
-        margin: 0;
+        background-color: #fff;
         color: var(--text-color);
         font-family: var(--main-font)
     }
 
     main {
-        min-height: 100vh;
+        max-width: var(--page-max-width);
         margin-left: auto;
         margin-right: auto;
-        display: grid;
-        grid-template-columns: var(--left-col-width) var(--right-col-width);
     }
 
     ul {
@@ -64,7 +58,6 @@
         margin-block-start: 0 !important;
         margin-block-end: 0 !important;
         padding-left: 0 !important;
-        list-style: none;
     }
 
     a {
@@ -73,44 +66,118 @@
         font-size: var(--font-small);
         line-height: var(--font-medium);
         text-decoration: none !important;
-        color: var(--text-color);
+        color: var(--text-color) !important;
     }
 
     a:active a:focus {
         color: var(--text-color) !important;
     }
 
-    .link:hover {
+    a:hover {
         cursor: pointer;
     }
 
-    .subtitle {
+
+     
+    .header {
+        min-height: var(--header-height);
+        padding-top: 40px;
+        color: var(--text-color);
+        border-color: var(--text-color);
+        border-bottom: var(--separator-border);
+        display: grid;
+        grid-template-columns: 80% 20%;
+    }
+
+    .about {
+        padding-right: 20px;
+    }
+
+    .photo {
+        position: relative;
+        height: 120px;
+    }
+
+    .name {
         font-weight: var(--bold);
+        font-style: normal;
+        font-size: var(--name-font-size);
+        line-height: 40px;
+        text-transform: uppercase;
+    }
+
+    .job-position {
+        font-weight: 400;
+        font-size: 20px;
+        text-transform: capitalize;
+    }
+
+    .profile-desc {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 18px;
+        white-space: pre-line;
+        text-align: justify;
+        margin-bottom: 10px;
+    }
+
+    .round-img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: var(--photo-size);
+        height: var(--photo-size);
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+     
+    .container {
+        display: grid;
+        margin-bottom: 10px;
+        grid-template-columns: 50% 50%;
+        grid-column-gap: 20px;
+    }
+
+    .subtitle {
+        font-weight: 900;
         font-style: normal;
         font-size: 18px;
         text-transform: uppercase;
         margin-bottom: 10px;
     }
 
-    .element {
+    .experiences,
+    .educations {
+        margin-top: 16px;
+        margin-bottom: 20px;
+    }
+
+    .experiences .element,
+    .educations .element {
         margin-bottom: 16px;
         font-weight: 400;
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .experiences .element .position,
+    .educations .element .degree {
+        font-weight: 800;
+        font-size: var(--font-medium);
+        line-height: 20px;
+    }
+
+    .experiences .element .dates,
+    .educations .element .dates {
+        font-weight: 500;
         font-size: 14px;
-        line-height: 18px;
-    }
-
-    .value {
-        font-weight: 400;
-        font-size: var(--font-small);
-        line-height: 18px;
-    }
-
-    .item {
-        margin-bottom: 10px;
         line-height: 16px;
+        margin-top: 2px;
     }
 
-    .description {
+    .experiences .element .description,
+    .educations .element .description {
         font-weight: 400;
         font-size: 12px;
         line-height: 18px;
@@ -118,190 +185,315 @@
         margin-top: -10px;
     }
 
-    .location-date {
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 16px;
-        margin-top: 2px;
-    }
-
-    .position,
-    .degree {
-        font-weight: 500;
-        font-size: var(--font-medium);
-        line-height: 20px;
-    }
-
-     
-    aside {
-        background-color: var(--primary-color);
-    }
-
-    .photo {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        display: grid;
-        place-items: center;
-    }
-
-    .photo img {
-        width: var(--photo-size);
-        height: var(--photo-size);
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px var(--secondary-color) solid;
-    }
-
-    aside .content {
-        margin-top: 10px;
-        padding: 15px;
-    }
-
-
-    .educations {
-        margin-top: 16px;
-        font-size: 16px;
-    }
-
+    .languages,
+    .soft-skills,
+    .skills,
+    .interests,
     .certifications {
+        margin-top: 16px;
+    }
+
+    .projects .item
+    .languages .item,
+    .soft-skills .item,
+    .skills .item,
+    .interests .item,
+    .certifications .item {
         margin-bottom: 10px;
-    }
-
-    .contact {
-        margin-top: 10px;
-    }
-
-
-    .contact .element {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .contact  .value {
-        margin-bottom: 5px;
-    }
-
-    .contact i {
-        margin-right: 2px;
-    }
-
-
-     
-
-    .container {
-        background: #fff;
-    }
-
-    .about {
-        background-color: var(--secondary-color);
-        min-height: var(--header-height);
-        color: var(--primary-color);
-        padding-top: 30px;
-        padding-left: 30px;
-    }
-
-    .about .name {
-        font-family: var(--secondary-font);
-        font-size: var(--name-font-size);
-        font-weight: var(--semi-bold);
-    }
-
-    .about .last-name {
-        text-transform: uppercase;
-    }
-
-    .about .job-position {
-        font-family: var(--main-font);
-        font-size: 20px;
-        text-transform: capitalize;
-    }
-
-    .about .profile-desc {
-        font-weight: 400;
-        font-size: 12px;
         line-height: 16px;
-        white-space: pre-line;
-        padding-bottom: 10px;
-        width: 90%;
     }
 
-    .experiences, .projects {
-        padding-top: 20px;
-        padding-left: 30px;
+    .projects .value
+    .certifications .value
+    .languages .value,
+    .soft-skills .value,
+    .skills .value,
+    .interests .value {
+        font-weight: 400;
+        font-size: var(--font-small);
+        line-height: 18px;
     }
 
-    .experiences .description {
-        width: 90%;
-    }
 
     .label {
-        font-weight: 600;
+        font-weight: 500;
         font-size: var(--font-medium);
         line-height: 20px;
         color: var(--text-color);
+    }
+
+
+    .contact li {
+        display: inline-block;
+        font-family: var(--secondary-font);
+        font-style: normal;
+        font-weight: 400;
+        font-size: var(--font-small);
+        line-height: 16px;
+        color: var(--text-color);
+    }
+
+    .contact li a {
+        font-size: var(--font-small);
+    }
+
+    .contact li > * {
+        color: var(--text-color);
+    }
+
+    .contact li:before {
+        content: '• ';
+        font-family: var(--secondary-font);
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 16px;
+        color: var(--text-color);
+    }
+
+    .contact li:first-child:before {
+        content: '';
     }
 
 </style>
 </head>
 <body>
 <main>
-    <aside>
-        
-            <div class="photo">
-                <img src="string" alt="photo">
-            </div>
-        
-        <div class="content">
-            <div class="contact">
-    <div class="subtitle">Contact</div>
-    <div class="element">
-        
-            <div class="value"><a class="link" href="mailto:string@gmail.com">string@gmail.com</a></div>
-        
-        
-            <div class="value"><a class="link" href="tel:string">string</a></div>
-        
-
-        
-            <div class="value"><a class="link" href="string">string</a></div>
-        
-
-        
-            <div class="value"><a class="link" href="string">string</a></div>
-        
-
-        
-            <div class="value"><a>string, string, FR</a></div>
-        
-    </div>
-</div>
-            
-    <div class="educations">
-        <div class="subtitle">Education</div>
-        
-            <div class="element">
-                <div class="degree">
-                    string string | string
-                </div>
-                <small class="location-date">
-                    string, string
-                </small>
-            </div>
-        
+    <div class="header">
+        <div class="about">
+    <div class="name">
+        <div>Doe Rust</div>
+        <div>John</div>
     </div>
 
-            
-<div class="certifications">
-    <div class="subtitle">Certifications</div>
+    <div class="job-position">DevOps Engineer</div>
+
     
-        <ul class="item">
-            <li class="value">
-                string
-                ($certification.Score)
+        <div class="profile-desc">
+            Experienced DevOps Engineer with over 5 years of experience managing complex cloud infrastructures and implementing automation solutions. Proficient in various cloud platforms such as AWS, Azure, and Google Cloud. Skilled in containerization technologies like Docker and Kubernetes, as well as configuration management tools like Ansible and Chef.
+        </div>
+    
+</div>
+
+
+<div class="photo">
+    
+        <img
+                class="round-img"
+                src="https://i.imgur.com/tHA5l7T.jpg"
+        />
+    
+</div>
+
+        <div class="contact">
+    <ul>
+        
+            <li>
+                <a
+                        href="mailto:johndoerust@mail.com"
+                        target="_blank"
+                >johndoerust@mail.com</a
+                >
             </li>
-        </ul>
+        
+        
+            <li>
+                <a href="tel:07123400808">07123400808</a>
+            </li>
+        
+        
+            <li>
+                <a>Paris, Ile-de-France, FR</a>
+            </li>
+        
+        
+            <li>
+                <a href="jdoerust.com" target="_blank">jdoerust.com</a>
+            </li>
+        
+        
+            <li>
+                <a href="https://www.linkedin.com/in/johndoerust/" target="_blank">LinkedIn</a>
+            </li>
+        
+            <li>
+                <a href="https://github.com/johndoerust" target="_blank">GitHub</a>
+            </li>
+        
+    </ul>
+</div>
+    </div>
+    <div class="container">
+        <div class="container-left">
+            <div class="experiences">
+    <div class="subtitle">
+        Experiences
+    </div>
+    
+    
+        <div class="element">
+            <div class="position">
+                DevOps Engineer
+                
+                    <span>| French Med Company</span>
+                
+            </div>
+
+            <div class="dates">
+                
+                    <span>Paris, France</span> |
+                
+                
+                    Since October 2020
+                
+            </div>
+
+            <div class="description">
+                Led the implementation of cloud infrastructure on AWS and Azure platforms, resulting in a 50% reduction in infrastructure costs.Designed and implemented a highly available Kubernetes cluster for container orchestration, improving application resiliency and reducing downtime.Built a custom CI/CD pipeline using GitLab CI/CD and Jenkins, resulting in faster and more reliable application deployments.
+            </div>
+        </div>
+    
+        <div class="element">
+            <div class="position">
+                DevOps Engineer
+                
+                    <span>| Bold Corporation</span>
+                
+            </div>
+
+            <div class="dates">
+                
+                    <span>Paris, France</span> |
+                
+                
+                    September 2017 - September 2020
+                
+            </div>
+
+            <div class="description">
+                Manage and maintain complex cloud infrastructure consisting of AWS and Azure services.Implemented Kubernetes for container orchestration, resulting in a 30% reduction in deployment time.Set up and maintained monitoring and alerting systems using Prometheus and Grafana.
+            </div>
+        </div>
+    
+        <div class="element">
+            <div class="position">
+                DevOps Engineer
+                
+                    <span>| Defi Solutions</span>
+                
+            </div>
+
+            <div class="dates">
+                
+                    <span>Lisbon, Portugal</span> |
+                
+                
+                    May 2015 - August 2017
+                
+            </div>
+
+            <div class="description">
+                Built and managed cloud infrastructure on AWS and Google Cloud platforms.Implemented Docker containerization and automated deployment using Jenkins.Configured and maintained Ansible playbooks for infrastructure automation and configuration management.Conducted regular security audits and implemented measures to improve security posture.
+            </div>
+        </div>
+    
+        <div class="element">
+            <div class="position">
+                Software Engineer
+                
+                    <span>| BlackBee Inc.</span>
+                
+            </div>
+
+            <div class="dates">
+                
+                    <span>Aveiro, Portugal</span> |
+                
+                
+                    April 2015 - January 2015
+                
+            </div>
+
+            <div class="description">
+                Work with development teams to design and develop software applications using Java, Spring, and Hibernate.Automate build, test, and deployment processes using tools such as Jenkins, Ansible, and Docker to improve software delivery speed and quality.Design and maintain cloud-based infrastructure using AWS services such as EC2, S3, and RDS.
+            </div>
+        </div>
     
 </div>
+
+        </div>
+        <div class="container-right">
+            <div class="educations">
+    <div class="subtitle">Education</div>
+    
+        <div class="element">
+            <div class="degree">
+                Master Computer Engineering
+                | Alta Nova University
+            </div>
+            <div class="dates">
+                
+                    <span>Lisbon, Portugal</span> |
+                
+                2015
+            </div>
+            
+                <div class="description">
+                    Graduated
+                </div>
+            
+        </div>
+    
+        <div class="element">
+            <div class="degree">
+                Bachelor Computer Science
+                | Pedro Alto University
+            </div>
+            <div class="dates">
+                
+                    <span>Lisbon, Portugal</span> |
+                
+                2013
+            </div>
+            
+                <div class="description">
+                    Graduated
+                </div>
+            
+        </div>
+    
+</div>
+
+            
+    <div class="certifications">
+        <div class="subtitle">Certifications</div>
+        
+            <div class="item">
+                <a  >Docker Certified Associate (DCA)</a>
+                
+            </div>
+        
+            <div class="item">
+                <a  >Certified Kubernetes Administrator (CKA)</a>
+                
+            </div>
+        
+    </div>
+
+
+            
+    <div class="projects">
+        <div class="subtitle">Projects</div>
+        
+            <div style="margin-bottom: 5px; display: flex; flex-direction: column;" class="item">
+                <a href="https://example.com" target="_blank">CloudFormation Templates</a>
+                
+                    <small style="font-size: 12px;" class="value">Developed a set of reusable CloudFormation templates to automate the deployment of cloud infrastructure resources on AWS.</small>
+                
+            </div>
+        
+    </div>
+
 
             
     <div class="skills">
@@ -309,95 +501,101 @@
         <div class="item">
             
                 <span class="value">
-             string
-        </span>
+                    Go/Java/TypeScript,
+                </span>
+            
+                <span class="value">
+                    Bash/Python,
+                </span>
+            
+                <span class="value">
+                    Prometheus/Grafana,
+                </span>
+            
+                <span class="value">
+                    Jenkins/Travis CI,
+                </span>
+            
+                <span class="value">
+                    Docker/Kubernetes,
+                </span>
+            
+                <span class="value">
+                    AWS/Google Cloud
+                </span>
             
         </div>
     </div>
 
 
+
+    <div class="skills">
+        <div class="subtitle">Soft Skills</div>
+        <div class="item">
+            
+                <span class="value">
+                    Teamwork,
+                </span>
+            
+                <span class="value">
+                    Adaptability,
+                </span>
+            
+                <span class="value">
+                    Attention to detail,
+                </span>
+            
+                <span class="value">
+                    Facilitator
+                </span>
+            
+        </div>
+    </div>
 
             
     <div class="languages">
         <div class="subtitle">Languages</div>
         <div class="item">
-            <ul>
-                
-                    <li class="value">string (string)</li>
-                
-
-            </ul>
+            
+                <a class="value">
+                    English
+                    (Fluent)
+                    ,
+                </a>
+            
+                <a class="value">
+                    French
+                    (Fluent)
+                    ,
+                </a>
+            
+                <a class="value">
+                    Portuguese
+                    (Native speaker)
+                    
+                </a>
+            
         </div>
     </div>
 
             
-    <div class="hobbies">
+    <div class="interests">
         <div class="subtitle">Hobbies</div>
         <div class="item">
             
-                <span class="value">string  </span>
+                <span class="value">Cooking,</span>
+            
+                <span class="value">Hiking,</span>
+            
+                <span class="value">Reading,</span>
+            
+                <span class="value">Motor Sports</span>
             
         </div>
     </div>
 
+
         </div>
-    </aside>
-    <div class="container">
-        <div class="about">
-    <div class="name">
-        <span class="first-name">string</span> <span class="last-name">string</span>
-    </div>
-    <div class="job-position">
-        string
-    </div>
-    
-        <div class="profile-desc">
-            string
-        </div>
-    
-</div>
-        
-    <div class="experiences">
-        <div class="subtitle">
-            Experiences
-        </div>
-        
-        
-            <div class="element">
-                <div class="position">
-                    string
-                    
-                    <span>| string</span>
-                </div>
-
-                <div class="dates">
-                    <span>string</span>
-                    |
-                    
-                        string - string
-                    
-                </div>
-
-                <div class="description">
-                    string
-                </div>
-            </div>
-        
-    </div>
-
-        
-<div class="projects">
-    <div class="subtitle">Projects</div>
-    
-    <div style="margin-bottom: 5px; display: flex; flex-direction: column;" class="item">
-        <a class="label" href="string" target="_blank">string</a>
-        
-        <small style="font-size: 12px;" class="value">string</small>
-        
-    </div>
-    
-</div>
-
     </div>
 </main>
 </body>

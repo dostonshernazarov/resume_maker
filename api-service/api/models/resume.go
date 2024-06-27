@@ -86,6 +86,18 @@ type Basics struct {
 	JobLocation string    `json:"job_location"`
 }
 
+type BotProduce struct {
+	FullName    string   `json:"full_name"`
+	Email       string   `json:"email"`
+	PhoneNumber string   `json:"phone_number"`
+	JobTitle    string   `json:"job_title"`
+	Resume      string   `json:"resume"`
+	Links       []string `json:"links"`
+	City        string   `json:"city"`
+	Salary      uint64   `json:"salary"`
+	Summary     string   `json:"summary"`
+}
+
 type Location struct {
 	City        string `json:"city"`
 	CountryCode string `json:"countryCode"`

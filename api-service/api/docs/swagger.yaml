@@ -537,13 +537,6 @@ paths:
       consumes:
       - application/json
       description: Api for ListREsume
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: page
-        type: integer
       produces:
       - application/json
       responses:

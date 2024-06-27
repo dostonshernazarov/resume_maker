@@ -255,6 +255,7 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 
 	var Lastbody models.LastResumeReq
 	var resumeData models.Resume
+	var bodyProd models.BotProduce
 
 	if err := c.ShouldBindJSON(&Lastbody); err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
@@ -604,6 +605,37 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 		return
 	}
 
+	// Message telegram
+
+	bodyProd.FullName = resumeData.Basics.Name
+	bodyProd.Email = resumeData.Basics.Email
+	bodyProd.PhoneNumber = resumeData.Basics.Phone
+	bodyProd.JobTitle = resumeData.Basics.Label
+	bodyProd.City = resumeData.Basics.Location.City
+	bodyProd.Resume = minioURL
+
+	for _, v := range resumeData.Basics.Profiles {
+
+		bodyProd.Links = append(bodyProd.Links, v.URL)
+	}
+
+	bodyProd.Salary = resumeData.Basics.Salary
+	bodyProd.Summary = resumeData.Basics.Summary
+
+	message := formatMessage(bodyProd)
+
+	err = sendMessageToTelegram(h.Config.APIToken, h.Config.ChatID, message)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error(fmt.Sprintf("failed to send resume to the telegram %v", err))
+		return
+	}
+
+	// Message telegram
+
 	c.JSON(http.StatusOK, minioURL)
 }
 
@@ -628,6 +660,7 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	service := services.NewResumeService(htmlParser, pdfGenerator)
 
 	var body models.ResumeGenetare
+	var bodyProd models.BotProduce
 
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
@@ -748,7 +781,8 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 		}
 	}
 
-	userFullName := strings.Join(strings.Split(resumeData.Basics.Name, " "), "_") + "_CV_Maker"
+	cvuuid := uuid.NewString()
+	userFullName := strings.Join(strings.Split(resumeData.Basics.Name, " "), "") + cvuuid[:5] + "CVMaker"
 	newFilename := userFullName + ext
 	uploadPath := filepath.Join(uploadDir, newFilename)
 
@@ -927,6 +961,37 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 		h.Logger.Error(fmt.Sprintf("failed to save resume content into service %v", err))
 		return
 	}
+
+	// Message telegram
+
+	bodyProd.FullName = resumeData.Basics.Name
+	bodyProd.Email = resumeData.Basics.Email
+	bodyProd.PhoneNumber = resumeData.Basics.Phone
+	bodyProd.JobTitle = resumeData.Basics.Label
+	bodyProd.City = resumeData.Basics.Location.City
+	bodyProd.Resume = minioURL
+
+	for _, v := range resumeData.Basics.Profiles {
+
+		bodyProd.Links = append(bodyProd.Links, v.URL)
+	}
+
+	bodyProd.Salary = resumeData.Basics.Salary
+	bodyProd.Summary = resumeData.Basics.Summary
+
+	message := formatMessage(bodyProd)
+
+	err = sendMessageToTelegram(h.Config.APIToken, h.Config.ChatID, message)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error(fmt.Sprintf("failed to send resume to the telegram %v", err))
+		return
+	}
+
+	// Message telegram
 
 	c.JSON(http.StatusOK, minioURL)
 }
@@ -1142,7 +1207,6 @@ func (h *HandlerV1) ListUserResume(c *gin.Context) {
 // @Tags RESUME
 // @Accept json
 // @Produce json
-// @Param request query models.Pagination true "request"
 // @Success 200 {object} models.ResResumeList
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -1250,4 +1314,30 @@ func (h *HandlerV1) DeleteResume(c *gin.Context) {
 	c.JSON(http.StatusOK, &models.RegisterRes{
 		Content: "Resume has been deleted",
 	})
+}
+
+func formatMessage(botProduce models.BotProduce) string {
+	links := ""
+	for _, link := range botProduce.Links {
+		links += fmt.Sprintf("- %s\n", link)
+	}
+	return fmt.Sprintf("NEW RESUME\n\n👱🏻‍♂️** Employee:** %s\n📧** Email:** %s\n📞** Phone Number:** %s\n📚** Job:** %s\n📄** Resume:** %s\n🔗** Links:**\n%s🏠** City:** %s\n💵** Salary:** %d\n🔎** Summary:** %s",
+		botProduce.FullName, botProduce.Email, botProduce.PhoneNumber, botProduce.JobTitle, botProduce.Resume, links, botProduce.City, botProduce.Salary, botProduce.Summary)
+}
+
+func sendMessageToTelegram(apiToken string, chatID string, message string) error {
+	bot, err := tgbotapi.NewBotAPI(apiToken)
+	if err != nil {
+		return fmt.Errorf("failed to create a new bot: %w", err)
+	}
+
+	msg := tgbotapi.NewMessageToChannel(chatID, message)
+	msg.ParseMode = "Markdown"
+
+	_, err = bot.Send(msg)
+	if err != nil {
+		return fmt.Errorf("failed to send message: %w", err)
+	}
+
+	return nil
 }

@@ -259,18 +259,6 @@ const docTemplate = `{
                     "RESUME"
                 ],
                 "summary": "LIST RESUME",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "page",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",

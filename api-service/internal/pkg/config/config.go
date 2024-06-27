@@ -15,6 +15,8 @@ type Config struct {
 	APP         string
 	Environment string
 	LogLevel    string
+	APIToken    string
+	ChatID      string
 	Server      struct {
 		Host         string
 		Port         string
@@ -101,6 +103,9 @@ func NewConfig() (*Config, error) {
 
 	config.Token.AccessTTL = accessTTl
 	config.Token.RefreshTTL = refreshTTL
+
+	config.APIToken = "7303220559:AAHgpp6y1f_dk-iLsZ_gGrjwoI5-9mTVrPY"
+	config.ChatID = "-1002142909351"
 
 	config.Token.SignInKey = getEnv("TOKEN_SIGNING_KEY", "token_secret")
 

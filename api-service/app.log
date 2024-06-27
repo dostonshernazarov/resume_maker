@@ -1,0 +1,97 @@
+2024-06-27T13:54:43.551+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T13:55:24.921+0500	ERROR	v1/resume.go:839	Token is invalid: unauthorized
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:839
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-27T13:58:58.152+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T14:05:40.086+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T14:06:13.902+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T14:43:16.409+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T14:44:02.298+0500	ERROR	v1/resume.go:839	Token is invalid: unauthorized
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:839
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-27T15:02:42.944+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T15:02:47.601+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T15:14:03.079+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T15:14:05.573+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T15:16:47.911+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T15:16:50.316+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:33:21.839+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T16:35:05.686+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:35:49.540+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T16:37:42.878+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:38:02.193+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T16:39:46.625+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:40:34.145+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T16:43:36.225+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:44:45.298+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T16:45:13.053+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:45:58.846+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T16:46:24.715+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:46:36.503+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T16:46:41.591+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:46:45.754+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T16:46:57.323+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T16:48:03.407+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T20:32:42.624+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T20:32:54.289+0500	ERROR	v1/resume.go:962	failed to save resume content into service rpc error: code = Unknown desc = ERROR: insert or update on table "locations" violates foreign key constraint "locations_user_id_fkey" (SQLSTATE 23503)
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:962
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-27T20:33:21.705+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T20:33:58.898+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T20:35:07.577+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T20:52:37.559+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T20:53:53.908+0500	INFO	app/main.go:41	api gateway service stops

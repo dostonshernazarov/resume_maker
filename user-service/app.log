@@ -46,3 +46,18 @@ main.main.func1
 2024-06-27T10:51:14.216+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T10:51:14+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetUser", "peer.address": "127.0.0.1:52272", "grpc.code": "OK", "grpc.time_ms": 4.987}
 2024-06-27T10:51:15.353+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T10:51:15+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "UpdateRefresh", "peer.address": "127.0.0.1:52272", "grpc.code": "OK", "grpc.time_ms": 5.863}
 2024-06-27T10:56:02.182+0500	INFO	app/main.go:36	User service stops !
+2024-06-27T13:54:28.867+0500	INFO	app/app.go:94	gRPC Server Listening	{"url": ":9090"}
+2024-06-27T13:55:35.272+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T13:55:35+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetAllUsers", "peer.address": "127.0.0.1:38726", "grpc.code": "OK", "grpc.time_ms": 31.946}
+2024-06-27T13:55:55.258+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T13:55:55+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetUser", "peer.address": "127.0.0.1:38726", "grpc.code": "OK", "grpc.time_ms": 8.402}
+2024-06-27T13:55:56.400+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T13:55:56+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "UpdateRefresh", "peer.address": "127.0.0.1:38726", "grpc.code": "OK", "grpc.time_ms": 5.296}
+2024-06-27T14:06:27.667+0500	INFO	app/main.go:36	User service stops !
+2024-06-27T14:43:06.604+0500	INFO	app/app.go:94	gRPC Server Listening	{"url": ":9090"}
+2024-06-27T14:44:22.839+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T14:44:22+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetUser", "peer.address": "127.0.0.1:48120", "grpc.code": "OK", "grpc.time_ms": 28.061}
+2024-06-27T14:44:23.980+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T14:44:23+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "UpdateRefresh", "peer.address": "127.0.0.1:48120", "grpc.code": "OK", "grpc.time_ms": 8.213}
+2024-06-27T16:48:10.695+0500	INFO	app/main.go:36	User service stops !
+2024-06-27T20:32:27.778+0500	INFO	app/app.go:94	gRPC Server Listening	{"url": ":9090"}
+2024-06-27T20:33:27.674+0500	INFO	app/main.go:36	User service stops !
+2024-06-27T20:33:30.133+0500	INFO	app/app.go:94	gRPC Server Listening	{"url": ":9090"}
+2024-06-27T20:34:19.129+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T20:34:19+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "GetUser", "peer.address": "127.0.0.1:52646", "grpc.code": "OK", "grpc.time_ms": 5.471}
+2024-06-27T20:34:20.267+0500	INFO	zap/options.go:212	finished unary call with code OK	{"grpc.start_time": "2024-06-27T20:34:20+05:00", "system": "grpc", "span.kind": "server", "grpc.service": "user_service.UserService", "grpc.method": "UpdateRefresh", "peer.address": "127.0.0.1:52646", "grpc.code": "OK", "grpc.time_ms": 3.599}
+2024-06-27T20:54:00.880+0500	INFO	app/main.go:36	User service stops !
