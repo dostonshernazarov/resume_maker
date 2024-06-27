@@ -44,20 +44,46 @@ type Resume struct {
 	Interests    []Interest    `json:"interests"`
 	Meta         Meta          `json:"meta"`
 	Labels       ResumeLabels
+}
+
+type ResumeGenetare struct {
+	Basics       Basics        `json:"basics"`
+	Work         []Work        `json:"work"`
+	Projects     []Project     `json:"projects"`
+	Education    []Education   `json:"education"`
+	Certificates []Certificate `json:"certificates"`
+	Skills       []Skill       `json:"skills"`
+	SoftSkills   []Skill       `json:"softSkills"`
+	Languages    []Language    `json:"languages"`
+	Interests    []Interest    `json:"interests"`
+	Meta         Meta          `json:"meta"`
+	Labels       ResumeLabels
 	Salary       uint64 `json:"salary"`
 	JobLocation  string `json:"job_location" example:"offline"`
 }
 
+type LastResumeReq struct {
+	Certificates []Certificate `json:"certificates"`
+	Skills       []Skill       `json:"skills"`
+	Languages    []Language    `json:"languages"`
+	Interests    []Interest    `json:"interests"`
+	Meta         Meta          `json:"meta"`
+	BasicRedisID string        `json:"basic_redis_id"`
+	MainRedisID  string        `json:"main_redis_id"`
+}
+
 type Basics struct {
-	Name     string    `json:"name"`
-	Label    string    `json:"label"`
-	Image    string    `json:"image"`
-	Email    string    `json:"email"`
-	Phone    string    `json:"phone"`
-	Summary  string    `json:"summary"`
-	Location Location  `json:"location"`
-	URL      string    `json:"url"`
-	Profiles []Profile `json:"profiles"`
+	Name        string    `json:"name"`
+	Label       string    `json:"label"`
+	Image       string    `json:"image"`
+	Email       string    `json:"email"`
+	Phone       string    `json:"phone"`
+	Summary     string    `json:"summary"`
+	Location    Location  `json:"location"`
+	URL         string    `json:"url"`
+	Profiles    []Profile `json:"profiles"`
+	Salary      uint64    `json:"salary"`
+	JobLocation string    `json:"job_location"`
 }
 
 type Location struct {
@@ -84,10 +110,9 @@ type Work struct {
 }
 
 type Project struct {
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	Highlights  []string `json:"highlights"`
-	URL         string   `json:"url"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	URL         string `json:"url"`
 }
 
 type Education struct {
@@ -99,6 +124,14 @@ type Education struct {
 	EndDate     string   `json:"endDate"`
 	Score       string   `json:"score"`
 	Courses     []string `json:"courses"`
+}
+
+type MainResumeReq struct {
+	Work         []Work      `json:"work"`
+	Projects     []Project   `json:"projects"`
+	Education    []Education `json:"education"`
+	BasicRedisID string      `json:"basic_redis_id"`
+	MainRedisID  string      `json:"main_redis_id"`
 }
 
 type Certificate struct {

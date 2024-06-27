@@ -5,6 +5,8 @@ definitions:
         type: string
       image:
         type: string
+      job_location:
+        type: string
       label:
         type: string
       location:
@@ -17,6 +19,8 @@ definitions:
         items:
           $ref: '#/definitions/models.Profile'
         type: array
+      salary:
+        type: integer
       summary:
         type: string
       url:
@@ -77,6 +81,31 @@ definitions:
       language:
         type: string
     type: object
+  models.LastResumeReq:
+    properties:
+      basic_redis_id:
+        type: string
+      certificates:
+        items:
+          $ref: '#/definitions/models.Certificate'
+        type: array
+      interests:
+        items:
+          $ref: '#/definitions/models.Interest'
+        type: array
+      languages:
+        items:
+          $ref: '#/definitions/models.Language'
+        type: array
+      main_redis_id:
+        type: string
+      meta:
+        $ref: '#/definitions/models.Meta'
+      skills:
+        items:
+          $ref: '#/definitions/models.Skill'
+        type: array
+    type: object
   models.Location:
     properties:
       city:
@@ -92,6 +121,25 @@ definitions:
         type: string
       password:
         type: string
+    type: object
+  models.MainResumeReq:
+    properties:
+      basic_redis_id:
+        type: string
+      education:
+        items:
+          $ref: '#/definitions/models.Education'
+        type: array
+      main_redis_id:
+        type: string
+      projects:
+        items:
+          $ref: '#/definitions/models.Project'
+        type: array
+      work:
+        items:
+          $ref: '#/definitions/models.Work'
+        type: array
     type: object
   models.Meta:
     properties:
@@ -113,10 +161,6 @@ definitions:
     properties:
       description:
         type: string
-      highlights:
-        items:
-          type: string
-        type: array
       name:
         type: string
       url:
@@ -162,7 +206,7 @@ definitions:
           $ref: '#/definitions/models.ResResume'
         type: array
     type: object
-  models.Resume:
+  models.ResumeGenetare:
     properties:
       basics:
         $ref: '#/definitions/models.Basics'
@@ -376,6 +420,78 @@ paths:
       summary: Upload User photo
       tags:
       - MEDIA
+  /v1/resume/basic:
+    post:
+      consumes:
+      - application/json
+      description: Api for post basic resume
+      parameters:
+      - description: BasicResumeData
+        in: body
+        name: BasicResumeData
+        required: true
+        schema:
+          $ref: '#/definitions/models.Basics'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RegisterRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: BASIC RESUME
+      tags:
+      - STEP-RESUME
+  /v1/resume/generate:
+    post:
+      consumes:
+      - application/json
+      description: This API for generate a resume
+      parameters:
+      - description: Resume Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.LastResumeReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resume URL
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: Generate a Resume
+      tags:
+      - STEP-RESUME
   /v1/resume/generate-resume:
     post:
       consumes:
@@ -387,7 +503,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/models.Resume'
+          $ref: '#/definitions/models.ResumeGenetare'
       produces:
       - application/json
       responses:
@@ -448,6 +564,38 @@ paths:
       summary: LIST RESUME
       tags:
       - RESUME
+  /v1/resume/main:
+    post:
+      consumes:
+      - application/json
+      description: Api for post Main resume
+      parameters:
+      - description: MainResumeData
+        in: body
+        name: MainResumeData
+        required: true
+        schema:
+          $ref: '#/definitions/models.MainResumeReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RegisterRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: Main RESUME
+      tags:
+      - STEP-RESUME
   /v1/resume/resume-photo:
     post:
       consumes:

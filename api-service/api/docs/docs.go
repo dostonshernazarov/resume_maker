@@ -64,6 +64,120 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/resume/basic": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Api for post basic resume",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "STEP-RESUME"
+                ],
+                "summary": "BASIC RESUME",
+                "parameters": [
+                    {
+                        "description": "BasicResumeData",
+                        "name": "BasicResumeData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Basics"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisterRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/resume/generate": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This API for generate a resume",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "STEP-RESUME"
+                ],
+                "summary": "Generate a Resume",
+                "parameters": [
+                    {
+                        "description": "Resume Model",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LastResumeReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resume URL",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/resume/generate-resume": {
             "post": {
                 "security": [
@@ -89,7 +203,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Resume"
+                            "$ref": "#/definitions/models.ResumeGenetare"
                         }
                     }
                 ],
@@ -162,6 +276,57 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.ResResumeList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/resume/main": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Api for post Main resume",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "STEP-RESUME"
+                ],
+                "summary": "Main RESUME",
+                "parameters": [
+                    {
+                        "description": "MainResumeData",
+                        "name": "MainResumeData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MainResumeReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisterRes"
                         }
                     },
                     "400": {
@@ -987,6 +1152,9 @@ const docTemplate = `{
                 "image": {
                     "type": "string"
                 },
+                "job_location": {
+                    "type": "string"
+                },
                 "label": {
                     "type": "string"
                 },
@@ -1004,6 +1172,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.Profile"
                     }
+                },
+                "salary": {
+                    "type": "integer"
                 },
                 "summary": {
                     "type": "string"
@@ -1098,6 +1269,44 @@ const docTemplate = `{
                 }
             }
         },
+        "models.LastResumeReq": {
+            "type": "object",
+            "properties": {
+                "basic_redis_id": {
+                    "type": "string"
+                },
+                "certificates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Certificate"
+                    }
+                },
+                "interests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Interest"
+                    }
+                },
+                "languages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Language"
+                    }
+                },
+                "main_redis_id": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/models.Meta"
+                },
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Skill"
+                    }
+                }
+            }
+        },
         "models.Location": {
             "type": "object",
             "properties": {
@@ -1120,6 +1329,35 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "models.MainResumeReq": {
+            "type": "object",
+            "properties": {
+                "basic_redis_id": {
+                    "type": "string"
+                },
+                "education": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Education"
+                    }
+                },
+                "main_redis_id": {
+                    "type": "string"
+                },
+                "projects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Project"
+                    }
+                },
+                "work": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Work"
+                    }
                 }
             }
         },
@@ -1153,12 +1391,6 @@ const docTemplate = `{
             "properties": {
                 "description": {
                     "type": "string"
-                },
-                "highlights": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 },
                 "name": {
                     "type": "string"
@@ -1230,7 +1462,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Resume": {
+        "models.ResumeGenetare": {
             "type": "object",
             "properties": {
                 "basics": {

@@ -101,6 +101,11 @@ func NewRoute(option RouteOption) *gin.Engine {
 	api.GET("/resume/list", HandlerV1.ListResume)
 	api.DELETE("/resumes/:id", HandlerV1.DeleteResume)
 
+	// STEP-RESUME
+	api.POST("/resume/basic", HandlerV1.BasicResumeData)
+	api.POST("/resume/main", HandlerV1.MainResumeData)
+	api.POST("/resume/generate", HandlerV1.LastGenerateResume)
+
 	url := ginSwagger.URL("swagger/doc.json")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	return router

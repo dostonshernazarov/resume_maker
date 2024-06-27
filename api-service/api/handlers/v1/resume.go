@@ -3,6 +3,7 @@ package v1
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -21,11 +22,13 @@ import (
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/pdf"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/template"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/utils"
+	val "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/validation"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/utils/fs"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
+	"github.com/redis/go-redis/v9"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -81,34 +84,246 @@ func createMultipartFileHeader(filePath string) *multipart.FileHeader {
 	return files[0]
 }
 
+// BasicReume
+// BASIC RESUME  ...
+// @Security BearerAuth
+// @Router /v1/resume/basic [POST]
+// @Summary BASIC RESUME
+// @Description Api for post basic resume
+// @Tags STEP-RESUME
+// @Accept json
+// @Produce json
+// @Param BasicResumeData body models.Basics true "BasicResumeData"
+// @Success 200 {object} models.RegisterRes
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
+func (h HandlerV1) BasicResumeData(c *gin.Context) {
+	var body models.Basics
+
+	err := c.ShouldBindJSON(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		},
+		)
+		h.Logger.Error("failed to bind json", l.Error(err))
+		return
+	}
+
+	isEmail := val.IsValidEmail(body.Email)
+	if !isEmail {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		h.Logger.Error("Incorrect Email. Try again")
+		return
+	}
+
+	redisId := uuid.New().String()
+
+	// Connect to redis
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "redis-db:6379",
+		Password: "",
+		DB:       0,
+	})
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("failed to close redis connection", err)
+			return
+		}
+	}(rdb)
+
+	userByte, err := json.Marshal(body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error("Failed to marshal body", l.Error(err))
+		return
+	}
+	_, err = rdb.Set(context.Background(), redisId, userByte, time.Hour*5).Result()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error("Failed to set object to redis", l.Error(err))
+		return
+	}
+
+	responseMessage := models.BacisResumeRes{
+		Content:      "data has been saved",
+		BasicRedisID: redisId,
+		MainRedisID:  uuid.NewString(),
+	}
+
+	c.JSON(http.StatusOK, responseMessage)
+}
+
+// MainReume
+// Main RESUME  ...
+// @Security BearerAuth
+// @Router /v1/resume/main [POST]
+// @Summary Main RESUME
+// @Description Api for post Main resume
+// @Tags STEP-RESUME
+// @Accept json
+// @Produce json
+// @Param MainResumeData body models.MainResumeReq true "MainResumeData"
+// @Success 200 {object} models.RegisterRes
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
+func (h HandlerV1) MainResumeData(c *gin.Context) {
+	var body models.MainResumeReq
+
+	err := c.ShouldBindJSON(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		},
+		)
+		h.Logger.Error("failed to bind json", l.Error(err))
+		return
+	}
+
+	// Connect to redis
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "redis-db:6379",
+		Password: "",
+		DB:       0,
+	})
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("failed to close redis connection", err)
+			return
+		}
+	}(rdb)
+
+	userByte, err := json.Marshal(body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error("Failed to marshal body", l.Error(err))
+		return
+	}
+	_, err = rdb.Set(context.Background(), body.MainRedisID, userByte, time.Hour*5).Result()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error("Failed to set object to redis", l.Error(err))
+		return
+	}
+
+	responseMessage := models.BacisResumeRes{
+		Content:      "data has been saved",
+		BasicRedisID: body.BasicRedisID,
+		MainRedisID:  body.MainRedisID,
+	}
+
+	c.JSON(http.StatusOK, responseMessage)
+}
+
 // GenerateResume
 // @Security 		BearerAuth
 // @Summary 		Generate a Resume
 // @Description 	This API for generate a resume
-// @Tags 			RESUME
+// @Tags 			STEP-RESUME
 // @Accept			json
 // @Produce 		json
-// @Param 			data body models.Resume true "Resume Model"
+// @Param 			data body models.LastResumeReq true "Resume Model"
 // @Success 		200 {object} string "Resume URL"
 // @Failure 		400 {object} models.Error
 // @Failure 		401 {object} models.Error
 // @Failure 		403 {object} models.Error
 // @Failure 		500 {object} models.Error
-// @Router 			/v1/resume/generate-resume [POST]
-func (h *HandlerV1) GenerateResume(c *gin.Context) {
+// @Router 			/v1/resume/generate [POST]
+func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 	templateManager := template.NewTemplateManager("ui")
 	htmlParser := parser.NewHTMLParser(models.OutputDir, models.OutputHtmlFile, templateManager)
 	pdfGenerator := pdf.NewPDFGenerator()
 	service := services.NewResumeService(htmlParser, pdfGenerator)
 
+	var Lastbody models.LastResumeReq
 	var resumeData models.Resume
 
-	if err := c.ShouldBindJSON(&resumeData); err != nil {
+	if err := c.ShouldBindJSON(&Lastbody); err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.WrongInfoMessage,
 		})
 		return
 	}
+
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "redis-db:6379",
+		Password: "",
+		DB:       0,
+	})
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("failed to close redis connection", err)
+			return
+		}
+	}(rdb)
+
+	basicValue, err := rdb.Get(context.Background(), Lastbody.BasicRedisID).Result()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		h.Logger.Error("Failed to get user from redis", l.Error(err))
+		return
+	}
+
+	var basicDetail models.Basics
+	if err := json.Unmarshal([]byte(basicValue), &basicDetail); err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error("Error unmarshalling user detail", l.Error(err))
+		return
+	}
+
+	MainValue, err := rdb.Get(context.Background(), Lastbody.MainRedisID).Result()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		h.Logger.Error("Failed to get user from redis", l.Error(err))
+		return
+	}
+
+	var MainDetail models.MainResumeReq
+	if err := json.Unmarshal([]byte(MainValue), &MainDetail); err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error("Error unmarshalling user detail", l.Error(err))
+		return
+	}
+
+	resumeData.Basics = basicDetail
+	resumeData.Work = MainDetail.Work
+	resumeData.Projects = MainDetail.Projects
+	resumeData.Education = MainDetail.Education
+	resumeData.Certificates = Lastbody.Certificates
+	resumeData.Skills = Lastbody.Skills
+	resumeData.Languages = Lastbody.Languages
+	resumeData.Interests = Lastbody.Interests
+	resumeData.Meta = Lastbody.Meta
 
 	htmlFile, err := service.Parser.ParseToHtml(resumeData)
 	if err != nil {
@@ -279,7 +494,6 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 			EndDate:   work.EndDate,
 			Location:  work.Location,
 			Summary:   work.Summary,
-			Skills:    work.Skills,
 		})
 	}
 
@@ -353,8 +567,332 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 		UserId:      userID,
 		Url:         resumeData.Basics.URL,
 		Filename:    minioURL,
-		Salary:      resumeData.Salary,
-		JobLocation: resumeData.JobLocation,
+		Salary:      basicDetail.Salary,
+		JobLocation: basicDetail.JobLocation,
+		Basic: &resume_service.Basic{
+			Name:        resumeData.Basics.Name,
+			JobTitle:    resumeData.Basics.Label,
+			Image:       resumeData.Basics.Image,
+			Email:       resumeData.Basics.Email,
+			PhoneNumber: resumeData.Basics.Phone,
+			Website:     resumeData.Basics.URL,
+			Summary:     resumeData.Basics.Summary,
+			City:        resumeData.Basics.Location.City,
+			CountryCode: resumeData.Basics.Location.CountryCode,
+			Region:      resumeData.Basics.Location.Region,
+		},
+		Profiles:     profiles,
+		Works:        works,
+		Projects:     projects,
+		Educations:   educations,
+		Certificates: certificates,
+		HardSkills:   hardSkills,
+		SoftSkills:   softSkills,
+		Languages:    languages,
+		Interests:    interests,
+		Meta: &resume_service.Meta{
+			Template: resumeData.Meta.Template,
+			Lang:     resumeData.Meta.Lang,
+		},
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: models.InternalMessage,
+		})
+		h.Logger.Error(fmt.Sprintf("failed to save resume content into service %v", err))
+		return
+	}
+
+	c.JSON(http.StatusOK, minioURL)
+}
+
+// GenerateResume
+// @Security 		BearerAuth
+// @Summary 		Generate a Resume
+// @Description 	This API for generate a resume
+// @Tags 			RESUME
+// @Accept			json
+// @Produce 		json
+// @Param 			data body models.ResumeGenetare true "Resume Model"
+// @Success 		200 {object} string "Resume URL"
+// @Failure 		400 {object} models.Error
+// @Failure 		401 {object} models.Error
+// @Failure 		403 {object} models.Error
+// @Failure 		500 {object} models.Error
+// @Router 			/v1/resume/generate-resume [POST]
+func (h *HandlerV1) GenerateResume(c *gin.Context) {
+	templateManager := template.NewTemplateManager("ui")
+	htmlParser := parser.NewHTMLParser(models.OutputDir, models.OutputHtmlFile, templateManager)
+	pdfGenerator := pdf.NewPDFGenerator()
+	service := services.NewResumeService(htmlParser, pdfGenerator)
+
+	var body models.ResumeGenetare
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.WrongInfoMessage,
+		})
+		return
+	}
+
+	var resumeData models.Resume
+	resumeData.Basics = body.Basics
+	resumeData.Certificates = body.Certificates
+	resumeData.Work = body.Work
+	resumeData.Projects = body.Projects
+	resumeData.Education = body.Education
+	resumeData.Skills = body.Skills
+	resumeData.SoftSkills = body.SoftSkills
+	resumeData.Languages = body.Languages
+	resumeData.Interests = body.Interests
+	resumeData.Meta = body.Meta
+	resumeData.Labels = body.Labels
+
+	htmlFile, err := service.Parser.ParseToHtml(resumeData)
+	if err != nil {
+		h.Logger.Error("ParseToHtml : " + err.Error())
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: "failed to parse HTML",
+		})
+		return
+	}
+
+	pdfData, err := service.Pdf.GenerateFromHTML(htmlFile)
+	if err != nil {
+		h.Logger.Error("GenerateFromHTML : " + err.Error())
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: "failed to generate PDF",
+		})
+		return
+	}
+
+	if err := fs.WriteFile(models.OutputPdfFile, pdfData); err != nil {
+		h.Logger.Error("WriteFile : " + err.Error())
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: "failed to write PDF file",
+		})
+		return
+	}
+
+	multipartFile := createMultipartFileHeader(models.OutputPdfFile)
+
+	endpoint := "3.76.217.224:9000"
+	accessKeyID := "minioadmin"
+	secretAccessKey := "minioadmin"
+	bucketName := "resumes"
+	minioClient, err := minio.New(endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
+		Secure: false,
+	})
+	if err != nil {
+		panic(err)
+	}
+	err = minioClient.MakeBucket(context.Background(), bucketName, minio.MakeBucketOptions{})
+	if err != nil {
+		if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
+		} else {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: err.Error(),
+			})
+			log.Println(err.Error())
+			return
+		}
+	}
+
+	policy := fmt.Sprintf(`{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "AWS": ["*"]
+                },
+                "Action": ["s3:GetObject"],
+                "Resource": ["arn:aws:s3:::%s/*"]
+            }
+        ]
+    }`, bucketName)
+
+	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err.Error())
+		return
+	}
+
+	file := &models.File{
+		File: multipartFile,
+	}
+
+	if file.File.Size > 10<<20 {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: "File size cannot be larger than 10 MB",
+		})
+		return
+	}
+
+	ext := filepath.Ext(file.File.Filename)
+
+	uploadDir := "./media"
+	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
+		err := os.Mkdir(uploadDir, os.ModePerm)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: models.InternalMessage,
+			})
+			log.Println("Error creating media directory", err.Error())
+			return
+		}
+	}
+
+	userFullName := strings.Join(strings.Split(resumeData.Basics.Name, " "), "_") + "_CV_Maker"
+	newFilename := userFullName + ext
+	uploadPath := filepath.Join(uploadDir, newFilename)
+
+	if err := c.SaveUploadedFile(file.File, uploadPath); err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err)
+		return
+	}
+
+	objectName := newFilename
+	contentType := "application/pdf"
+	_, err = minioClient.FPutObject(context.Background(), bucketName, objectName, uploadPath, minio.PutObjectOptions{
+		ContentType: contentType,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err)
+		return
+	}
+
+	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
+
+	userID, status := GetIdFromToken(c.Request, h.Config)
+	if status == http.StatusUnauthorized {
+		c.JSON(http.StatusUnauthorized, models.Error{
+			Message: "Token is invalid",
+		})
+		h.Logger.Error(fmt.Sprintf("Token is invalid: %s", userID))
+		return
+	}
+
+	timeNow := time.Now()
+
+	var (
+		profiles     []*resume_service.Profile
+		works        []*resume_service.Work
+		projects     []*resume_service.Project
+		educations   []*resume_service.Education
+		certificates []*resume_service.Certificate
+		hardSkills   []*resume_service.HardSkill
+		softSkills   []*resume_service.SoftSkill
+		languages    []*resume_service.Language
+		interests    []*resume_service.Interest
+	)
+
+	for _, profile := range resumeData.Basics.Profiles {
+		profiles = append(profiles, &resume_service.Profile{
+			Network:  profile.Network,
+			Username: profile.Username,
+			Url:      profile.URL,
+		})
+	}
+
+	for _, work := range resumeData.Work {
+		if work.StartDate == "" {
+			work.StartDate = timeNow.String()
+		}
+		works = append(works, &resume_service.Work{
+			Position:  work.Position,
+			Company:   work.Company,
+			StartDate: work.StartDate,
+			EndDate:   work.EndDate,
+			Location:  work.Location,
+			Summary:   work.Summary,
+		})
+	}
+
+	for _, project := range resumeData.Projects {
+		projects = append(projects, &resume_service.Project{
+			Name:        project.Name,
+			Url:         project.URL,
+			Description: project.Description,
+		})
+	}
+
+	for _, education := range resumeData.Education {
+		if education.StartDate == "" {
+			education.StartDate = timeNow.String()
+		}
+		educations = append(educations, &resume_service.Education{
+			EducationId: uuid.NewString(),
+			Institution: education.Institution,
+			Area:        education.Area,
+			StudyType:   education.StudyType,
+			Location:    education.Location,
+			StartDate:   education.StartDate,
+			EndDate:     education.EndDate,
+			Score:       education.Score,
+			Courses:     education.Courses,
+		})
+	}
+
+	for _, certificate := range resumeData.Certificates {
+
+		if certificate.Date == "" {
+			certificate.Date = timeNow.String()
+		}
+		certificates = append(certificates, &resume_service.Certificate{
+			Title:  certificate.Title,
+			Date:   certificate.Date,
+			Issuer: certificate.Issuer,
+			Score:  certificate.Score,
+			Url:    certificate.URL,
+		})
+	}
+
+	for _, hard := range resumeData.Skills {
+		hardSkills = append(hardSkills, &resume_service.HardSkill{
+			Name:  hard.Name,
+			Level: hard.Level,
+		})
+	}
+
+	for _, soft := range resumeData.SoftSkills {
+		softSkills = append(softSkills, &resume_service.SoftSkill{
+			Name: soft.Name,
+		})
+	}
+
+	for _, lang := range resumeData.Languages {
+		languages = append(languages, &resume_service.Language{
+			Language: lang.Language,
+			Fluency:  lang.Fluency,
+		})
+	}
+
+	for _, interest := range resumeData.Interests {
+		interests = append(interests, &resume_service.Interest{
+			Name: interest.Name,
+		})
+	}
+
+	_, err = h.Service.ResumeService().CreateResume(context.Background(), &resume_service.Resume{
+		Id:          uuid.NewString(),
+		UserId:      userID,
+		Url:         resumeData.Basics.URL,
+		Filename:    minioURL,
+		Salary:      body.Salary,
+		JobLocation: body.JobLocation,
 		Basic: &resume_service.Basic{
 			Name:        resumeData.Basics.Name,
 			JobTitle:    resumeData.Basics.Label,

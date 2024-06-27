@@ -55,7 +55,7 @@ func New() *Config {
 	config.TelegramService.Port = getEnv("TELEGRAM_SERVICE_RPC_PORT", ":8090")
 
 	// user service
-	config.UserService.Host = getEnv("USER_SERVICE_RPC_HOST", "localhost")
+	config.UserService.Host = getEnv("USER_SERVICE_RPC_HOST", "user-service")
 	config.UserService.Port = getEnv("USER_SERVICE_RPC_PORT", ":9090")
 
 	return &config

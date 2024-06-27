@@ -15,6 +15,12 @@ type RegisterRes struct {
 	Content string `json:"content"`
 }
 
+type BacisResumeRes struct {
+	Content      string `json:"content"`
+	BasicRedisID string `json:"basic_redis_id"`
+	MainRedisID  string `json:"main_redis_id"`
+}
+
 type Verify struct {
 	Email string `json:"email"`
 	Code  string `json:"code"`

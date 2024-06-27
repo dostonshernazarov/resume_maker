@@ -2,6 +2,8 @@ package v1
 
 import (
 	"context"
+	"log"
+
 	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 	pbu "github.com/dostonshernazarov/resume_maker/api-service/genproto/user_service"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/etc"
@@ -10,7 +12,6 @@ import (
 	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
 	val "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/validation"
 	"github.com/redis/go-redis/v9"
-	"log"
 
 	"encoding/json"
 	"math/rand"

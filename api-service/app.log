@@ -467,3 +467,129 @@ net/http.(*conn).serve
 2024-06-26T21:17:25.543+0500	INFO	app/main.go:41	api gateway service stops
 2024-06-27T00:26:51.408+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
 2024-06-27T00:37:05.723+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:33:29.953+0500	INFO	app/main.go:30	Listen: 	{"address": "api-service:8080"}
+2024-06-27T10:33:29.956+0500	ERROR	app/main.go:32	app run	{"error": "listen tcp: lookup api-service on 127.0.0.53:53: server misbehaving"}
+main.main.func1
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/cmd/app/main.go:32
+2024-06-27T10:33:36.523+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:36:18.279+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T10:37:12.794+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:40:10.443+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T10:41:46.719+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:41:54.362+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T10:43:03.058+0500	ERROR	v1/resume.go:330	ParseToHtml : ParseToHtml simple - Execute: template: experiences.gohtml:11:61: executing "experiences.gohtml" at <.ContractType>: can't evaluate field ContractType in type models.Work
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).LastGenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:330
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-27T10:43:09.279+0500	ERROR	v1/resume.go:330	ParseToHtml : ParseToHtml simple - Execute: template: experiences.gohtml:11:61: executing "experiences.gohtml" at <.ContractType>: can't evaluate field ContractType in type models.Work
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).LastGenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:330
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-27T10:43:16.381+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:43:18.830+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T10:43:20.731+0500	ERROR	v1/resume.go:330	ParseToHtml : ParseToHtml simple - Execute: template: experiences.gohtml:11:61: executing "experiences.gohtml" at <.ContractType>: can't evaluate field ContractType in type models.Work
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).LastGenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:330
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-27T10:43:47.726+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:45:23.244+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T10:47:49.762+0500	ERROR	v1/resume.go:330	ParseToHtml : ParseToHtml basic - Execute: template: experiences.gohtml:11:25: executing "experiences.gohtml" at <.ContractType>: can't evaluate field ContractType in type models.Work
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).LastGenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:330
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-27T10:49:46.909+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:49:49.730+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T10:50:07.279+0500	ERROR	v1/resume.go:460	Token is invalid: unauthorized
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).LastGenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:460
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-06-27T10:50:17.563+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:50:30.700+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T10:52:31.399+0500	INFO	app/main.go:41	api gateway service stops
+2024-06-27T10:52:46.398+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-06-27T10:54:35.471+0500	INFO	app/main.go:41	api gateway service stops
