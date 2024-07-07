@@ -1,25 +1,3 @@
-DROP TABLE IF EXISTS interests;
-
-DROP TABLE IF EXISTS languages;
-
-DROP TABLE IF EXISTS soft_skills;
-
-DROP TABLE IF EXISTS hard_skills;
-
-DROP TABLE IF EXISTS certificates;
-
-DROP TABLE IF EXISTS courses;
-
-DROP TABLE IF EXISTS educations;
-
-DROP TABLE IF EXISTS projects;
-
-DROP TABLE IF EXISTS works;
-
-DROP TABLE IF EXISTS profiles;
-
-DROP TABLE IF EXISTS locations;
-
 DROP TABLE IF EXISTS resumes;
 
 DROP TABLE IF EXISTS users;
