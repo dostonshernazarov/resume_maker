@@ -2,7 +2,6 @@ package v1
 
 import (
 	"context"
-	"log"
 
 	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 	pbu "github.com/dostonshernazarov/resume_maker/api-service/genproto/user_service"
@@ -11,7 +10,6 @@ import (
 	scode "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/sendcode"
 	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
 	val "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/validation"
-	"github.com/redis/go-redis/v9"
 
 	"encoding/json"
 	"math/rand"
@@ -95,23 +93,6 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	// Connect to redis
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-db:6379",
-		Password: "",
-		DB:       0,
-	})
-	defer func(rdb *redis.Client) {
-		err := rdb.Close()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("failed to close redis connection", err)
-			return
-		}
-	}(rdb)
-
 	// Generate code for check email
 	code := strconv.Itoa(rand.Int())[:6]
 
@@ -128,7 +109,7 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
-	_, err = rdb.Set(context.Background(), body.Email, userByte, time.Minute*5).Result()
+	err = h.redisStorage.Set(context.Background(), body.Email, userByte, time.Minute*5)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
@@ -162,23 +143,7 @@ func (h HandlerV1) Verification(c *gin.Context) {
 	email := c.Query("email")
 	code := c.Query("code")
 
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-db:6379",
-		Password: "",
-		DB:       0,
-	})
-	defer func(rdb *redis.Client) {
-		err := rdb.Close()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("failed to close redis connection", err)
-			return
-		}
-	}(rdb)
-
-	value, err := rdb.Get(context.Background(), email).Result()
+	value, err := h.redisStorage.Get(context.Background(), email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.NotAvailable,
@@ -390,23 +355,6 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 		return
 	}
 
-	// Connect to redis
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-db:6379",
-		Password: "",
-		DB:       0,
-	})
-	defer func(rdb *redis.Client) {
-		err := rdb.Close()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("failed to close redis connection", l.Error(err))
-			return
-		}
-	}(rdb)
-
 	// Generate code for check email
 	code := strconv.Itoa(rand.Int())[:6]
 
@@ -421,7 +369,7 @@ func (h HandlerV1) ForgetPassword(c *gin.Context) {
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
-	_, err = rdb.Set(context.Background(), toRedis.Email, userByte, time.Minute*10).Result()
+	err = h.redisStorage.Set(context.Background(), toRedis.Email, userByte, time.Minute*10)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
@@ -457,23 +405,7 @@ func (h HandlerV1) ForgetPasswordVerify(c *gin.Context) {
 	email := c.Query("email")
 	code := c.Query("code")
 
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-db:6379",
-		Password: "",
-		DB:       0,
-	})
-	defer func(rdb *redis.Client) {
-		err := rdb.Close()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("failed to close redis connection", l.Error(err))
-			return
-		}
-	}(rdb)
-
-	value, err := rdb.Get(context.Background(), email).Result()
+	value, err := h.redisStorage.Get(context.Background(), email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Incorrect email. Try again ..",

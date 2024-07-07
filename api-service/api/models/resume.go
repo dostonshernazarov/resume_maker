@@ -25,11 +25,12 @@ const (
 )
 
 type Filter struct {
-	Page     int    `json:"page"`
-	Limit    int    `json:"limit"`
-	JobTitle string `json:"job_title"`
-	Age      int    `json:"age"`
-	Location string `json:"location"`
+	JobTitle    string `json:"job_title"`
+	JobLocation string `json:"job_location" example:"offline"`
+	JobType     string `json:"job_type" example:"full-time"`
+	Salary      int64  `json:"salary"`
+	Country     string `json:"country"`
+	Experience  int64  `json:"experience"`
 }
 
 type Resume struct {
@@ -73,17 +74,19 @@ type LastResumeReq struct {
 }
 
 type Basics struct {
-	Name        string    `json:"name"`
-	Label       string    `json:"label"`
-	Image       string    `json:"image"`
-	Email       string    `json:"email"`
-	Phone       string    `json:"phone"`
-	Summary     string    `json:"summary"`
-	Location    Location  `json:"location"`
-	URL         string    `json:"url"`
-	Profiles    []Profile `json:"profiles"`
-	Salary      uint64    `json:"salary"`
-	JobLocation string    `json:"job_location"`
+	Name           string    `json:"name"`
+	Label          string    `json:"label"`
+	Image          string    `json:"image"`
+	Email          string    `json:"email"`
+	Phone          string    `json:"phone"`
+	Summary        string    `json:"summary"`
+	Location       Location  `json:"location"`
+	URL            string    `json:"url"`
+	Profiles       []Profile `json:"profiles"`
+	Salary         uint64    `json:"salary"`
+	JobLocation    string    `json:"job_location"`
+	JobType        string    `json:"job_type" example:"full-time"`
+	ExperienceYear int32     `json:"experience_year"`
 }
 
 type BotProduce struct {
@@ -195,6 +198,7 @@ type ResResume struct {
 	City        string `json:"city"`
 	Salary      uint64 `json:"salary"`
 	JobLocation string `json:"job_location"`
+	Experiance  int32  `json:"experiance_year"`
 }
 
 type ResResumeList struct {

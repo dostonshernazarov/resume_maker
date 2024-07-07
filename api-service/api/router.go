@@ -17,6 +17,8 @@ import (
 
 	"go.uber.org/zap"
 
+	repo "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/repository/redis"
+
 	grpcClients "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/grpc_service_client"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
@@ -34,6 +36,7 @@ type RouteOption struct {
 	BrokerProducer event.BrokerProducer
 	AppVersion     app_version.AppVersion
 	Enforcer       *casbin.Enforcer
+	Cache          repo.Cache
 }
 
 // NewRouter
@@ -58,6 +61,7 @@ func NewRoute(option RouteOption) *gin.Engine {
 		AppVersion:     option.AppVersion,
 		BrokerProducer: option.BrokerProducer,
 		Enforcer:       option.Enforcer,
+		Redis:          option.Cache,
 	})
 
 	corsConfig := cors.DefaultConfig()

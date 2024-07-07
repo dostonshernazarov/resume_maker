@@ -259,6 +259,50 @@ const docTemplate = `{
                     "RESUME"
                 ],
                 "summary": "LIST RESUME",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "country",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "experience",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "offline",
+                        "name": "job_location",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "job_title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "full-time",
+                        "name": "job_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "salary",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1137,11 +1181,18 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "experience_year": {
+                    "type": "integer"
+                },
                 "image": {
                     "type": "string"
                 },
                 "job_location": {
                     "type": "string"
+                },
+                "job_type": {
+                    "type": "string",
+                    "example": "full-time"
                 },
                 "label": {
                     "type": "string"
@@ -1415,6 +1466,9 @@ const docTemplate = `{
             "properties": {
                 "city": {
                     "type": "string"
+                },
+                "experiance_year": {
+                    "type": "integer"
                 },
                 "filename": {
                     "type": "string"

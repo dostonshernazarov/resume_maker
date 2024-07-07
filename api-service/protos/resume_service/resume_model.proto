@@ -17,15 +17,15 @@ message Status {
   bool action = 1;
 }
 
-message UserRequest {
-  string user_id = 1;
-  uint64 page = 2;
-  uint64 limit = 3;
-}
-
 message ListRequest {
   uint64 page = 1;
   uint64 limit = 2;
+  string job_title = 3;
+  string job_location = 4;
+  string job_type = 5;
+  int64 salary = 6;
+  string region = 7;
+  int64 experience = 8;
 }
 
 message ListResumeResponse {
@@ -37,128 +37,13 @@ message Resume {
   string id = 1;
   string user_id = 2;
   string url = 3;
-  string filename = 4;
   uint64 salary = 5;
-  string job_location = 6;
-  string job_type = 7;
-  Basic basic = 8;
-  repeated Profile profiles = 9;
-  repeated Work works = 10;
-  repeated Project projects = 11;
-  repeated Education educations = 12;
-  repeated Certificate certificates = 13;
-  repeated HardSkill hard_skills = 14;
-  repeated SoftSkill soft_skills = 15;
-  repeated Language languages = 16;
-  repeated Interest interests = 17;
-  Meta meta = 18;
-  string created_at = 19;
-  string updated_at = 20;
-}
-
-message Basic {
-  string name = 1;
-  string job_title = 2;
-  string image = 3;
-  string email = 4;
-  string phone_number = 5;
-  string website = 6;
-  string summary = 7;
-  string location_id = 8;
-  string city = 9;
-  string country_code = 10;
-  string region = 11;
+  string job_title = 6;
+  string region = 7;
+  string job_location = 8;
+  string job_type = 9;
+  int64 experience = 10;
+  string template = 11;
   string created_at = 12;
   string updated_at = 13;
-}
-
-message Profile {
-  string profile_id = 1;
-  string network = 2;
-  string username = 3;
-  string url = 4;
-  string created_at = 5;
-  string updated_at = 6;
-}
-
-message Work {
-  string work_id = 1;
-  string position = 2;
-  string company = 3;
-  string start_date = 4;
-  string end_date = 5;
-  string location = 6;
-  string summary = 7;
-  repeated string skills = 8;
-  string created_at = 9;
-  string updated_at = 10;
-}
-
-message Project {
-  string project_id = 1;
-  string name = 2;
-  string url = 3;
-  string description = 4;
-  string created_at = 5;
-  string updated_at = 6;
-}
-
-message Education {
-  string education_id = 1;
-  string institution = 2;
-  string area = 3;
-  string study_type = 4;
-  string location = 5;
-  string start_date = 6;
-  string end_date = 7;
-  string score = 8;
-  repeated string courses = 9;
-  string created_at = 10;
-  string updated_at = 11;
-}
-
-message Certificate {
-  string certificate_id = 1;
-  string title = 2;
-  string date = 3;
-  string issuer = 4;
-  string score = 5;
-  string url = 6;
-  string created_at = 7;
-  string updated_at = 8;
-}
-
-message HardSkill {
-  string hard_skill_id = 1;
-  string name = 2;
-  string level = 3;
-  string created_at = 4;
-  string updated_at = 5;
-}
-
-message SoftSkill {
-  string soft_skill_id = 1;
-  string name = 2;
-  string created_at = 3;
-  string updated_at = 4;
-}
-
-message Language {
-  string language_id = 1;
-  string language = 2;
-  string fluency = 3;
-  string created_at = 4;
-  string updated_at = 5;
-}
-
-message Interest {
-  string interest_id = 1;
-  string name = 2;
-  string created_at = 3;
-  string updated_at = 4;
-}
-
-message Meta {
-  string template = 1;
-  string lang = 2;
 }

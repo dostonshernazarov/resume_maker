@@ -3,9 +3,14 @@ definitions:
     properties:
       email:
         type: string
+      experience_year:
+        type: integer
       image:
         type: string
       job_location:
+        type: string
+      job_type:
+        example: full-time
         type: string
       label:
         type: string
@@ -184,6 +189,8 @@ definitions:
     properties:
       city:
         type: string
+      experiance_year:
+        type: integer
       filename:
         type: string
       id:
@@ -537,6 +544,33 @@ paths:
       consumes:
       - application/json
       description: Api for ListREsume
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: country
+        type: string
+      - in: query
+        name: experience
+        type: integer
+      - example: offline
+        in: query
+        name: job_location
+        type: string
+      - in: query
+        name: job_title
+        type: string
+      - example: full-time
+        in: query
+        name: job_type
+        type: string
+      - in: query
+        name: salary
+        type: integer
       produces:
       - application/json
       responses:

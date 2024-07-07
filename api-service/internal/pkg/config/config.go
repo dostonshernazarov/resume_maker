@@ -39,11 +39,12 @@ type Config struct {
 		SignInKey  string
 	}
 	Minio struct {
-		Endpoint              string
-		AccessKey             string
-		SecretKey             string
-		Location              string
-		MovieUploadBucketName string
+		Host       string
+		Port       string
+		AccessKey  string
+		SecretKey  string
+		Location   string
+		BucketName string
 	}
 	Kafka struct {
 		Address []string
@@ -77,6 +78,13 @@ func NewConfig() (*Config, error) {
 	config.Redis.Port = getEnv("REDIS_PORT", "6379")
 	config.Redis.Password = getEnv("REDIS_PASSWORD", "")
 	config.Redis.Name = getEnv("REDIS_DATABASE", "0")
+
+	// minio configuration
+	config.Minio.Host = getEnv("MINIO_HOST", "3.76.217.224")
+	config.Minio.Port = getEnv("MINIO_PORT", "9000")
+	config.Minio.AccessKey = getEnv("MINIO_ACCESS_KEY", "minioadmin")
+	config.Minio.SecretKey = getEnv("MINIO_SECRET_KEY", "minioadmin")
+	config.Minio.BucketName = getEnv("MINIO_BUCKET_NAME", "resumes")
 
 	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "resume-service")
 	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9080")

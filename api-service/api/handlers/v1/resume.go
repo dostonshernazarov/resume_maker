@@ -11,12 +11,14 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/dostonshernazarov/resume_maker/api-service/api/models"
 	"github.com/dostonshernazarov/resume_maker/api-service/api/services"
 	"github.com/dostonshernazarov/resume_maker/api-service/genproto/resume_service"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 	l "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/parser"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/pdf"
@@ -28,7 +30,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	"github.com/redis/go-redis/v9"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -121,23 +122,6 @@ func (h HandlerV1) BasicResumeData(c *gin.Context) {
 
 	redisId := uuid.New().String()
 
-	// Connect to redis
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-db:6379",
-		Password: "",
-		DB:       0,
-	})
-	defer func(rdb *redis.Client) {
-		err := rdb.Close()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("failed to close redis connection", err)
-			return
-		}
-	}(rdb)
-
 	userByte, err := json.Marshal(body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
@@ -146,7 +130,7 @@ func (h HandlerV1) BasicResumeData(c *gin.Context) {
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
-	_, err = rdb.Set(context.Background(), redisId, userByte, time.Hour*5).Result()
+	err = h.redisStorage.Set(context.Background(), redisId, userByte, time.Hour*5)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
@@ -190,23 +174,6 @@ func (h HandlerV1) MainResumeData(c *gin.Context) {
 		return
 	}
 
-	// Connect to redis
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-db:6379",
-		Password: "",
-		DB:       0,
-	})
-	defer func(rdb *redis.Client) {
-		err := rdb.Close()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("failed to close redis connection", err)
-			return
-		}
-	}(rdb)
-
 	userByte, err := json.Marshal(body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
@@ -215,7 +182,7 @@ func (h HandlerV1) MainResumeData(c *gin.Context) {
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
-	_, err = rdb.Set(context.Background(), body.MainRedisID, userByte, time.Hour*5).Result()
+	err = h.redisStorage.Set(context.Background(), body.MainRedisID, userByte, time.Hour*5)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: models.InternalMessage,
@@ -255,7 +222,6 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 
 	var Lastbody models.LastResumeReq
 	var resumeData models.Resume
-	var bodyProd models.BotProduce
 
 	if err := c.ShouldBindJSON(&Lastbody); err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
@@ -264,23 +230,7 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 		return
 	}
 
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-db:6379",
-		Password: "",
-		DB:       0,
-	})
-	defer func(rdb *redis.Client) {
-		err := rdb.Close()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("failed to close redis connection", err)
-			return
-		}
-	}(rdb)
-
-	basicValue, err := rdb.Get(context.Background(), Lastbody.BasicRedisID).Result()
+	basicValue, err := h.redisStorage.Get(context.Background(), Lastbody.BasicRedisID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.NotAvailable,
@@ -298,7 +248,7 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 		return
 	}
 
-	MainValue, err := rdb.Get(context.Background(), Lastbody.MainRedisID).Result()
+	MainValue, err := h.redisStorage.Get(context.Background(), Lastbody.MainRedisID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.NotAvailable,
@@ -354,104 +304,14 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 
 	multipartFile := createMultipartFileHeader(models.OutputPdfFile)
 
-	endpoint := "3.76.217.224:9000"
-	accessKeyID := "minioadmin"
-	secretAccessKey := "minioadmin"
-	bucketName := "resumes"
-	minioClient, err := minio.New(endpoint, &minio.Options{
-		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
-		Secure: false,
-	})
+	minioURL, err := GeneratePDFminio(multipartFile, resumeData.Basics.Name, c, h.Config)
 	if err != nil {
-		panic(err)
-	}
-	err = minioClient.MakeBucket(context.Background(), bucketName, minio.MakeBucketOptions{})
-	if err != nil {
-		if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
-		} else {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: err.Error(),
-			})
-			log.Println(err.Error())
-			return
-		}
-	}
-
-	policy := fmt.Sprintf(`{
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": ["*"]
-                },
-                "Action": ["s3:GetObject"],
-                "Resource": ["arn:aws:s3:::%s/*"]
-            }
-        ]
-    }`, bucketName)
-
-	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
-	if err != nil {
+		h.Logger.Error("GeneratePDFminio : " + err.Error())
 		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: err.Error(),
-		})
-		log.Println(err.Error())
-		return
-	}
-
-	file := &models.File{
-		File: multipartFile,
-	}
-
-	if file.File.Size > 10<<20 {
-		c.JSON(http.StatusBadRequest, models.Error{
-			Message: "File size cannot be larger than 10 MB",
+			Message: "failed to generate PDF in minio",
 		})
 		return
 	}
-
-	ext := filepath.Ext(file.File.Filename)
-
-	uploadDir := "./media"
-	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
-		err := os.Mkdir(uploadDir, os.ModePerm)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("Error creating media directory", err.Error())
-			return
-		}
-	}
-
-	userFullName := strings.Join(strings.Split(resumeData.Basics.Name, " "), "_") + "_CV_Maker"
-	newFilename := userFullName + ext
-	uploadPath := filepath.Join(uploadDir, newFilename)
-
-	if err := c.SaveUploadedFile(file.File, uploadPath); err != nil {
-		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: err.Error(),
-		})
-		log.Println(err)
-		return
-	}
-
-	objectName := newFilename
-	contentType := "application/pdf"
-	_, err = minioClient.FPutObject(context.Background(), bucketName, objectName, uploadPath, minio.PutObjectOptions{
-		ContentType: contentType,
-	})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: err.Error(),
-		})
-		log.Println(err)
-		return
-	}
-
-	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
 
 	userID, status := GetIdFromToken(c.Request, h.Config)
 	if status == http.StatusUnauthorized {
@@ -462,139 +322,17 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 		return
 	}
 
-	timeNow := time.Now()
-
-	var (
-		profiles     []*resume_service.Profile
-		works        []*resume_service.Work
-		projects     []*resume_service.Project
-		educations   []*resume_service.Education
-		certificates []*resume_service.Certificate
-		hardSkills   []*resume_service.HardSkill
-		softSkills   []*resume_service.SoftSkill
-		languages    []*resume_service.Language
-		interests    []*resume_service.Interest
-	)
-
-	for _, profile := range resumeData.Basics.Profiles {
-		profiles = append(profiles, &resume_service.Profile{
-			Network:  profile.Network,
-			Username: profile.Username,
-			Url:      profile.URL,
-		})
-	}
-
-	for _, work := range resumeData.Work {
-		if work.StartDate == "" {
-			work.StartDate = timeNow.String()
-		}
-		works = append(works, &resume_service.Work{
-			Position:  work.Position,
-			Company:   work.Company,
-			StartDate: work.StartDate,
-			EndDate:   work.EndDate,
-			Location:  work.Location,
-			Summary:   work.Summary,
-		})
-	}
-
-	for _, project := range resumeData.Projects {
-		projects = append(projects, &resume_service.Project{
-			Name:        project.Name,
-			Url:         project.URL,
-			Description: project.Description,
-		})
-	}
-
-	for _, education := range resumeData.Education {
-		if education.StartDate == "" {
-			education.StartDate = timeNow.String()
-		}
-		educations = append(educations, &resume_service.Education{
-			EducationId: uuid.NewString(),
-			Institution: education.Institution,
-			Area:        education.Area,
-			StudyType:   education.StudyType,
-			Location:    education.Location,
-			StartDate:   education.StartDate,
-			EndDate:     education.EndDate,
-			Score:       education.Score,
-			Courses:     education.Courses,
-		})
-	}
-
-	for _, certificate := range resumeData.Certificates {
-
-		if certificate.Date == "" {
-			certificate.Date = timeNow.String()
-		}
-		certificates = append(certificates, &resume_service.Certificate{
-			Title:  certificate.Title,
-			Date:   certificate.Date,
-			Issuer: certificate.Issuer,
-			Score:  certificate.Score,
-			Url:    certificate.URL,
-		})
-	}
-
-	for _, hard := range resumeData.Skills {
-		hardSkills = append(hardSkills, &resume_service.HardSkill{
-			Name:  hard.Name,
-			Level: hard.Level,
-		})
-	}
-
-	for _, soft := range resumeData.SoftSkills {
-		softSkills = append(softSkills, &resume_service.SoftSkill{
-			Name: soft.Name,
-		})
-	}
-
-	for _, lang := range resumeData.Languages {
-		languages = append(languages, &resume_service.Language{
-			Language: lang.Language,
-			Fluency:  lang.Fluency,
-		})
-	}
-
-	for _, interest := range resumeData.Interests {
-		interests = append(interests, &resume_service.Interest{
-			Name: interest.Name,
-		})
-	}
-
 	_, err = h.Service.ResumeService().CreateResume(context.Background(), &resume_service.Resume{
 		Id:          uuid.NewString(),
 		UserId:      userID,
-		Url:         resumeData.Basics.URL,
-		Filename:    minioURL,
-		Salary:      basicDetail.Salary,
-		JobLocation: basicDetail.JobLocation,
-		Basic: &resume_service.Basic{
-			Name:        resumeData.Basics.Name,
-			JobTitle:    resumeData.Basics.Label,
-			Image:       resumeData.Basics.Image,
-			Email:       resumeData.Basics.Email,
-			PhoneNumber: resumeData.Basics.Phone,
-			Website:     resumeData.Basics.URL,
-			Summary:     resumeData.Basics.Summary,
-			City:        resumeData.Basics.Location.City,
-			CountryCode: resumeData.Basics.Location.CountryCode,
-			Region:      resumeData.Basics.Location.Region,
-		},
-		Profiles:     profiles,
-		Works:        works,
-		Projects:     projects,
-		Educations:   educations,
-		Certificates: certificates,
-		HardSkills:   hardSkills,
-		SoftSkills:   softSkills,
-		Languages:    languages,
-		Interests:    interests,
-		Meta: &resume_service.Meta{
-			Template: resumeData.Meta.Template,
-			Lang:     resumeData.Meta.Lang,
-		},
+		Url:         minioURL,
+		Salary:      resumeData.Basics.Salary,
+		JobTitle:    resumeData.Basics.Label,
+		Region:      resumeData.Basics.Location.City,
+		JobLocation: resumeData.Basics.JobLocation,
+		JobType:     resumeData.Basics.JobType,
+		Experience:  int64(resumeData.Basics.ExperienceYear),
+		Template:    resumeData.Meta.Template,
 	})
 
 	if err != nil {
@@ -604,37 +342,6 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 		h.Logger.Error(fmt.Sprintf("failed to save resume content into service %v", err))
 		return
 	}
-
-	// Message telegram
-
-	bodyProd.FullName = resumeData.Basics.Name
-	bodyProd.Email = resumeData.Basics.Email
-	bodyProd.PhoneNumber = resumeData.Basics.Phone
-	bodyProd.JobTitle = resumeData.Basics.Label
-	bodyProd.City = resumeData.Basics.Location.City
-	bodyProd.Resume = minioURL
-
-	for _, v := range resumeData.Basics.Profiles {
-
-		bodyProd.Links = append(bodyProd.Links, v.URL)
-	}
-
-	bodyProd.Salary = resumeData.Basics.Salary
-	bodyProd.Summary = resumeData.Basics.Summary
-
-	message := formatMessage(bodyProd)
-
-	err = sendMessageToTelegram(h.Config.APIToken, h.Config.ChatID, message)
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: models.InternalMessage,
-		})
-		h.Logger.Error(fmt.Sprintf("failed to send resume to the telegram %v", err))
-		return
-	}
-
-	// Message telegram
 
 	c.JSON(http.StatusOK, minioURL)
 }
@@ -660,7 +367,6 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	service := services.NewResumeService(htmlParser, pdfGenerator)
 
 	var body models.ResumeGenetare
-	var bodyProd models.BotProduce
 
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
@@ -710,105 +416,14 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 
 	multipartFile := createMultipartFileHeader(models.OutputPdfFile)
 
-	endpoint := "3.76.217.224:9000"
-	accessKeyID := "minioadmin"
-	secretAccessKey := "minioadmin"
-	bucketName := "resumes"
-	minioClient, err := minio.New(endpoint, &minio.Options{
-		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
-		Secure: false,
-	})
+	minioURL, err := GeneratePDFminio(multipartFile, body.Basics.Name, c, h.Config)
 	if err != nil {
-		panic(err)
-	}
-	err = minioClient.MakeBucket(context.Background(), bucketName, minio.MakeBucketOptions{})
-	if err != nil {
-		if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
-		} else {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: err.Error(),
-			})
-			log.Println(err.Error())
-			return
-		}
-	}
-
-	policy := fmt.Sprintf(`{
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": ["*"]
-                },
-                "Action": ["s3:GetObject"],
-                "Resource": ["arn:aws:s3:::%s/*"]
-            }
-        ]
-    }`, bucketName)
-
-	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
-	if err != nil {
+		h.Logger.Error("GeneratePDFminio : " + err.Error())
 		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: err.Error(),
-		})
-		log.Println(err.Error())
-		return
-	}
-
-	file := &models.File{
-		File: multipartFile,
-	}
-
-	if file.File.Size > 10<<20 {
-		c.JSON(http.StatusBadRequest, models.Error{
-			Message: "File size cannot be larger than 10 MB",
+			Message: "failed to generate PDF in minio",
 		})
 		return
 	}
-
-	ext := filepath.Ext(file.File.Filename)
-
-	uploadDir := "./media"
-	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
-		err := os.Mkdir(uploadDir, os.ModePerm)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, models.Error{
-				Message: models.InternalMessage,
-			})
-			log.Println("Error creating media directory", err.Error())
-			return
-		}
-	}
-
-	cvuuid := uuid.NewString()
-	userFullName := strings.Join(strings.Split(resumeData.Basics.Name, " "), "") + cvuuid[:5] + "CVMaker"
-	newFilename := userFullName + ext
-	uploadPath := filepath.Join(uploadDir, newFilename)
-
-	if err := c.SaveUploadedFile(file.File, uploadPath); err != nil {
-		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: err.Error(),
-		})
-		log.Println(err)
-		return
-	}
-
-	objectName := newFilename
-	contentType := "application/pdf"
-	_, err = minioClient.FPutObject(context.Background(), bucketName, objectName, uploadPath, minio.PutObjectOptions{
-		ContentType: contentType,
-	})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: err.Error(),
-		})
-		log.Println(err)
-		return
-	}
-
-	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
 
 	userID, status := GetIdFromToken(c.Request, h.Config)
 	if status == http.StatusUnauthorized {
@@ -819,139 +434,17 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 		return
 	}
 
-	timeNow := time.Now()
-
-	var (
-		profiles     []*resume_service.Profile
-		works        []*resume_service.Work
-		projects     []*resume_service.Project
-		educations   []*resume_service.Education
-		certificates []*resume_service.Certificate
-		hardSkills   []*resume_service.HardSkill
-		softSkills   []*resume_service.SoftSkill
-		languages    []*resume_service.Language
-		interests    []*resume_service.Interest
-	)
-
-	for _, profile := range resumeData.Basics.Profiles {
-		profiles = append(profiles, &resume_service.Profile{
-			Network:  profile.Network,
-			Username: profile.Username,
-			Url:      profile.URL,
-		})
-	}
-
-	for _, work := range resumeData.Work {
-		if work.StartDate == "" {
-			work.StartDate = timeNow.String()
-		}
-		works = append(works, &resume_service.Work{
-			Position:  work.Position,
-			Company:   work.Company,
-			StartDate: work.StartDate,
-			EndDate:   work.EndDate,
-			Location:  work.Location,
-			Summary:   work.Summary,
-		})
-	}
-
-	for _, project := range resumeData.Projects {
-		projects = append(projects, &resume_service.Project{
-			Name:        project.Name,
-			Url:         project.URL,
-			Description: project.Description,
-		})
-	}
-
-	for _, education := range resumeData.Education {
-		if education.StartDate == "" {
-			education.StartDate = timeNow.String()
-		}
-		educations = append(educations, &resume_service.Education{
-			EducationId: uuid.NewString(),
-			Institution: education.Institution,
-			Area:        education.Area,
-			StudyType:   education.StudyType,
-			Location:    education.Location,
-			StartDate:   education.StartDate,
-			EndDate:     education.EndDate,
-			Score:       education.Score,
-			Courses:     education.Courses,
-		})
-	}
-
-	for _, certificate := range resumeData.Certificates {
-
-		if certificate.Date == "" {
-			certificate.Date = timeNow.String()
-		}
-		certificates = append(certificates, &resume_service.Certificate{
-			Title:  certificate.Title,
-			Date:   certificate.Date,
-			Issuer: certificate.Issuer,
-			Score:  certificate.Score,
-			Url:    certificate.URL,
-		})
-	}
-
-	for _, hard := range resumeData.Skills {
-		hardSkills = append(hardSkills, &resume_service.HardSkill{
-			Name:  hard.Name,
-			Level: hard.Level,
-		})
-	}
-
-	for _, soft := range resumeData.SoftSkills {
-		softSkills = append(softSkills, &resume_service.SoftSkill{
-			Name: soft.Name,
-		})
-	}
-
-	for _, lang := range resumeData.Languages {
-		languages = append(languages, &resume_service.Language{
-			Language: lang.Language,
-			Fluency:  lang.Fluency,
-		})
-	}
-
-	for _, interest := range resumeData.Interests {
-		interests = append(interests, &resume_service.Interest{
-			Name: interest.Name,
-		})
-	}
-
 	_, err = h.Service.ResumeService().CreateResume(context.Background(), &resume_service.Resume{
 		Id:          uuid.NewString(),
 		UserId:      userID,
-		Url:         resumeData.Basics.URL,
-		Filename:    minioURL,
-		Salary:      body.Salary,
-		JobLocation: body.JobLocation,
-		Basic: &resume_service.Basic{
-			Name:        resumeData.Basics.Name,
-			JobTitle:    resumeData.Basics.Label,
-			Image:       resumeData.Basics.Image,
-			Email:       resumeData.Basics.Email,
-			PhoneNumber: resumeData.Basics.Phone,
-			Website:     resumeData.Basics.URL,
-			Summary:     resumeData.Basics.Summary,
-			City:        resumeData.Basics.Location.City,
-			CountryCode: resumeData.Basics.Location.CountryCode,
-			Region:      resumeData.Basics.Location.Region,
-		},
-		Profiles:     profiles,
-		Works:        works,
-		Projects:     projects,
-		Educations:   educations,
-		Certificates: certificates,
-		HardSkills:   hardSkills,
-		SoftSkills:   softSkills,
-		Languages:    languages,
-		Interests:    interests,
-		Meta: &resume_service.Meta{
-			Template: resumeData.Meta.Template,
-			Lang:     resumeData.Meta.Lang,
-		},
+		Url:         minioURL,
+		Salary:      resumeData.Basics.Salary,
+		JobTitle:    resumeData.Basics.Label,
+		Region:      resumeData.Basics.Location.City,
+		JobLocation: resumeData.Basics.JobLocation,
+		JobType:     resumeData.Basics.JobType,
+		Experience:  int64(resumeData.Basics.ExperienceYear),
+		Template:    resumeData.Meta.Template,
 	})
 
 	if err != nil {
@@ -961,37 +454,6 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 		h.Logger.Error(fmt.Sprintf("failed to save resume content into service %v", err))
 		return
 	}
-
-	// Message telegram
-
-	bodyProd.FullName = resumeData.Basics.Name
-	bodyProd.Email = resumeData.Basics.Email
-	bodyProd.PhoneNumber = resumeData.Basics.Phone
-	bodyProd.JobTitle = resumeData.Basics.Label
-	bodyProd.City = resumeData.Basics.Location.City
-	bodyProd.Resume = minioURL
-
-	for _, v := range resumeData.Basics.Profiles {
-
-		bodyProd.Links = append(bodyProd.Links, v.URL)
-	}
-
-	bodyProd.Salary = resumeData.Basics.Salary
-	bodyProd.Summary = resumeData.Basics.Summary
-
-	message := formatMessage(bodyProd)
-
-	err = sendMessageToTelegram(h.Config.APIToken, h.Config.ChatID, message)
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: models.InternalMessage,
-		})
-		h.Logger.Error(fmt.Sprintf("failed to send resume to the telegram %v", err))
-		return
-	}
-
-	// Message telegram
 
 	c.JSON(http.StatusOK, minioURL)
 }
@@ -1189,10 +651,11 @@ func (h *HandlerV1) ListUserResume(c *gin.Context) {
 		var resRes models.ResResume
 		resRes.ID = val.Id
 		resRes.UserID = val.UserId
-		resRes.Filename = val.Filename
-		resRes.JobTitle = val.Basic.JobTitle
+		resRes.Filename = val.Url
+		resRes.JobTitle = val.JobTitle
 		resRes.Salary = val.Salary
 		resRes.JobLocation = val.JobLocation
+		resRes.Experiance = int32(val.Experience)
 
 		resumes = append(resumes, &resRes)
 	}
@@ -1207,6 +670,8 @@ func (h *HandlerV1) ListUserResume(c *gin.Context) {
 // @Tags RESUME
 // @Accept json
 // @Produce json
+// @Param request query models.Pagination true "request"
+// @Param request query models.Filter true "request"
 // @Success 200 {object} models.ResResumeList
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -1221,13 +686,72 @@ func (h *HandlerV1) ListResume(c *gin.Context) {
 		return
 	}
 
+	job_title := c.Query("job_title")
+	job_location := c.Query("job_location")
+	job_type := c.Query("job_type")
+	salary := c.Query("salary")
+	country := c.Query("country")
+	experience := c.Query("experience")
+
+	job_location = strings.ToLower(job_location)
+	job_type = strings.ToLower(job_type)
+
+	if job_location != "offline" && job_location != "online" {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		return
+	}
+
+	if job_type != "full-time" && job_type != "part-time" {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		return
+	}
+
+	salaryInt, err := strconv.Atoi(salary)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		return
+	}
+	if salaryInt < -1 {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		return
+	}
+
+	experienceInt, err := strconv.Atoi(experience)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		return
+	}
+
+	if experienceInt < -1 {
+		c.JSON(http.StatusBadRequest, models.Error{
+			Message: models.NotAvailable,
+		})
+		return
+	}
+
 	var jsonMarshal protojson.MarshalOptions
 	jsonMarshal.UseProtoNames = true
 
 	response, err := h.Service.ResumeService().ListResume(
 		context.Background(), &resume_service.ListRequest{
-			Page:  params.Page,
-			Limit: params.Limit,
+			Page:        params.Page,
+			Limit:       params.Limit,
+			JobTitle:    job_title,
+			JobLocation: job_location,
+			JobType:     job_type,
+			Salary:      int64(salaryInt),
+			Region:      country,
+			Experience:  int64(experienceInt),
 		})
 
 	if err != nil {
@@ -1243,10 +767,11 @@ func (h *HandlerV1) ListResume(c *gin.Context) {
 		var resRes models.ResResume
 		resRes.ID = val.Id
 		resRes.UserID = val.UserId
-		resRes.Filename = val.Filename
-		resRes.JobTitle = val.Basic.JobTitle
+		resRes.Filename = val.Url
+		resRes.JobTitle = val.JobTitle
 		resRes.Salary = val.Salary
 		resRes.JobLocation = val.JobLocation
+		resRes.Experiance = int32(val.Experience)
 
 		resumes.Resumes = append(resumes.Resumes, resRes)
 	}
@@ -1325,19 +850,89 @@ func formatMessage(botProduce models.BotProduce) string {
 		botProduce.FullName, botProduce.Email, botProduce.PhoneNumber, botProduce.JobTitle, botProduce.Resume, links, botProduce.City, botProduce.Salary, botProduce.Summary)
 }
 
-func sendMessageToTelegram(apiToken string, chatID string, message string) error {
-	bot, err := tgbotapi.NewBotAPI(apiToken)
+func GeneratePDFminio(multipartFile *multipart.FileHeader, basicUserName string, c *gin.Context, cfg *config.Config) (string, error) {
+	// minio
+	endpoint := cfg.Minio.Host + ":" + cfg.Minio.Port
+	accessKeyID := cfg.Minio.AccessKey
+	secretAccessKey := cfg.Minio.SecretKey
+	bucketName := cfg.Minio.BucketName
+	minioClient, err := minio.New(endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
+		Secure: false,
+	})
 	if err != nil {
-		return fmt.Errorf("failed to create a new bot: %w", err)
+		panic(err)
+	}
+	err = minioClient.MakeBucket(context.Background(), bucketName, minio.MakeBucketOptions{})
+	if err != nil {
+		if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
+		} else {
+			log.Println(err.Error())
+			return "", err
+		}
 	}
 
-	msg := tgbotapi.NewMessageToChannel(chatID, message)
-	msg.ParseMode = "Markdown"
+	policy := fmt.Sprintf(`{
+			"Version": "2012-10-17",
+			"Statement": [
+					{
+							"Effect": "Allow",
+							"Principal": {
+									"AWS": ["*"]
+							},
+							"Action": ["s3:GetObject"],
+							"Resource": ["arn:aws:s3:::%s/*"]
+					}
+			]
+	}`, bucketName)
 
-	_, err = bot.Send(msg)
+	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
 	if err != nil {
-		return fmt.Errorf("failed to send message: %w", err)
+
+		log.Println(err.Error())
+		return "", err
 	}
 
-	return nil
+	file := &models.File{
+		File: multipartFile,
+	}
+
+	if file.File.Size > 10<<20 {
+		return "", err
+	}
+
+	ext := filepath.Ext(file.File.Filename)
+
+	uploadDir := "./media"
+	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
+		err := os.Mkdir(uploadDir, os.ModePerm)
+		if err != nil {
+			log.Println("Error creating media directory", err.Error())
+			return "", err
+		}
+	}
+
+	cvuuid := uuid.NewString()
+	userFullName := strings.Join(strings.Split(basicUserName, " "), "") + cvuuid[:5] + "CVMaker"
+	newFilename := userFullName + ext
+	uploadPath := filepath.Join(uploadDir, newFilename)
+
+	if err := c.SaveUploadedFile(file.File, uploadPath); err != nil {
+		log.Println(err)
+		return "", err
+	}
+
+	objectName := newFilename
+	contentType := "application/pdf"
+	_, err = minioClient.FPutObject(context.Background(), bucketName, objectName, uploadPath, minio.PutObjectOptions{
+		ContentType: contentType,
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
+	// minio
+	return minioURL, nil
 }
