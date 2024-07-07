@@ -14,7 +14,7 @@ type Resume interface {
 	DeleteUserResumes(ctx context.Context, userID string) error
 	GetResumeByID(ctx context.Context, resumeID string) (*entity.Resume, error)
 	GetUserResume(ctx context.Context, userID string, page, limit uint64) (*entity.ListResume, error)
-	ListResume(ctx context.Context, limit, offset uint64) (*entity.ListResume, error)
+	ListResume(ctx context.Context, request *entity.ListRequest) (*entity.ListResume, error)
 }
 
 type resumeService struct {
@@ -72,9 +72,9 @@ func (u resumeService) GetUserResume(ctx context.Context, userID string, limit, 
 	return u.repo.GetUserResume(ctx, userID, limit, offset)
 }
 
-func (u resumeService) ListResume(ctx context.Context, limit, offset uint64) (*entity.ListResume, error) {
+func (u resumeService) ListResume(ctx context.Context, request *entity.ListRequest) (*entity.ListResume, error) {
 	ctx, cancel := context.WithTimeout(ctx, u.ctxTimeout)
 	defer cancel()
 
-	return u.repo.ListResume(ctx, limit, offset)
+	return u.repo.ListResume(ctx, request)
 }
