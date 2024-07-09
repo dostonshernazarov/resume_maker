@@ -5,16 +5,14 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-
-	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/app"
 )
 
-func productionConfig(file string) zap.Config {
-	configZap := zap.NewProductionConfig()
-	configZap.OutputPaths = []string{"stdout", file}
-	configZap.DisableStacktrace = true
-	return configZap
-}
+// func productionConfig(file string) zap.Config {
+// 	configZap := zap.NewProductionConfig()
+// 	configZap.OutputPaths = []string{"stdout", file}
+// 	configZap.DisableStacktrace = true
+// 	return configZap
+// }
 
 func developmentConfig(file string) zap.Config {
 	configZap := zap.NewDevelopmentConfig()
@@ -26,11 +24,11 @@ func developmentConfig(file string) zap.Config {
 func New(level, environment string, file_name string) (*zap.Logger, error) {
 	file := filepath.Join("./" + file_name)
 
-	configZap := productionConfig(file)
+	configZap := developmentConfig(file)
 
-	if environment == app.EnvironmentDevelop {
-		configZap = developmentConfig(file)
-	}
+	// if environment == app.EnvironmentDevelop {
+	// 	configZap = developmentConfig(file)
+	// }
 
 	switch level {
 	case "debug":

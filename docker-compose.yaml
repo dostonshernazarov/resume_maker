@@ -96,11 +96,16 @@ services:
     container_name: api-service
     build: ./api-service
     depends_on:
-      - redis-db
-      - postgres-db
-      - resume-service
-      - user-service
-      - rabbitmq
+      redis-db:
+        condition: service_started
+      postgres-db:
+        condition: service_started
+      resume-service:
+        condition: service_started
+      user-service:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     environment:
       - AMQP_SERVER=amqp://guest:guest@rabbitmq:5672/
       - QUEUE_NAME=cvmaker_queue

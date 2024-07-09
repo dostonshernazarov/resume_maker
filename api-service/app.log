@@ -95,3 +95,47 @@ net/http.(*conn).serve
 2024-06-27T20:35:07.577+0500	INFO	app/main.go:41	api gateway service stops
 2024-06-27T20:52:37.559+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
 2024-06-27T20:53:53.908+0500	INFO	app/main.go:41	api gateway service stops
+2024-07-09T15:36:28.710+0500	INFO	app/main.go:30	Listen: 	{"address": "localhost:8080"}
+2024-07-09T15:37:28.479+0500	ERROR	v1/resume.go:421	GeneratePDFminio : Put "http://3.76.217.224:9000/resumes/": dial tcp 3.76.217.224:9000: i/o timeout
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:421
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-07-09T15:38:00.845+0500	ERROR	v1/resume.go:421	GeneratePDFminio : Put "http://3.76.217.224:9000/resumes/": dial tcp 3.76.217.224:9000: i/o timeout
+github.com/dostonshernazarov/resume_maker/api-service/api/handlers/v1.(*HandlerV1).GenerateResume
+	/home/doston/project/go/src/musobaqa/resume_maker/api-service/api/handlers/v1/resume.go:421
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/home/doston/project/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:3137
+net/http.(*conn).serve
+	/home/doston/project/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.2.linux-amd64/src/net/http/server.go:2039
+2024-07-09T15:38:02.841+0500	INFO	app/main.go:41	api gateway service stops

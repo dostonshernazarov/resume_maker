@@ -17,6 +17,7 @@ type RabbitMQProducerImpl struct {
 func NewRabbitMQProducer(amqpURI string) (*RabbitMQProducerImpl, error) {
 	conn, err := amqp.Dial(amqpURI)
 	if err != nil {
+		println("error")
 		return nil, err
 	}
 
