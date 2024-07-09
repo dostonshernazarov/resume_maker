@@ -7,6 +7,7 @@ import (
 	"go.uber.org/zap"
 
 	grpcClients "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/grpc_service_client"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/rabbitmq"
 	repo "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/repository/redis"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 	tokens "github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/token"
@@ -25,6 +26,7 @@ type HandlerV1 struct {
 	BrokerProducer event.BrokerProducer
 	Enforcer       *casbin.Enforcer
 	redisStorage   repo.Cache
+	writer         *rabbitmq.RabbitMQProducerImpl
 }
 
 type HandlerV1Config struct {
@@ -37,6 +39,7 @@ type HandlerV1Config struct {
 	BrokerProducer event.BrokerProducer
 	Enforcer       *casbin.Enforcer
 	Redis          repo.Cache
+	Writer         *rabbitmq.RabbitMQProducerImpl
 }
 
 func New(c *HandlerV1Config) *HandlerV1 {
@@ -50,5 +53,6 @@ func New(c *HandlerV1Config) *HandlerV1 {
 		BrokerProducer: c.BrokerProducer,
 		Enforcer:       c.Enforcer,
 		redisStorage:   c.Redis,
+		writer:         c.Writer,
 	}
 }

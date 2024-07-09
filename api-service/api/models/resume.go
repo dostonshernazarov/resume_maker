@@ -89,6 +89,21 @@ type Basics struct {
 	ExperienceYear int32     `json:"experience_year"`
 }
 
+type ResumeBot struct {
+	Name           string    `json:"name"`
+	Label          string    `json:"label"`
+	Email          string    `json:"email"`
+	Phone          string    `json:"phone"`
+	Summary        string    `json:"summary"`
+	Location       Location  `json:"location"`
+	URL            string    `json:"url"`
+	Profiles       []Profile `json:"profiles"`
+	Salary         uint64    `json:"salary"`
+	JobLocation    string    `json:"job_location"`
+	JobType        string    `json:"job_type" example:"full-time"`
+	ExperienceYear int32     `json:"experience_year"`
+}
+
 type BotProduce struct {
 	FullName    string   `json:"full_name"`
 	Email       string   `json:"email"`

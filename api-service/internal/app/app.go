@@ -14,6 +14,7 @@ import (
 	grpcService "github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/grpc_service_client"
 
 	defaultrolemanager "github.com/casbin/casbin/v2/rbac/default-role-manager"
+	"github.com/dostonshernazarov/resume_maker/api-service/internal/infrastructure/rabbitmq"
 
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/config"
 	"github.com/dostonshernazarov/resume_maker/api-service/internal/pkg/logger"
@@ -31,6 +32,7 @@ type App struct {
 	Clients        grpcService.ServiceClient
 	BrokerProducer event.BrokerProducer
 	appVersion     app_version.AppVersion
+	writer         *rabbitmq.RabbitMQProducerImpl
 }
 
 func NewApp(cfg config.Config) (*App, error) {
@@ -43,13 +45,19 @@ func NewApp(cfg config.Config) (*App, error) {
 	// kafka producer init
 	// kafkaProducer := kafka.NewProducer(&cfg, logger)
 
-	// redis init
-	redisdb, err := redis.New(&cfg)
+	//RabbitMQ producer init
+	writer, err := rabbitmq.NewRabbitMQProducer(cfg.RabbitMQ.Host)
 	if err != nil {
 		return nil, err
 	}
 
-	// otlp collector init
+	// err = writer.ProducerMessage("test-topic", []byte("\nthis message has come from produce"))
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// redis init
+	redisdb, err := redis.New(&cfg)
 	if err != nil {
 		return nil, err
 	}
@@ -77,6 +85,7 @@ func NewApp(cfg config.Config) (*App, error) {
 		Logger:   logger,
 		RedisDB:  redisdb,
 		Enforcer: enforcer,
+		writer:   writer,
 		// BrokerProducer: kafkaProducer,
 	}, nil
 }
@@ -102,6 +111,7 @@ func (a *App) Run() error {
 		Service:        clients,
 		BrokerProducer: a.BrokerProducer,
 		AppVersion:     a.appVersion,
+		Writer:         a.writer,
 	})
 	err = a.Enforcer.LoadPolicy()
 	if err != nil {
@@ -127,6 +137,9 @@ func (a *App) Stop() {
 
 	// kafka producer close
 	a.BrokerProducer.Close()
+
+	//rabbitmq producer close
+	a.writer.Close()
 
 	// shutdown server http
 	if err := a.server.Shutdown(context.Background()); err != nil {

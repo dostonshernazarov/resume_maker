@@ -109,6 +109,7 @@ func (h HandlerV1) RegisterUser(c *gin.Context) {
 		h.Logger.Error("Failed to marshal body", l.Error(err))
 		return
 	}
+	
 	err = h.redisStorage.Set(context.Background(), body.Email, userByte, time.Minute*5)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{

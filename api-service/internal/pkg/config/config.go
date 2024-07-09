@@ -52,6 +52,10 @@ type Config struct {
 			UserCreateTopic string
 		}
 	}
+	RabbitMQ struct {
+		Host  string
+		Topic string
+	}
 	ResumeService   webAddress
 	UserService     webAddress
 	TelegramService webAddress
@@ -74,7 +78,7 @@ func NewConfig() (*Config, error) {
 	config.Server.IdleTimeout = getEnv("SERVER_IDLE_TIMEOUT", "120s")
 
 	// redis configuration
-	config.Redis.Host = getEnv("REDIS_HOST", "localhost")
+	config.Redis.Host = getEnv("REDIS_HOST", "redis-db")
 	config.Redis.Port = getEnv("REDIS_PORT", "6379")
 	config.Redis.Password = getEnv("REDIS_PASSWORD", "")
 	config.Redis.Name = getEnv("REDIS_DATABASE", "0")
@@ -109,13 +113,18 @@ func NewConfig() (*Config, error) {
 		return nil, err
 	}
 
+	//JWT key
 	config.Token.AccessTTL = accessTTl
 	config.Token.RefreshTTL = refreshTTL
+	config.Token.SignInKey = getEnv("TOKEN_SIGNING_KEY", "token_secret")
 
+	//Telegram config
 	config.APIToken = "7303220559:AAHgpp6y1f_dk-iLsZ_gGrjwoI5-9mTVrPY"
 	config.ChatID = "-1002142909351"
 
-	config.Token.SignInKey = getEnv("TOKEN_SIGNING_KEY", "token_secret")
+	//RabbitMQ config
+	config.RabbitMQ.Host = getEnv("AMQP_SERVER", "amqp://guest:guest@rabbitmq:5672/")
+	config.RabbitMQ.Topic = getEnv("QUEUE_NAME", "cvmaker_queue")
 
 	// kafka configuration
 	config.Kafka.Address = strings.Split(getEnv("KAFKA_ADDRESS", "localhost:9092"), ",")

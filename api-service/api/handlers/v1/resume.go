@@ -455,6 +455,32 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 		return
 	}
 
+	//Rabbitmq for telegram bot
+	var resumeBot models.ResumeBot
+	resumeBot.Name = resumeData.Basics.Name
+	resumeBot.Email = resumeData.Basics.Email
+	resumeBot.Label = resumeData.Basics.Label
+	resumeBot.Location = resumeData.Basics.Location
+	resumeBot.Phone = resumeData.Basics.Phone
+	resumeBot.JobType = resumeData.Basics.JobType
+	resumeBot.JobLocation = resumeData.Basics.JobLocation
+	resumeBot.ExperienceYear = resumeData.Basics.ExperienceYear
+	resumeBot.Profiles = resumeData.Basics.Profiles
+	resumeBot.Salary = resumeData.Basics.Salary
+	resumeBot.Summary = resumeData.Basics.Summary
+	resumeBot.URL = minioURL
+
+	byteBot, err := json.Marshal(resumeBot)
+	if err != nil {
+		h.Logger.Error(fmt.Sprintf("failed to marshal data vor producer %v", err))
+	}
+
+	err = h.writer.ProducerMessage(h.Config.RabbitMQ.Topic, byteBot)
+	if err != nil {
+		h.Logger.Error(fmt.Sprintf("failed to send message to consumer %v", err))
+	}
+	//rabbitmq
+
 	c.JSON(http.StatusOK, minioURL)
 }
 
