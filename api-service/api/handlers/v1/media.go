@@ -43,10 +43,10 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), duration)
 	defer cancel()
 
-	endpoint := "3.76.217.224:9000"
-	accessKeyID := "minioadmin"
-	secretAccessKey := "minioadmin"
-	bucketName := "resumes"
+	endpoint := h.Config.Minio.Host + h.Config.Minio.Port
+	accessKeyID := h.Config.Minio.AccessKey
+	secretAccessKey := h.Config.Minio.SecretKey
+	bucketName := h.Config.Minio.BucketName
 	minioClient, err := minio.New(endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
 		Secure: false,
