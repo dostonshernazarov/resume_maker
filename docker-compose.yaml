@@ -110,7 +110,7 @@ services:
       - AMQP_SERVER=amqp://guest:guest@rabbitmq:5672/
       - QUEUE_NAME=cvmaker_queue
     ports:
-      - "8080:8080"
+      - "9070:9070"
     networks:
       - cv
 
