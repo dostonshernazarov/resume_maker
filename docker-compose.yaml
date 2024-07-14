@@ -37,7 +37,7 @@ services:
     volumes:
       - db:/databasedatadb/postgres
     ports:
-      - "5332:5332"
+      - "5232:5332"
     networks:
       - cv
     restart: unless-stopped
