@@ -8,7 +8,7 @@ services:
       - cv
     volumes:
       - ./user-service/migrations:/migrations
-    command: [ "-path", "/migrations", "-database",  "postgres://postgres:root@postgres:5432/resume?sslmode=disable", "up" ]
+    command: [ "-path", "/migrations", "-database",  "postgres://postgres:root@cvmaker_postgres:5432/resume?sslmode=disable", "up" ]
     depends_on:
       - postgres-db
 
@@ -37,7 +37,7 @@ services:
     volumes:
       - db:/databasedatadb/postgres
     ports:
-      - "5232:5332"
+      - "5333:5333"
     networks:
       - cv
     restart: unless-stopped
