@@ -878,7 +878,7 @@ func formatMessage(botProduce models.BotProduce) string {
 
 func GeneratePDFminio(multipartFile *multipart.FileHeader, basicUserName string, c *gin.Context, cfg *config.Config) (string, error) {
 	// minio
-	endpoint := cfg.Minio.Host + ":" + cfg.Minio.Port
+	endpoint := cfg.Minio.Host + cfg.Minio.Port
 	accessKeyID := cfg.Minio.AccessKey
 	secretAccessKey := cfg.Minio.SecretKey
 	bucketName := cfg.Minio.BucketName
