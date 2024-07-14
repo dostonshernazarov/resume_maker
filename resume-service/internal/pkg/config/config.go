@@ -44,18 +44,18 @@ func New() *Config {
 	config.Context.Timeout = getEnv("CONTEXT_TIMEOUT", "30s")
 
 	// db configuration
-	config.DB.Host = getEnv("POSTGRES_HOST", "postgres")
+	config.DB.Host = getEnv("POSTGRES_HOST", "cvmaker_postgres")
 	config.DB.Port = getEnv("POSTGRES_PORT", "5432")
 	config.DB.User = getEnv("POSTGRES_USER", "postgres")
 	config.DB.Password = getEnv("POSTGRES_PASSWORD", "root")
 	config.DB.Name = getEnv("POSTGRES_DATABASE", "resume")
 
 	// telegram service
-	config.TelegramService.Host = getEnv("TELEGRAM_SERVICE_RPC_HOST", "telegram-service")
+	config.TelegramService.Host = getEnv("TELEGRAM_SERVICE_RPC_HOST", "cvmaker_telegram-service")
 	config.TelegramService.Port = getEnv("TELEGRAM_SERVICE_RPC_PORT", ":8090")
 
 	// user service
-	config.UserService.Host = getEnv("USER_SERVICE_RPC_HOST", "user-service")
+	config.UserService.Host = getEnv("USER_SERVICE_RPC_HOST", "cvmaker_user-service")
 	config.UserService.Port = getEnv("USER_SERVICE_RPC_PORT", ":9090")
 
 	return &config

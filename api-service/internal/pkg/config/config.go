@@ -71,30 +71,30 @@ func NewConfig() (*Config, error) {
 	config.Context.Timeout = getEnv("CONTEXT_TIMEOUT", "7s")
 
 	// server configuration
-	config.Server.Host = getEnv("SERVER_HOST", "api-service")
+	config.Server.Host = getEnv("SERVER_HOST", "cvmaker_api-service")
 	config.Server.Port = getEnv("SERVER_PORT", ":8080")
 	config.Server.ReadTimeout = getEnv("SERVER_READ_TIMEOUT", "10s")
 	config.Server.WriteTimeout = getEnv("SERVER_WRITE_TIMEOUT", "10s")
 	config.Server.IdleTimeout = getEnv("SERVER_IDLE_TIMEOUT", "120s")
 
 	// redis configuration
-	config.Redis.Host = getEnv("REDIS_HOST", "redis-db")
+	config.Redis.Host = getEnv("REDIS_HOST", "rcvmaker_edis-db")
 	config.Redis.Port = getEnv("REDIS_PORT", "6379")
 	config.Redis.Password = getEnv("REDIS_PASSWORD", "")
 	config.Redis.Name = getEnv("REDIS_DATABASE", "0")
 
 	// minio configuration
-	config.Minio.Host = getEnv("MINIO_HOST", "45.130.148.73")
+	config.Minio.Host = getEnv("MINIO_HOST", "164.90.169.237")
 	config.Minio.Port = getEnv("MINIO_PORT", "9000")
 	config.Minio.AccessKey = getEnv("MINIO_ACCESS_KEY", "minioadmin")
 	config.Minio.SecretKey = getEnv("MINIO_SECRET_KEY", "minioadmin")
 	config.Minio.BucketName = getEnv("MINIO_BUCKET_NAME", "resumes")
 
-	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "resume-service")
+	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "cvmaker_resume-service")
 	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9080")
 
 	// user configuration
-	config.UserService.Host = getEnv("USER_SERVICE_GRPC_HOST", "user-service")
+	config.UserService.Host = getEnv("USER_SERVICE_GRPC_HOST", "cvmaker_user-service")
 	config.UserService.Port = getEnv("USER_SERVICE_GRPC_PORT", ":9090")
 
 	// telegram configuration

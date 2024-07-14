@@ -27,7 +27,7 @@ services:
       - MINIO_DEFAULT_BUCKETS=resumes
 
   postgres-db:
-    container_name: postgres
+    container_name: cvmaker_postgres
     image: postgres
     environment:
       POSTGRES_USER: postgres
@@ -48,7 +48,7 @@ services:
       retries: 5
 
   redis-db:
-    container_name: redis-db
+    container_name: cvmaker_redis-db
     image: redis
     ports:
       - "6380:6380"
@@ -70,7 +70,7 @@ services:
       retries: 5
 
   user-service:
-    container_name: user-service
+    container_name: cvmaker_user-service
     build: ./user-service
     depends_on:
       - redis-db
@@ -81,7 +81,7 @@ services:
       - cv
 
   resume-service:
-    container_name: resume-service
+    container_name: cvmaker_resume-service
     build: ./resume-service
     depends_on:
       - redis-db
@@ -93,7 +93,7 @@ services:
       - cv
 
   api-service:
-    container_name: api-service
+    container_name: cvmaker_api-service
     build: ./api-service
     depends_on:
       redis-db:
