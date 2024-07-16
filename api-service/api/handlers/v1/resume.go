@@ -545,7 +545,7 @@ func (h *HandlerV1) UploadResumePhoto(c *gin.Context) {
         ]
     }`, bucketName)
 
-	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
+	err = minioClient.SetBucketPolicy(ctx, bucketName, policy)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: err.Error(),
@@ -889,7 +889,19 @@ func GeneratePDFminio(multipartFile *multipart.FileHeader, basicUserName string,
 	if err != nil {
 		panic(err)
 	}
-	err = minioClient.MakeBucket(context.Background(), bucketName, minio.MakeBucketOptions{})
+
+	duration, err := time.ParseDuration(cfg.Context.Timeout)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err.Error())
+		return "", err
+	}
+	ctx, cancel := context.WithTimeout(c, duration)
+	defer cancel()
+
+	err = minioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{})
 	if err != nil {
 		if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
 		} else {
@@ -912,7 +924,7 @@ func GeneratePDFminio(multipartFile *multipart.FileHeader, basicUserName string,
 			]
 	}`, bucketName)
 
-	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
+	err = minioClient.SetBucketPolicy(ctx, bucketName, policy)
 	if err != nil {
 
 		log.Println(err.Error())
@@ -959,6 +971,7 @@ func GeneratePDFminio(multipartFile *multipart.FileHeader, basicUserName string,
 	}
 
 	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
+
 	// minio
 	return minioURL, nil
 }
