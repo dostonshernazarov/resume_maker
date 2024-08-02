@@ -91,7 +91,7 @@ func NewConfig() (*Config, error) {
 	config.Minio.BucketName = getEnv("MINIO_BUCKET_NAME", "resumes")
 
 	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "cvmaker_resume-service")
-	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9080")
+	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9070")
 
 	// user configuration
 	config.UserService.Host = getEnv("USER_SERVICE_GRPC_HOST", "cvmaker_user-service")
@@ -119,8 +119,8 @@ func NewConfig() (*Config, error) {
 	config.Token.SignInKey = getEnv("TOKEN_SIGNING_KEY", "token_secret")
 
 	//Telegram config
-	config.APIToken = "7303220559:AAHgpp6y1f_dk-iLsZ_gGrjwoI5-9mTVrPY"
-	config.ChatID = "-1002142909351"
+	config.APIToken = getEnv("TELEGRAM_BOT_TOKEN", "7303220559:AAHgpp6y1f_dk-iLsZ_gGrjwoI5-9mTVrPY")
+	config.ChatID = getEnv("CHAT_ID", "-1002142909351")
 
 	//RabbitMQ config
 	config.RabbitMQ.Host = getEnv("AMQP_SERVER", "amqp://guest:guest@rabbitmq:5672/")
