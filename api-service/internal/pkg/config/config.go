@@ -78,7 +78,7 @@ func NewConfig() (*Config, error) {
 	config.Server.IdleTimeout = getEnv("SERVER_IDLE_TIMEOUT", "120s")
 
 	// redis configuration
-	config.Redis.Host = getEnv("REDIS_HOST", "rcvmaker_edis-db")
+	config.Redis.Host = getEnv("REDIS_HOST", "cvmaker_redis-db")
 	config.Redis.Port = getEnv("REDIS_PORT", "6379")
 	config.Redis.Password = getEnv("REDIS_PASSWORD", "")
 	config.Redis.Name = getEnv("REDIS_DATABASE", "0")
