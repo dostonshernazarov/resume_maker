@@ -84,7 +84,7 @@ func NewConfig() (*Config, error) {
 	config.Redis.Name = getEnv("REDIS_DATABASE", "0")
 
 	// minio configuration
-	config.Minio.Host = getEnv("MINIO_HOST", "164.90.169.237")
+	config.Minio.Host = getEnv("MINIO_HOST", "35.198.173.128")
 	config.Minio.Port = getEnv("MINIO_PORT", ":9000")
 	config.Minio.AccessKey = getEnv("MINIO_ACCESS_KEY", "minioadmin")
 	config.Minio.SecretKey = getEnv("MINIO_SECRET_KEY", "minioadmin")
