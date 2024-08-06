@@ -19,3 +19,12 @@ jobs:
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          git clone git@github.com:dostonshernazarov/resume_maker.git
+          sudo docker network create cv
+
+          cd resume_maker
+          sudo docker compose down
+          sudo docker compose up -d
+          echo dir changed to resume_maker main directory, up and down
