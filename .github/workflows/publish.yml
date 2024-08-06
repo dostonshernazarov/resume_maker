@@ -14,17 +14,24 @@ jobs:
     - name: Checkout our repository
       uses: actions/checkout@v4
 
-    - name: Deploy
+    - name: Verify Connection Details
+      run: |
+        echo "Connecting to host: ${{ secrets.SSH_HOST }}"
+        echo "Using user: ${{ secrets.SSH_USER }}"
+
+    - name: Deploy to Google cloud
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PASSWORD }}
+        key: ${{ secrets.SSH_KEY }}
+        key_format: pem
+        port: 22
         script: |
-          git clone git@github.com:dostonshernazarov/resume_maker.git
-          sudo docker network create cv
-
-          cd resume_maker
+          echo "Starting deployment..."
+          cd /projects/go/resume_maker
           sudo docker compose down
+          docker system prune -af
+          git pull origin main
           sudo docker compose up -d
-          echo dir changed to resume_maker main directory, up and down
+          echo "Deployment complete."
