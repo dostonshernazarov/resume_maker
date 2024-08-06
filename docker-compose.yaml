@@ -65,11 +65,15 @@ services:
       - "15673:15672"
     networks:
       - cv
+    volumes:
+    - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 40s
 
   user-service:
     container_name: cvmaker_user-service
@@ -146,4 +150,6 @@ volumes:
   db:
     driver: local
   minio_data:
+    driver: local
+  rabbitmq_data:
     driver: local
