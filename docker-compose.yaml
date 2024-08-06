@@ -10,7 +10,9 @@ services:
       - ./user-service/migrations:/migrations
     command: [ "-path", "/migrations", "-database",  "postgres://postgres:root@cvmaker_postgres:5432/resume?sslmode=disable", "up" ]
     depends_on:
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
+
 
   minio:
     image: docker.io/bitnami/minio:2024
@@ -35,9 +37,9 @@ services:
       PGDATA: /data/postgres
       POSTGRES_DB: resume
     volumes:
-      - db:/databasedatadb/postgres
+      - db:/data/postgres
     ports:
-      - "5333:5333"
+      - "5432:5432"
     networks:
       - cv
     restart: unless-stopped
@@ -73,20 +75,22 @@ services:
     container_name: cvmaker_user-service
     build: ./user-service
     depends_on:
-      - redis-db
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
     ports:
       - "9090:9090"
     networks:
       - cv
 
+
   resume-service:
     container_name: cvmaker_resume-service
     build: ./resume-service
     depends_on:
-      - redis-db
-      - postgres-db
-      - user-service
+      postgres-db:
+        condition: service_healthy
+      user-service:
+        condition: service_started
     ports:
       - "9080:9080"
     networks:
@@ -118,9 +122,6 @@ services:
     build:
       context: ./bot-service
       dockerfile: Dockerfile
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
     environment:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
@@ -129,6 +130,11 @@ services:
       - TELEGRAM_BOT_TOKEN=7303220559:AAHgpp6y1f_dk-iLsZ_gGrjwoI5-9mTVrPY
       - TELEGRAM_CHAT_ID=-1002142909351
       - QUEUE_NAME=cvmaker_queue
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     networks:
       - cv
 
@@ -138,5 +144,6 @@ networks:
 
 volumes:
   db:
+    driver: local
   minio_data:
     driver: local
