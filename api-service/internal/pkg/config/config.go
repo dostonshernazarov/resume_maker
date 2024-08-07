@@ -85,7 +85,7 @@ func NewConfig() (*Config, error) {
 
 	// minio configuration
 	config.Minio.Host = getEnv("MINIO_HOST", "34.89.185.96")
-	config.Minio.Port = getEnv("MINIO_PORT", ":9000")
+	config.Minio.Port = getEnv("MINIO_PORT", ":9001")
 	config.Minio.AccessKey = getEnv("MINIO_ACCESS_KEY", "minioadmin")
 	config.Minio.SecretKey = getEnv("MINIO_SECRET_KEY", "minioadmin")
 	config.Minio.BucketName = getEnv("MINIO_BUCKET_NAME", "resumes")
