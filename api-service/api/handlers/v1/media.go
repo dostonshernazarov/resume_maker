@@ -174,7 +174,7 @@ func (h *HandlerV1) UploadMedia(c *gin.Context) {
 		return
 	}
 
-	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
+	minioURL := fmt.Sprintf("https://%s/%s/%s", endpoint, bucketName, objectName)
 
 	user.Image = minioURL
 	_, err = h.Service.UserService().UpdateUser(ctx, user)
