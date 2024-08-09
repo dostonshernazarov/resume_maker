@@ -545,7 +545,7 @@ func (h *HandlerV1) UploadResumePhoto(c *gin.Context) {
         ]
     }`, bucketName)
 
-	err = minioClient.SetBucketPolicy(ctx, bucketName, policy)
+	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.Error{
 			Message: err.Error(),

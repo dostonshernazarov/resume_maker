@@ -18,6 +18,7 @@ services:
     image: docker.io/bitnami/minio:2024
     ports:
       - '9001:9000'
+      - '9001:9001'
     networks:
       - cv
     volumes:

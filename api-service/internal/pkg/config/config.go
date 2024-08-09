@@ -86,9 +86,9 @@ func NewConfig() (*Config, error) {
 	// minio configuration
 	config.Minio.Host = getEnv("MINIO_HOST", "34.89.185.96")
 	config.Minio.Port = getEnv("MINIO_PORT", ":9000")
-	config.Minio.AccessKey = getEnv("MINIO_ACCESS_KEY", "minioadmin")
-	config.Minio.SecretKey = getEnv("MINIO_SECRET_KEY", "minioadmin")
-	config.Minio.BucketName = getEnv("MINIO_BUCKET_NAME", "resumes")
+	config.Minio.AccessKey = getEnv("MINIO_ROOT_USER", "minioadmin")
+	config.Minio.SecretKey = getEnv("MINIO_ROOT_PASSWORD", "minioadmin")
+	config.Minio.BucketName = getEnv("MINIO_DEFAULT_BUCKETS", "resumes")
 
 	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "cvmaker_resume-service")
 	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9070")
