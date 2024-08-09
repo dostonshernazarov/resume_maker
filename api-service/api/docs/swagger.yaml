@@ -213,6 +213,13 @@ definitions:
           $ref: '#/definitions/models.ResResume'
         type: array
     type: object
+  models.ResponseUrl:
+    properties:
+      minio_url:
+        type: string
+      path:
+        type: string
+    type: object
   models.ResumeGenetare:
     properties:
       basics:
@@ -641,7 +648,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.ResponseUrl'
         "400":
           description: Bad Request
           schema:

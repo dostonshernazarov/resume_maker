@@ -407,7 +407,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.ResponseUrl"
                         }
                     },
                     "400": {
@@ -1501,6 +1501,17 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.ResResume"
                     }
+                }
+            }
+        },
+        "models.ResponseUrl": {
+            "type": "object",
+            "properties": {
+                "minio_url": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
                 }
             }
         },
