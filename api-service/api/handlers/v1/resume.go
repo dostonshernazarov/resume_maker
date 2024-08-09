@@ -492,7 +492,7 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 // @Accept      json
 // @Produce     json
 // @Param       file formData file true "Image"
-// @Success     200 {object} string
+// @Success     200 {object} models.ResponseUrl
 // @Failure     400 {object} models.Error
 // @Failure     500 {object} models.Error
 // @Router      /v1/resume/resume-photo [POST]
@@ -529,29 +529,6 @@ func (h *HandlerV1) UploadResumePhoto(c *gin.Context) {
 			log.Println(err.Error())
 			return
 		}
-	}
-
-	policy := fmt.Sprintf(`{
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": ["*"]
-                },
-                "Action": ["s3:GetObject"],
-                "Resource": ["arn:aws:s3:::%s/*"]
-            }
-        ]
-    }`, bucketName)
-
-	err = minioClient.SetBucketPolicy(context.Background(), bucketName, policy)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.Error{
-			Message: err.Error(),
-		})
-		log.Println(err.Error())
-		return
 	}
 
 	file := &models.File{}
@@ -621,7 +598,10 @@ func (h *HandlerV1) UploadResumePhoto(c *gin.Context) {
 
 	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
 
-	c.JSON(http.StatusOK, minioURL)
+	c.JSON(http.StatusOK, &models.ResponseUrl{
+		MinioUrl: minioURL,
+		Path:     "34.89.185.96/projects/go/resume_maker/api-service/" + uploadPath,
+	})
 }
 
 // ListUsersResume

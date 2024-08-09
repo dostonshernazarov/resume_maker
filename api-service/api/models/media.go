@@ -7,6 +7,11 @@ type (
 		File *multipart.FileHeader `form:"file" binding:"required"`
 	}
 
+	ResponseUrl struct {
+		MinioUrl string `json:"minio_url"`
+		Path     string `json:"path"`
+	}
+
 	UploadPhotoRes struct {
 		URL string `json:"photo_url"`
 	}
@@ -18,9 +23,9 @@ type (
 	}
 
 	Media struct {
-		UserId string `json:",omitempty"`
-		ProfileImg  string `json:"image_url,omitempty"`
-		FileName  string `json:"file_name"`
+		UserId     string `json:",omitempty"`
+		ProfileImg string `json:"image_url,omitempty"`
+		FileName   string `json:"file_name"`
 	}
 
 	ProductImages struct {
@@ -29,8 +34,6 @@ type (
 
 	EstablishmentImageRespons struct {
 		ImageURL string `json:"image_url"`
-		Message string `json:"message"`
+		Message  string `json:"message"`
 	}
-
 )
-
