@@ -17,7 +17,7 @@ services:
   minio:
     image: docker.io/bitnami/minio:2024
     ports:
-      - '9001:9000'
+      - '9000:9000'
       - '9001:9001'
     networks:
       - cv
@@ -27,6 +27,11 @@ services:
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
       - MINIO_DEFAULT_BUCKETS=resumes
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   postgres-db:
     container_name: cvmaker_postgres
