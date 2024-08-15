@@ -29,9 +29,7 @@ jobs:
         port: 22
         script: |
           echo "Starting deployment..."
-          cd /projects/go/resume_maker
-          sudo docker compose down
-          docker system prune -af
-          git pull origin main
+          cd /test
+          git clone git@github.com:dostonshernazarov/resume_maker.git
           sudo docker compose up -d
           echo "Deployment complete."
