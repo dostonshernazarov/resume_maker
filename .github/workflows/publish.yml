@@ -28,7 +28,7 @@ jobs:
     - name: Deploy to Google cloud
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.SSH_HOST }}
+        host: ${{ env.SERVER_HOST }}
         username: ${{ env.SERVER_USERNAME }}
         key: ${{ env.SSH_PRIVATE_KEY }}
         key_format: pem
