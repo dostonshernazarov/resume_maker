@@ -9,6 +9,7 @@ on:
 env:
   SERVER_HOST: 34.89.185.96
   SERVER_USERNAME: doston
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
 
 jobs:
