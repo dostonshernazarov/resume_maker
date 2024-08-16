@@ -33,7 +33,7 @@ jobs:
         key_format: pem
         script: |
           echo "Starting deployment..."
-          cd test/
+          cd ~/test/
           git clone git@github.com:dostonshernazarov/resume_maker.git
           sudo docker compose up -d
           echo "Deployment complete."
