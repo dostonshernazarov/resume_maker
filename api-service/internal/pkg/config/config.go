@@ -91,7 +91,7 @@ func NewConfig() (*Config, error) {
 	config.Minio.BucketName = getEnv("MINIO_DEFAULT_BUCKETS", "resumes")
 
 	config.ResumeService.Host = getEnv("RESUME_SERVICE_GRPC_HOST", "cvmaker_resume-service")
-	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9070")
+	config.ResumeService.Port = getEnv("RESUME_SERVICE_GRPC_PORT", ":9080")
 
 	// user configuration
 	config.UserService.Host = getEnv("USER_SERVICE_GRPC_HOST", "cvmaker_user-service")
