@@ -1,44 +1,31 @@
-name: deploy to server
+name: Build, Push, and Deploy Docker Image
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 env:
-  SERVER_HOST: 34.89.185.96
-  SERVER_USERNAME: doston
+  SERVER_HOST: 18.199.83.250
+  SERVER_USERNAME: ubuntu
   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-<<<<<<< HEAD
-=======
-
->>>>>>> 8055413 (github action has been added)
-
 
 jobs:
-  build:
+  build_push_deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout our repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Verify Connection Details
-      run: |
-        echo "Connecting to host: ${{ secrets.SSH_HOST }}"
-        echo "Using user: ${{ secrets.SSH_USER }}"
-
-    - name: Deploy to Google cloud
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ env.SERVER_HOST }}
-        username: ${{ env.SERVER_USERNAME }}
-        key: ${{ env.SSH_PRIVATE_KEY }}
-        key_format: pem
-        script: |
-          echo "Starting deployment..."
-          cd ~/test/
-          git clone git@github.com:dostonshernazarov/resume_maker.git
-          sudo docker compose up -d
-          echo "Deployment complete."
+      - name: Clone repository and Up project to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USERNAME }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir test
+            cd test/
+            git clone git@github.com:dostonshernazarov/resume_maker.git
+            cd resume_maker/
+            docker compose up
