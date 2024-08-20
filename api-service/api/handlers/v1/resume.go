@@ -497,42 +497,42 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 // @Failure     500 {object} models.Error
 // @Router      /v1/resume/resume-photo [POST]
 func (h *HandlerV1) UploadResumePhoto(c *gin.Context) {
-	// duration, err := time.ParseDuration(h.Config.Context.Timeout)
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, models.Error{
-	// 		Message: err.Error(),
-	// 	})
-	// 	log.Println(err.Error())
-	// 	return
-	// }
-	// ctx, cancel := context.WithTimeout(context.Background(), duration)
-	// defer cancel()
+	duration, err := time.ParseDuration(h.Config.Context.Timeout)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err.Error())
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), duration)
+	defer cancel()
 
-	// endpoint := "34.89.185.96:9000"
-	// accessKeyID := h.Config.Minio.AccessKey
-	// secretAccessKey := h.Config.Minio.SecretKey
-	// bucketName := h.Config.Minio.BucketName
-	// minioClient, err := minio.New(endpoint, &minio.Options{
-	// 	Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
-	// 	Secure: false,
-	// })
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// err = minioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{})
-	// if err != nil {
-	// 	if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
-	// 	} else {
-	// 		c.JSON(http.StatusInternalServerError, models.Error{
-	// 			Message: err.Error(),
-	// 		})
-	// 		log.Println(err.Error())
-	// 		return
-	// 	}
-	// }
+	endpoint := "18.199.83.250:9001"
+	accessKeyID := h.Config.Minio.AccessKey
+	secretAccessKey := h.Config.Minio.SecretKey
+	bucketName := h.Config.Minio.BucketName
+	minioClient, err := minio.New(endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
+		Secure: false,
+	})
+	if err != nil {
+		panic(err)
+	}
+	err = minioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{})
+	if err != nil {
+		if minio.ToErrorResponse(err).Code == "BucketAlreadyOwnedByYou" {
+		} else {
+			c.JSON(http.StatusInternalServerError, models.Error{
+				Message: err.Error(),
+			})
+			log.Println(err.Error())
+			return
+		}
+	}
 
 	file := &models.File{}
-	err := c.ShouldBind(&file)
+	err = c.ShouldBind(&file)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: err.Error(),
@@ -582,24 +582,24 @@ func (h *HandlerV1) UploadResumePhoto(c *gin.Context) {
 		return
 	}
 
-	// objectName := newFilename
-	// contentType := "image/jpeg"
-	// _, err = minioClient.FPutObject(context.Background(), bucketName, objectName, uploadPath, minio.PutObjectOptions{
-	// 	ContentType: contentType,
-	// })
+	objectName := newFilename
+	contentType := "image/jpeg"
+	_, err = minioClient.FPutObject(context.Background(), bucketName, objectName, uploadPath, minio.PutObjectOptions{
+		ContentType: contentType,
+	})
 
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, models.Error{
-	// 		Message: err.Error(),
-	// 	})
-	// 	log.Println(err)
-	// 	return
-	// }
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Error{
+			Message: err.Error(),
+		})
+		log.Println(err)
+		return
+	}
 
-	// minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
+	minioURL := fmt.Sprintf("https://media.cvmaker.uz/%s/%s", bucketName, objectName)
 
 	c.JSON(http.StatusOK, &models.ResponseUrl{
-		MinioUrl: "minioURL",
+		MinioUrl: minioURL,
 		Path:     "34.89.185.96/projects/go/resume_maker/api-service/" + uploadPath,
 	})
 }

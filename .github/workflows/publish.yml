@@ -10,6 +10,10 @@ env:
   SERVER_HOST: 34.89.185.96
   SERVER_USERNAME: doston
   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8055413 (github action has been added)
 
 
 jobs:
