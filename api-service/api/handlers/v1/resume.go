@@ -508,7 +508,7 @@ func (h *HandlerV1) UploadResumePhoto(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), duration)
 	defer cancel()
 
-	endpoint := "18.199.83.250:9001"
+	endpoint := "18.199.83.250:9000"
 	accessKeyID := h.Config.Minio.AccessKey
 	secretAccessKey := h.Config.Minio.SecretKey
 	bucketName := h.Config.Minio.BucketName

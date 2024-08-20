@@ -25,7 +25,8 @@ jobs:
           key: ${{ env.SSH_PRIVATE_KEY }}
           script: |
             mkdir test
-            cd test/
-            git clone git@github.com:dostonshernazarov/resume_maker.git
-            cd resume_maker/
+            cd test/resume_maker/
+            docker compose down
+            docker system prune -af
+            git pull origin main
             docker compose up
