@@ -24,9 +24,13 @@ jobs:
           username: ${{ env.SERVER_USERNAME }}
           key: ${{ env.SSH_PRIVATE_KEY }}
           script: |
-            mkdir test
+            if [ ! -d "test/resume_maker" ]; then
+              mkdir -p test/resume_maker
+            fi
             cd test/resume_maker/
-            docker compose down
+            docker compose down || true
             docker system prune -af
             git pull origin main
-            docker compose up
+            docker compose up -d
+          script_stop: true
+          timeout: 300s
