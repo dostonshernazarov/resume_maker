@@ -702,14 +702,14 @@ func (h *HandlerV1) ListResume(c *gin.Context) {
 	job_location = strings.ToLower(job_location)
 	job_type = strings.ToLower(job_type)
 
-	if job_location != "offline" && job_location != "online" {
+	if job_location != "offline" && job_location != "online" && job_location != "" {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.NotAvailable,
 		})
 		return
 	}
 
-	if job_type != "full-time" && job_type != "part-time" {
+	if job_type != "full-time" && job_type != "part-time" && job_type != "" {
 		c.JSON(http.StatusBadRequest, models.Error{
 			Message: models.NotAvailable,
 		})

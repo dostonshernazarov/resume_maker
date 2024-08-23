@@ -24,9 +24,9 @@ type HandlerV1 struct {
 	Service        grpcClients.ServiceClient
 	AppVersion     appV.AppVersion
 	BrokerProducer event.BrokerProducer
-	Enforcer       *casbin.Enforcer
-	redisStorage   repo.Cache
-	writer         *rabbitmq.RabbitMQProducerImpl
+	// Enforcer       *casbin.Enforcer
+	redisStorage repo.Cache
+	writer       *rabbitmq.RabbitMQProducerImpl
 }
 
 type HandlerV1Config struct {
@@ -51,8 +51,8 @@ func New(c *HandlerV1Config) *HandlerV1 {
 		JwtHandler:     c.JwtHandler,
 		AppVersion:     c.AppVersion,
 		BrokerProducer: c.BrokerProducer,
-		Enforcer:       c.Enforcer,
-		redisStorage:   c.Redis,
-		writer:         c.Writer,
+		// Enforcer:       c.Enforcer,
+		redisStorage: c.Redis,
+		writer:       c.Writer,
 	}
 }
