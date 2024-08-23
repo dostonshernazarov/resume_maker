@@ -692,6 +692,8 @@ func (h *HandlerV1) ListResume(c *gin.Context) {
 		return
 	}
 
+	var salaryInt, experienceInt int
+
 	job_title := c.Query("job_title")
 	job_location := c.Query("job_location")
 	job_type := c.Query("job_type")
@@ -716,33 +718,37 @@ func (h *HandlerV1) ListResume(c *gin.Context) {
 		return
 	}
 
-	salaryInt, err := strconv.Atoi(salary)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.Error{
-			Message: models.NotAvailable,
-		})
-		return
-	}
-	if salaryInt < -1 {
-		c.JSON(http.StatusBadRequest, models.Error{
-			Message: models.NotAvailable,
-		})
-		return
-	}
-
-	experienceInt, err := strconv.Atoi(experience)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.Error{
-			Message: models.NotAvailable,
-		})
-		return
+	if salary != "" {
+		salaryInt, err := strconv.Atoi(salary)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, models.Error{
+				Message: models.NotAvailable,
+			})
+			return
+		}
+		if salaryInt < -1 {
+			c.JSON(http.StatusBadRequest, models.Error{
+				Message: models.NotAvailable,
+			})
+			return
+		}
 	}
 
-	if experienceInt < -1 {
-		c.JSON(http.StatusBadRequest, models.Error{
-			Message: models.NotAvailable,
-		})
-		return
+	if experience != "" {
+		experienceInt, err := strconv.Atoi(experience)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, models.Error{
+				Message: models.NotAvailable,
+			})
+			return
+		}
+
+		if experienceInt < -1 {
+			c.JSON(http.StatusBadRequest, models.Error{
+				Message: models.NotAvailable,
+			})
+			return
+		}
 	}
 
 	var jsonMarshal protojson.MarshalOptions
