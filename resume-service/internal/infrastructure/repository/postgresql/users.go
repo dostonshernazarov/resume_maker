@@ -244,7 +244,7 @@ func (r resumeRepo) ListResume(ctx context.Context, request *entity.ListRequest)
 			squirrel.LtOrEq{"salary": request.Salary + 50},
 		))
 	}
-	builder = builder.Where(r.db.Sq.Equal("region", request.Region))
+	builder = builder.Where(r.db.Sq.ILike("region", "%"+request.Region+"%"))
 	if request.Experience >= 0 {
 		builder = builder.Where(r.db.Sq.And(
 			squirrel.GtOrEq{"experience": request.Experience - 1},
@@ -299,7 +299,7 @@ func (r resumeRepo) ListResume(ctx context.Context, request *entity.ListRequest)
 			squirrel.LtOrEq{"salary": request.Salary + 50},
 		))
 	}
-	builder = builder.Where(r.db.Sq.Equal("region", request.Region))
+	builder = builder.Where(r.db.Sq.ILike("region", "%"+request.Region+"%"))
 	if request.Experience >= 0 {
 		totalBuilder = totalBuilder.Where(r.db.Sq.And(
 			squirrel.GtOrEq{"experience": request.Experience - 1},
