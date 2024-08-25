@@ -119,6 +119,8 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
+      consumer:
+        condition: service_started
     environment:
       - AMQP_SERVER=amqp://guest:guest@rabbitmq:5672/
       - QUEUE_NAME=cvmaker_queue

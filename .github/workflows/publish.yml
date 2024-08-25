@@ -43,6 +43,8 @@ jobs:
             docker image rm redis || true
             docker image rm bitnami/minio:2024 || true
             docker image rm rabbitmq:3-management || true
+            docker system prune -af
+            docker volume prune -af
             git pull origin main
             docker compose up -d
           script_stop: true

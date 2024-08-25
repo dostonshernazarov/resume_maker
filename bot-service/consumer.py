@@ -23,22 +23,22 @@ def callback(ch, method, properties, body):
     try:
         bot_produce = json.loads(body)
         message = f"""
-<b>New Application Received:</b>
+<b>🆕 NEW RESUME:</b>
 
-<b>Full Name:</b> {bot_produce['name']}
-<b>Email:</b> {bot_produce['email']}
-<b>Phone:</b> {bot_produce['phone']}
-<b>Job Title:</b> {bot_produce['label']}
-<b>City:</b> {bot_produce['location']}
-<b>Salary:</b> ${bot_produce['salary']}
+<b>👱🏻‍♂️ Employee:</b> {bot_produce['name']}
+<b>📧 Email:</b> {bot_produce['email']}
+<b>📞 Phone:</b> {bot_produce['phone']}
+<b>📚 Job:</b> {bot_produce['label']}
+<b>🏠 City:</b> {bot_produce['location']}
+<b>💵 Salary:</b> ${bot_produce['salary']}
 
-<b>Resume:</b>
+<b>📄 Resume:</b>
 {bot_produce['url']}
 
-<b>Links:</b>
-{', '.join(bot_produce['profiles'])}
+<b>🔗 Profiles:</b>
+{', '.join([profile['url'] for profile in bot_produce['profiles']])}
 
-<b>Summary:</b>
+<b>🔎 Summary:</b>
 {bot_produce['summary']}
 """
         print(f" [x] Received message")
