@@ -2,7 +2,6 @@ package postgresql
 
 import (
 	"context"
-	"github.com/Masterminds/squirrel"
 	"time"
 
 	"github.com/dostonshernazarov/resume_maker/user-service/internal/entity"
@@ -238,19 +237,7 @@ func (r resumeRepo) ListResume(ctx context.Context, request *entity.ListRequest)
 	builder = builder.Where(r.db.Sq.ILike("job_title", "%"+request.JobTitle+"%"))
 	builder = builder.Where(r.db.Sq.ILike("job_location", "%"+request.JobLocation+"%"))
 	builder = builder.Where(r.db.Sq.ILike("job_type", "%"+request.JobType+"%"))
-	if request.Salary >= 0 {
-		builder = builder.Where(r.db.Sq.And(
-			squirrel.GtOrEq{"salary": request.Salary - 50},
-			squirrel.LtOrEq{"salary": request.Salary + 50},
-		))
-	}
 	builder = builder.Where(r.db.Sq.ILike("region", "%"+request.Region+"%"))
-	if request.Experience >= 0 {
-		builder = builder.Where(r.db.Sq.And(
-			squirrel.GtOrEq{"experience": request.Experience - 1},
-			squirrel.LtOrEq{"experience": request.Experience + 1},
-		))
-	}
 	builder = builder.Limit(uint64(request.Limit))
 	builder = builder.Offset(uint64(offset))
 
@@ -292,21 +279,7 @@ func (r resumeRepo) ListResume(ctx context.Context, request *entity.ListRequest)
 	totalBuilder = totalBuilder.Where(r.db.Sq.ILike("job_title", "%"+request.JobTitle+"%"))
 	totalBuilder = totalBuilder.Where(r.db.Sq.ILike("job_location", "%"+request.JobLocation+"%"))
 	totalBuilder = totalBuilder.Where(r.db.Sq.ILike("job_type", "%"+request.JobType+"%"))
-
-	if request.Salary >= 0 {
-		totalBuilder = totalBuilder.Where(r.db.Sq.And(
-			squirrel.GtOrEq{"salary": request.Salary - 50},
-			squirrel.LtOrEq{"salary": request.Salary + 50},
-		))
-	}
 	builder = builder.Where(r.db.Sq.ILike("region", "%"+request.Region+"%"))
-	if request.Experience >= 0 {
-		totalBuilder = totalBuilder.Where(r.db.Sq.And(
-			squirrel.GtOrEq{"experience": request.Experience - 1},
-			squirrel.LtOrEq{"experience": request.Experience + 1},
-		))
-	}
-
 	totalQuery, args, err := totalBuilder.ToSql()
 	if err != nil {
 		return nil, err

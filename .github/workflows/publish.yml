@@ -29,20 +29,6 @@ jobs:
             fi
             cd projects/go/resume_maker/
             docker compose down || true
-            docker rm cvmaker_api-service || true
-            docker rm cvmaker_resume-service || true
-            docker rm cvmaker_user-service || true
-            docker rm cvmaker_postgres || true
-            docker rm cvmaker_redis-db || true
-            docker rm resume_maker-minio-1 || true
-            docker rm resume_maker-rabbitmq-1|| true
-            docker image rm resume_maker-api-service || true
-            docker image rm resume_maker-resume-service || true
-            docker image rm resume_maker-user-service || true
-            docker image rm postgres || true
-            docker image rm redis || true
-            docker image rm bitnami/minio:2024 || true
-            docker image rm rabbitmq:3-management || true
             docker system prune -af
             docker volume prune -af
             git pull origin main
