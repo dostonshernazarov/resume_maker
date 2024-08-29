@@ -287,6 +287,11 @@ definitions:
       softSkills:
         type: string
     type: object
+  models.ResumeResponse:
+    properties:
+      resume:
+        type: string
+    type: object
   models.Skill:
     properties:
       keywords:
@@ -522,9 +527,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: Resume URL
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.ResumeResponse'
         "400":
           description: Bad Request
           schema:

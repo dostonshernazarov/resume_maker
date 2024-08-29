@@ -354,7 +354,7 @@ func (h *HandlerV1) LastGenerateResume(c *gin.Context) {
 // @Accept			json
 // @Produce 		json
 // @Param 			data body models.ResumeGenetare true "Resume Model"
-// @Success 		200 {object} string "Resume URL"
+// @Success 		200 {object} models.ResumeResponse
 // @Failure 		400 {object} models.Error
 // @Failure 		401 {object} models.Error
 // @Failure 		403 {object} models.Error
@@ -481,7 +481,9 @@ func (h *HandlerV1) GenerateResume(c *gin.Context) {
 	}
 	//rabbitmq
 
-	c.JSON(http.StatusOK, minioURL)
+	c.JSON(http.StatusOK, models.ResumeResponse{
+		Resume: minioURL,
+	})
 }
 
 // UploadMedia

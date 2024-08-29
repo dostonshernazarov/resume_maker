@@ -156,6 +156,10 @@ type Education struct {
 	Courses     []string `json:"courses"`
 }
 
+type ResumeResponse struct {
+	Resume string `json:"resume"`
+}
+
 type MainResumeReq struct {
 	Work         []Work      `json:"work"`
 	Projects     []Project   `json:"projects"`

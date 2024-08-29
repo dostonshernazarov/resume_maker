@@ -209,9 +209,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Resume URL",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.ResumeResponse"
                         }
                     },
                     "400": {
@@ -1612,6 +1612,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "softSkills": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ResumeResponse": {
+            "type": "object",
+            "properties": {
+                "resume": {
                     "type": "string"
                 }
             }
